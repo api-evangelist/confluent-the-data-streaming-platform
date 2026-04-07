@@ -9,8 +9,7 @@ type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
+tags: []
 created: '2025-08-19'
 modified: '2026-03-16'
 url: >-
@@ -26,8 +25,7 @@ apis:
       turn data chaos into instantly accessible and usable data products with the
       market leading Data Streaming Platform.
     humanURL: https://www.confluent.io/
-    tags:
-      - API
+    tags: []
     properties:
       - type: Documentation
         url: https://docs.confluent.io/
