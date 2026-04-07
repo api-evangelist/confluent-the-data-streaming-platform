@@ -1,10 +1,10 @@
 aid: confluent-the-data-streaming-platform
-name: Confluent | The Data Streaming Platform
+name: Confluent | the Data Streaming Platform
 description: >-
-  Stream, connect, process, and govern your data with an all-in-one, real-time
-  platform from the pioneer in data streaming. Build faster, scale smarter, and
-  turn data chaos into instantly accessible and usable data products with the
-  market leading Data Streaming Platform. 
+  Stream, connect, process, and govern your data with an all-in-one, real-time platform
+  from the pioneer in data streaming. Build faster, scale smarter, and turn data chaos
+  into instantly accessible and usable data products with the market leading Data
+  Streaming Platform.
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -19,12 +19,12 @@ specificationVersion: '0.19'
 apis:
   - aid: >-
       confluent-the-data-streaming-platform:confluent-the-data-streaming-platform
-    name: Confluent | The Data Streaming Platform
+    name: Confluent | the Data Streaming Platform
     description: >-
-      Stream, connect, process, and govern your data with an all-in-one,
-      real-time platform from the pioneer in data streaming. Build faster, scale
-      smarter, and turn data chaos into instantly accessible and usable data
-      products with the market leading Data Streaming Platform. 
+      Stream, connect, process, and govern your data with an all-in-one, real-time
+      platform from the pioneer in data streaming. Build faster, scale smarter, and
+      turn data chaos into instantly accessible and usable data products with the
+      market leading Data Streaming Platform.
     humanURL: https://www.confluent.io/
     tags:
       - API
