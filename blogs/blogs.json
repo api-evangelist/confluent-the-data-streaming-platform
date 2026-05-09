@@ -3,11 +3,11 @@
   "feeds": [
     {
       "source": "https://www.confluent.io/blog/",
-      "feed_url": "https://www.confluent.io/rss.xml",
-      "saved": 10,
-      "title": "Confluent: Data in motion"
+      "feed_url": "https://www.confluent.io/feed/",
+      "title": "Confluent: Data in motion",
+      "saved": 4
     }
   ],
-  "post_count": 10,
-  "fetched": "2026-05-03T23:25:54Z"
+  "post_count": 14,
+  "fetched": "2026-05-09T20:17:51Z"
 }
