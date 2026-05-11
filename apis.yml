@@ -237,6 +237,10 @@ common:
     url: https://www.confluent.io/terms-of-service/
   - type: Privacy Policy
     url: https://www.confluent.io/privacy-policy/
+  - type: Integrations
+    url: https://www.confluent.io/partner/
+integrations:
+  - name: Become a Partner
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
