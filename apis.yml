@@ -20,7 +20,7 @@ url: >-
 created: '2025-08-19'
 modified: '2026-04-28'
 specificationVersion: '0.19'
-x-type: company
+kind: company
 tags:
   - Apache Flink
   - Apache Kafka
@@ -54,7 +54,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.confluent.io/cloud/current/api.html
-      - type: API Reference
+      - type: APIReference
         url: https://docs.confluent.io/cloud/current/api.html
     x-features:
       - Cluster Lifecycle Management
@@ -225,7 +225,7 @@ common:
     url: https://www.confluent.io/blog/
   - type: Pricing
     url: https://www.confluent.io/pricing/
-  - type: Status
+  - type: StatusPage
     url: https://status.confluent.cloud/
   - type: Login
     url: https://confluent.cloud/login
@@ -233,9 +233,9 @@ common:
     url: https://www.confluent.io/hub/
   - type: Training
     url: https://training.confluent.io/
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.confluent.io/terms-of-service/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.confluent.io/privacy-policy/
   - type: Integrations
     url: https://www.confluent.io/partner/
