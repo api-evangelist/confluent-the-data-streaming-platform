@@ -211,6 +211,8 @@ apis:
       - Run stateful stream processing on Confluent Cloud
       - Deploy Flink SQL jobs through automation
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/confluent
   - type: Website
     url: https://www.confluent.io/
   - type: Developer Portal
