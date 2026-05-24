@@ -1,0 +1,409 @@
+openapi: 3.1.0
+info:
+  title: Confluent Cloud REST API (selected)
+  description: |
+    A best-effort subset of the Confluent Cloud control-plane REST APIs:
+    Organizations and Environments (org/v2), Service Accounts and Cloud
+    API Keys (iam/v2), and Kafka Clusters (cmk/v2). Confluent Cloud
+    additionally publishes data-plane APIs (Kafka REST v3, Schema Registry,
+    Connect, ksqlDB, Flink) on per-cluster endpoints that are not modeled
+    here. Authentication uses HTTP Basic with a Cloud API Key/Secret pair,
+    or OAuth 2.0 (Confluent STS / external IdP).
+  version: "2.0.0"
+  contact:
+    name: Confluent Cloud API Reference
+    url: https://docs.confluent.io/cloud/current/api.html
+servers:
+  - url: https://api.confluent.cloud
+    description: Confluent Cloud control plane
+security:
+  - basicAuth: []
+  - bearerAuth: []
+tags:
+  - name: Organizations
+  - name: Environments
+  - name: Service Accounts
+  - name: API Keys
+  - name: Clusters
+paths:
+  /org/v2/organizations:
+    get:
+      tags: [Organizations]
+      summary: List organizations the caller can access
+      parameters:
+        - { in: query, name: page_size, schema: { type: integer, default: 10 } }
+        - { in: query, name: page_token, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of organizations
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OrganizationList" }
+  /org/v2/organizations/{id}:
+    get:
+      tags: [Organizations]
+      summary: Get an organization
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: An organization
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Organization" }
+  /org/v2/environments:
+    get:
+      tags: [Environments]
+      summary: List environments
+      parameters:
+        - { in: query, name: page_size, schema: { type: integer, default: 10 } }
+        - { in: query, name: page_token, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of environments
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EnvironmentList" }
+    post:
+      tags: [Environments]
+      summary: Create an environment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Environment" }
+      responses:
+        "201":
+          description: Environment created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Environment" }
+  /org/v2/environments/{id}:
+    get:
+      tags: [Environments]
+      summary: Get an environment
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: An environment
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Environment" }
+    patch:
+      tags: [Environments]
+      summary: Update an environment
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Environment" }
+      responses:
+        "200": { description: Environment updated }
+    delete:
+      tags: [Environments]
+      summary: Delete an environment
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Environment deleted }
+  /iam/v2/service-accounts:
+    get:
+      tags: [Service Accounts]
+      summary: List service accounts
+      parameters:
+        - { in: query, name: page_size, schema: { type: integer, default: 10 } }
+        - { in: query, name: page_token, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of service accounts
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceAccountList" }
+    post:
+      tags: [Service Accounts]
+      summary: Create a service account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ServiceAccount" }
+      responses:
+        "201":
+          description: Service account created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceAccount" }
+  /iam/v2/service-accounts/{id}:
+    get:
+      tags: [Service Accounts]
+      summary: Get a service account
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: A service account
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceAccount" }
+    delete:
+      tags: [Service Accounts]
+      summary: Delete a service account
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Service account deleted }
+  /iam/v2/api-keys:
+    get:
+      tags: [API Keys]
+      summary: List API keys
+      parameters:
+        - { in: query, name: spec.owner, schema: { type: string } }
+        - { in: query, name: spec.resource, schema: { type: string } }
+        - { in: query, name: page_size, schema: { type: integer, default: 10 } }
+        - { in: query, name: page_token, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of API keys
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ApiKeyList" }
+    post:
+      tags: [API Keys]
+      summary: Create an API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ApiKey" }
+      responses:
+        "201":
+          description: API key created (secret returned exactly once)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ApiKey" }
+  /iam/v2/api-keys/{id}:
+    get:
+      tags: [API Keys]
+      summary: Get an API key
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: An API key
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ApiKey" }
+    delete:
+      tags: [API Keys]
+      summary: Delete an API key
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "204": { description: API key deleted }
+  /cmk/v2/clusters:
+    get:
+      tags: [Clusters]
+      summary: List Kafka clusters
+      parameters:
+        - { in: query, name: environment, required: true, schema: { type: string } }
+        - { in: query, name: page_size, schema: { type: integer, default: 10 } }
+        - { in: query, name: page_token, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of clusters
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClusterList" }
+    post:
+      tags: [Clusters]
+      summary: Create a Kafka cluster
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Cluster" }
+      responses:
+        "201":
+          description: Cluster being provisioned
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Cluster" }
+  /cmk/v2/clusters/{id}:
+    get:
+      tags: [Clusters]
+      summary: Get a Kafka cluster
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+        - { in: query, name: environment, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: A cluster
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Cluster" }
+    delete:
+      tags: [Clusters]
+      summary: Delete a Kafka cluster
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+        - { in: query, name: environment, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Cluster being deprovisioned }
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Cloud API Key (key) and Secret (password)
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Confluent STS or external OAuth access token
+  schemas:
+    Organization:
+      type: object
+      properties:
+        api_version: { type: string, example: org/v2 }
+        kind: { type: string, example: Organization }
+        id: { type: string }
+        metadata: { $ref: "#/components/schemas/ResourceMetadata" }
+        display_name: { type: string }
+    OrganizationList:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Organization" }
+        metadata: { $ref: "#/components/schemas/ListMetadata" }
+    Environment:
+      type: object
+      properties:
+        api_version: { type: string, example: org/v2 }
+        kind: { type: string, example: Environment }
+        id: { type: string }
+        metadata: { $ref: "#/components/schemas/ResourceMetadata" }
+        display_name: { type: string }
+        stream_governance_config:
+          type: object
+          properties:
+            package:
+              type: string
+              enum: [ESSENTIALS, ADVANCED]
+    EnvironmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Environment" }
+        metadata: { $ref: "#/components/schemas/ListMetadata" }
+    ServiceAccount:
+      type: object
+      properties:
+        api_version: { type: string, example: iam/v2 }
+        kind: { type: string, example: ServiceAccount }
+        id: { type: string }
+        metadata: { $ref: "#/components/schemas/ResourceMetadata" }
+        display_name: { type: string }
+        description: { type: string }
+    ServiceAccountList:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/ServiceAccount" }
+        metadata: { $ref: "#/components/schemas/ListMetadata" }
+    ApiKey:
+      type: object
+      properties:
+        api_version: { type: string, example: iam/v2 }
+        kind: { type: string, example: ApiKey }
+        id: { type: string }
+        metadata: { $ref: "#/components/schemas/ResourceMetadata" }
+        spec:
+          type: object
+          properties:
+            display_name: { type: string }
+            description: { type: string }
+            secret: { type: string, readOnly: true }
+            owner:
+              type: object
+              properties:
+                id: { type: string }
+                api_version: { type: string }
+                kind: { type: string }
+            resource:
+              type: object
+              properties:
+                id: { type: string }
+                api_version: { type: string }
+                kind: { type: string }
+                environment: { type: string }
+    ApiKeyList:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/ApiKey" }
+        metadata: { $ref: "#/components/schemas/ListMetadata" }
+    Cluster:
+      type: object
+      properties:
+        api_version: { type: string, example: cmk/v2 }
+        kind: { type: string, example: Cluster }
+        id: { type: string }
+        metadata: { $ref: "#/components/schemas/ResourceMetadata" }
+        spec:
+          type: object
+          properties:
+            display_name: { type: string }
+            availability:
+              type: string
+              enum: [SINGLE_ZONE, MULTI_ZONE]
+            cloud:
+              type: string
+              enum: [AWS, AZURE, GCP]
+            region: { type: string }
+            config:
+              type: object
+              properties:
+                kind:
+                  type: string
+                  enum: [Basic, Standard, Dedicated, Enterprise, Freight]
+            environment:
+              type: object
+              properties:
+                id: { type: string }
+                api_version: { type: string, example: org/v2 }
+                kind: { type: string, example: Environment }
+        status:
+          type: object
+          properties:
+            phase: { type: string }
+            cku: { type: integer }
+    ClusterList:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Cluster" }
+        metadata: { $ref: "#/components/schemas/ListMetadata" }
+    ResourceMetadata:
+      type: object
+      properties:
+        self: { type: string, format: uri }
+        resource_name: { type: string }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        deleted_at: { type: string, format: date-time }
+    ListMetadata:
+      type: object
+      properties:
+        first: { type: string, format: uri }
+        last: { type: string, format: uri }
+        prev: { type: string, format: uri }
+        next: { type: string, format: uri }
+        total_size: { type: integer }
