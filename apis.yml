@@ -14,7 +14,7 @@ description: >-
 type: Index
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: >-
   https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml
 created: '2025-08-19'
@@ -46,7 +46,7 @@ apis:
       v2 conventions.
     humanURL: https://docs.confluent.io/cloud/current/api.html
     baseURL: https://api.confluent.cloud
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - Confluent Cloud
       - Management
@@ -82,7 +82,7 @@ apis:
       RBAC and Confluent Cloud authentication.
     humanURL: https://docs.confluent.io/platform/current/kafka-rest/api.html
     baseURL: https://pkc-XXXXX.region.aws.confluent.cloud
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - Apache Kafka
       - Producer
@@ -115,7 +115,7 @@ apis:
       profile lives in the api-evangelist/confluent-schema-registry repository.
     humanURL: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
     baseURL: https://psrc-XXXXX.region.aws.confluent.cloud
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - Avro
       - JSON Schema
@@ -147,7 +147,7 @@ apis:
       exposed via the Connect REST surface.
     humanURL: https://docs.confluent.io/platform/current/connect/references/restapi.html
     baseURL: https://localhost:8083
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - Connectors
       - Kafka Connect
@@ -172,7 +172,7 @@ apis:
       and tables (push and pull queries), and inspect server status.
     humanURL: https://docs.ksqldb.io/en/latest/developer-guide/api/
     baseURL: https://localhost:8088
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - ksqlDB
       - REST
@@ -196,7 +196,7 @@ apis:
       Confluent Cloud. It is part of the Confluent Cloud REST surface.
     humanURL: https://docs.confluent.io/cloud/current/flink/index.html
     baseURL: https://flink.region.aws.confluent.cloud
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     tags:
       - Apache Flink
       - Stream Processing
