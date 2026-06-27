@@ -215,7 +215,7 @@ common:
     url: https://www.linkedin.com/company/confluent
   - type: Website
     url: https://www.confluent.io/
-  - type: Developer Portal
+  - type: DeveloperPortal
     url: https://developer.confluent.io/
   - type: Documentation
     url: https://docs.confluent.io/
@@ -241,7 +241,7 @@ common:
     url: https://www.confluent.io/privacy-policy/
   - type: Integrations
     url: https://www.confluent.io/partner/
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.confluent.io/llms.txt
 integrations:
   - name: Become a Partner
