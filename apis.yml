@@ -211,6 +211,15 @@ apis:
       - Run stateful stream processing on Confluent Cloud
       - Deploy Flink SQL jobs through automation
 common:
+  - type: VulnerabilityDisclosure
+    url: security/confluent-the-data-streaming-platform-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/confluent-the-data-streaming-platform-domain-security.yml
+  - type: Authentication
+    url: authentication/confluent-the-data-streaming-platform-authentication.yml
+  - name: Agent Skills
+    url: https://github.com/confluentinc/agent-skills
+    type: AgentSkills
   - type: LinkedIn
     url: https://www.linkedin.com/company/confluent
   - type: Website

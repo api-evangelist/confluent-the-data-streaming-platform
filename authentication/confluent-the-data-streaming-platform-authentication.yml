@@ -1,0 +1,20 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/confluent-the-data-streaming-platform-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: Cloud API Key (key) and Secret (password)
+  sources:
+  - openapi/confluent-the-data-streaming-platform-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Confluent STS or external OAuth access token
+  sources:
+  - openapi/confluent-the-data-streaming-platform-openapi.yml
