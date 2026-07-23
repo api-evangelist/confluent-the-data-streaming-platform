@@ -1,0 +1,198 @@
+openapi: 3.1.0
+info:
+  title: Confluent Cloud REST API (selected) API Keys Environments API
+  description: 'A best-effort subset of the Confluent Cloud control-plane REST APIs:
+
+    Organizations and Environments (org/v2), Service Accounts and Cloud
+
+    API Keys (iam/v2), and Kafka Clusters (cmk/v2). Confluent Cloud
+
+    additionally publishes data-plane APIs (Kafka REST v3, Schema Registry,
+
+    Connect, ksqlDB, Flink) on per-cluster endpoints that are not modeled
+
+    here. Authentication uses HTTP Basic with a Cloud API Key/Secret pair,
+
+    or OAuth 2.0 (Confluent STS / external IdP).
+
+    '
+  version: 2.0.0
+  contact:
+    name: Confluent Cloud API Reference
+    url: https://docs.confluent.io/cloud/current/api.html
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud control plane
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Environments
+paths:
+  /org/v2/environments:
+    get:
+      tags:
+      - Environments
+      summary: List environments
+      parameters:
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          default: 10
+      - in: query
+        name: page_token
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A page of environments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentList'
+    post:
+      tags:
+      - Environments
+      summary: Create an environment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Environment'
+      responses:
+        '201':
+          description: Environment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /org/v2/environments/{id}:
+    get:
+      tags:
+      - Environments
+      summary: Get an environment
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    patch:
+      tags:
+      - Environments
+      summary: Update an environment
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Environment'
+      responses:
+        '200':
+          description: Environment updated
+    delete:
+      tags:
+      - Environments
+      summary: Delete an environment
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Environment deleted
+components:
+  schemas:
+    Environment:
+      type: object
+      properties:
+        api_version:
+          type: string
+          example: org/v2
+        kind:
+          type: string
+          example: Environment
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+        display_name:
+          type: string
+        stream_governance_config:
+          type: object
+          properties:
+            package:
+              type: string
+              enum:
+              - ESSENTIALS
+              - ADVANCED
+    EnvironmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Environment'
+        metadata:
+          $ref: '#/components/schemas/ListMetadata'
+    ListMetadata:
+      type: object
+      properties:
+        first:
+          type: string
+          format: uri
+        last:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        total_size:
+          type: integer
+    ResourceMetadata:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        resource_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Cloud API Key (key) and Secret (password)
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Confluent STS or external OAuth access token
