@@ -12,9 +12,22 @@ description: >-
   connectors; the ksqlDB REST API for stream processing; and managed Apache
   Flink. Authentication is API-key based (Cloud) or HTTP/mTLS/OAuth (Platform).
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/confluent-the-data-streaming-platform.png
 url: >-
   https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml
 created: '2025-08-19'
@@ -35,181 +48,231 @@ tags:
   - Schema Registry
   - Stream Processing
 apis:
-  - aid: confluent-the-data-streaming-platform:cloud-rest-api
-    name: Confluent Cloud REST API
-    description: >-
-      The Confluent Cloud REST API is the management plane for Confluent
-      Cloud. It is used to manage organizations, environments, Kafka and
-      Flink clusters, service accounts, API keys, role bindings, networking,
-      schema registry clusters, and connector instances. The API uses Cloud
-      API keys for authentication and follows Confluent's resource-oriented
-      v2 conventions.
-    humanURL: https://docs.confluent.io/cloud/current/api.html
-    baseURL: https://api.confluent.cloud
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - Confluent Cloud
-      - Management
-      - REST
-    properties:
-      - type: Documentation
-        url: https://docs.confluent.io/cloud/current/api.html
-      - type: APIReference
-        url: https://docs.confluent.io/cloud/current/api.html
-    x-features:
-      - Cluster Lifecycle Management
-      - Environments and Organizations
-      - API Key Management
-      - RBAC and Service Accounts
-      - Networking and Private Link
-      - Schema Registry Cluster Management
-      - Connector Provisioning
-      - Flink Compute Pools
-    x-use-cases:
-      - Provision Kafka clusters in Confluent Cloud
-      - Automate environment and access management
-      - Rotate API keys and manage service accounts
-      - Wire up private networking for clusters
-      - Manage Flink compute pools and statements
-  - aid: confluent-the-data-streaming-platform:kafka-rest-api
-    name: Confluent Kafka REST API
-    description: >-
-      The Kafka REST API (Confluent REST Proxy in self-managed deployments,
-      Kafka REST in Cloud) provides HTTP access to Apache Kafka topics,
-      consumers, partitions, brokers, and ACLs. Clients without a native
-      Kafka library can produce and consume records, manage topics, and
-      inspect metadata over HTTP. Cloud variants additionally enforce
-      RBAC and Confluent Cloud authentication.
-    humanURL: https://docs.confluent.io/platform/current/kafka-rest/api.html
-    baseURL: https://pkc-XXXXX.region.aws.confluent.cloud
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - Apache Kafka
-      - Producer
-      - Consumer
-      - REST
-    properties:
-      - type: Documentation
-        url: https://docs.confluent.io/platform/current/kafka-rest/api.html
-      - type: Cloud Documentation
-        url: https://docs.confluent.io/cloud/current/kafka-rest/index.html
-    x-features:
-      - Topic Management
-      - Produce and Consume over HTTP
-      - Partition Inspection
-      - Consumer Group Management
-      - Broker Metadata
-      - ACL Management
-    x-use-cases:
-      - Produce events from clients without a Kafka library
-      - Bridge legacy systems to Kafka over HTTP
-      - Inspect topic and partition metadata from web tools
-      - Manage ACLs from automation scripts
-  - aid: confluent-the-data-streaming-platform:schema-registry-api
-    name: Confluent Schema Registry REST API
-    description: >-
-      The Schema Registry REST API stores and serves Avro, JSON Schema, and
-      Protobuf schemas with versioning and compatibility enforcement. It is
-      available both as a managed Confluent Cloud service and as a
-      self-managed component of Confluent Platform. The full developer
-      profile lives in the api-evangelist/confluent-schema-registry repository.
-    humanURL: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
-    baseURL: https://psrc-XXXXX.region.aws.confluent.cloud
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - Avro
-      - JSON Schema
-      - Protobuf
-      - Schema Registry
-    properties:
-      - type: Documentation
-        url: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
-      - type: Companion Repo
-        url: https://github.com/api-evangelist/confluent-schema-registry
-    x-features:
-      - Avro/JSON Schema/Protobuf Support
-      - Compatibility Enforcement
-      - Schema Versioning
-      - Schema References
-      - Schema Linking
-    x-use-cases:
-      - Govern data contracts across producers and consumers
-      - Evolve schemas with backward and forward compatibility
-      - Share schemas across environments via Schema Linking
-  - aid: confluent-the-data-streaming-platform:connect-rest-api
-    name: Kafka Connect REST API
-    description: >-
-      The Kafka Connect REST API manages connectors, tasks, and worker
-      configuration. Operators use it to deploy, configure, pause, resume,
-      and delete source and sink connectors, inspect task status, and
-      restart failed tasks. In Confluent Cloud, managed connectors are
-      provisioned through the Cloud REST API while runtime status is
-      exposed via the Connect REST surface.
-    humanURL: https://docs.confluent.io/platform/current/connect/references/restapi.html
-    baseURL: https://localhost:8083
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - Connectors
-      - Kafka Connect
-      - REST
-    properties:
-      - type: Documentation
-        url: https://docs.confluent.io/platform/current/connect/references/restapi.html
-    x-features:
-      - Connector Lifecycle Management
-      - Task Status and Restart
-      - Plugin Discovery
-      - Configuration Validation
-    x-use-cases:
-      - Deploy and operate source/sink connectors
-      - Restart failed tasks programmatically
-      - Validate connector configurations in CI
-  - aid: confluent-the-data-streaming-platform:ksqldb-rest-api
-    name: ksqlDB REST API
-    description: >-
-      The ksqlDB REST API exposes ksqlDB, Confluent's streaming SQL engine,
-      over HTTP. Clients submit streaming SQL statements, query streams
-      and tables (push and pull queries), and inspect server status.
-    humanURL: https://docs.ksqldb.io/en/latest/developer-guide/api/
-    baseURL: https://localhost:8088
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - ksqlDB
-      - REST
-      - Streaming SQL
-    properties:
-      - type: Documentation
-        url: https://docs.ksqldb.io/en/latest/developer-guide/api/
-    x-features:
-      - Push and Pull Queries
-      - Streaming SQL Execution
-      - Server Health and Status
-    x-use-cases:
-      - Run streaming SQL from web applications
-      - Build real-time materialized views
-      - Power dashboards with push queries
-  - aid: confluent-the-data-streaming-platform:flink-rest-api
-    name: Confluent Cloud for Apache Flink REST API
-    description: >-
-      The Confluent Cloud for Apache Flink REST API manages Flink compute
-      pools, statements, and workspaces for stateful stream processing on
-      Confluent Cloud. It is part of the Confluent Cloud REST surface.
-    humanURL: https://docs.confluent.io/cloud/current/flink/index.html
-    baseURL: https://flink.region.aws.confluent.cloud
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    tags:
-      - Apache Flink
-      - Stream Processing
-    properties:
-      - type: Documentation
-        url: https://docs.confluent.io/cloud/current/flink/index.html
-    x-features:
-      - Flink Compute Pools
-      - Flink SQL Statements
-      - Workspace Management
-    x-use-cases:
-      - Run stateful stream processing on Confluent Cloud
-      - Deploy Flink SQL jobs through automation
+- aid: confluent-the-data-streaming-platform:cloud-rest-api
+  name: Confluent Cloud REST API
+  description: >-
+    The Confluent Cloud REST API is the management plane for Confluent Cloud. It is used to manage organizations,
+    environments, Kafka and Flink clusters, service accounts, API keys, role bindings, networking, schema
+    registry clusters, and connector instances. The API uses Cloud API keys for authentication and follows
+    Confluent's resource-oriented v2 conventions.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - Confluent Cloud
+  - Management
+  - REST
+  properties:
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  x-features:
+  - Cluster Lifecycle Management
+  - Environments and Organizations
+  - API Key Management
+  - RBAC and Service Accounts
+  - Networking and Private Link
+  - Schema Registry Cluster Management
+  - Connector Provisioning
+  - Flink Compute Pools
+  x-use-cases:
+  - Provision Kafka clusters in Confluent Cloud
+  - Automate environment and access management
+  - Rotate API keys and manage service accounts
+  - Wire up private networking for clusters
+  - Manage Flink compute pools and statements
+- aid: confluent-the-data-streaming-platform:kafka-rest-api
+  name: Confluent Kafka REST API
+  description: >-
+    The Kafka REST API (Confluent REST Proxy in self-managed deployments, Kafka REST in Cloud) provides
+    HTTP access to Apache Kafka topics, consumers, partitions, brokers, and ACLs. Clients without a native
+    Kafka library can produce and consume records, manage topics, and inspect metadata over HTTP. Cloud
+    variants additionally enforce RBAC and Confluent Cloud authentication.
+  humanURL: https://docs.confluent.io/platform/current/kafka-rest/api.html
+  baseURL: https://pkc-XXXXX.region.aws.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - Apache Kafka
+  - Producer
+  - Consumer
+  - REST
+  properties:
+  - type: Documentation
+    url: https://docs.confluent.io/platform/current/kafka-rest/api.html
+  - type: Cloud Documentation
+    url: https://docs.confluent.io/cloud/current/kafka-rest/index.html
+  x-features:
+  - Topic Management
+  - Produce and Consume over HTTP
+  - Partition Inspection
+  - Consumer Group Management
+  - Broker Metadata
+  - ACL Management
+  x-use-cases:
+  - Produce events from clients without a Kafka library
+  - Bridge legacy systems to Kafka over HTTP
+  - Inspect topic and partition metadata from web tools
+  - Manage ACLs from automation scripts
+- aid: confluent-the-data-streaming-platform:schema-registry-api
+  name: Confluent Schema Registry REST API
+  description: >-
+    The Schema Registry REST API stores and serves Avro, JSON Schema, and Protobuf schemas with versioning
+    and compatibility enforcement. It is available both as a managed Confluent Cloud service and as a
+    self-managed component of Confluent Platform. The full developer profile lives in the api-evangelist/confluent-schema-registry
+    repository.
+  humanURL: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
+  baseURL: https://psrc-XXXXX.region.aws.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - Avro
+  - JSON Schema
+  - Protobuf
+  - Schema Registry
+  properties:
+  - type: Documentation
+    url: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
+  - type: Companion Repo
+    url: https://github.com/api-evangelist/confluent-schema-registry
+  x-features:
+  - Avro/JSON Schema/Protobuf Support
+  - Compatibility Enforcement
+  - Schema Versioning
+  - Schema References
+  - Schema Linking
+  x-use-cases:
+  - Govern data contracts across producers and consumers
+  - Evolve schemas with backward and forward compatibility
+  - Share schemas across environments via Schema Linking
+- aid: confluent-the-data-streaming-platform:connect-rest-api
+  name: Kafka Connect REST API
+  description: >-
+    The Kafka Connect REST API manages connectors, tasks, and worker configuration. Operators use it to
+    deploy, configure, pause, resume, and delete source and sink connectors, inspect task status, and
+    restart failed tasks. In Confluent Cloud, managed connectors are provisioned through the Cloud REST
+    API while runtime status is exposed via the Connect REST surface.
+  humanURL: https://docs.confluent.io/platform/current/connect/references/restapi.html
+  baseURL: https://localhost:8083
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - Connectors
+  - Kafka Connect
+  - REST
+  properties:
+  - type: Documentation
+    url: https://docs.confluent.io/platform/current/connect/references/restapi.html
+  x-features:
+  - Connector Lifecycle Management
+  - Task Status and Restart
+  - Plugin Discovery
+  - Configuration Validation
+  x-use-cases:
+  - Deploy and operate source/sink connectors
+  - Restart failed tasks programmatically
+  - Validate connector configurations in CI
+- aid: confluent-the-data-streaming-platform:ksqldb-rest-api
+  name: ksqlDB REST API
+  description: >-
+    The ksqlDB REST API exposes ksqlDB, Confluent's streaming SQL engine, over HTTP. Clients submit streaming
+    SQL statements, query streams and tables (push and pull queries), and inspect server status.
+  humanURL: https://docs.ksqldb.io/en/latest/developer-guide/api/
+  baseURL: https://localhost:8088
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - ksqlDB
+  - REST
+  - Streaming SQL
+  properties:
+  - type: Documentation
+    url: https://docs.ksqldb.io/en/latest/developer-guide/api/
+  x-features:
+  - Push and Pull Queries
+  - Streaming SQL Execution
+  - Server Health and Status
+  x-use-cases:
+  - Run streaming SQL from web applications
+  - Build real-time materialized views
+  - Power dashboards with push queries
+- aid: confluent-the-data-streaming-platform:flink-rest-api
+  name: Confluent Cloud for Apache Flink REST API
+  description: >-
+    The Confluent Cloud for Apache Flink REST API manages Flink compute pools, statements, and workspaces
+    for stateful stream processing on Confluent Cloud. It is part of the Confluent Cloud REST surface.
+  humanURL: https://docs.confluent.io/cloud/current/flink/index.html
+  baseURL: https://flink.region.aws.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - Apache Flink
+  - Stream Processing
+  properties:
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/flink/index.html
+  x-features:
+  - Flink Compute Pools
+  - Flink SQL Statements
+  - Workspace Management
+  x-use-cases:
+  - Run stateful stream processing on Confluent Cloud
+  - Deploy Flink SQL jobs through automation
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-api-keys-api
+  name: Confluent | the Data Streaming Platform API Keys API
+  description: >-
+    The API Keys API from Confluent | the Data Streaming Platform — 2 operation(s) for api keys.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-api-keys-api-openapi.yml
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-api
+  name: Confluent | the Data Streaming Platform Clusters API
+  description: >-
+    The Clusters API from Confluent | the Data Streaming Platform — 2 operation(s) for clusters.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Clusters
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-clusters-api-openapi.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-environments-api
+  name: Confluent | the Data Streaming Platform Environments API
+  description: >-
+    The Environments API from Confluent | the Data Streaming Platform — 2 operation(s) for environments.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-environments-api-openapi.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-organizations-api
+  name: Confluent | the Data Streaming Platform Organizations API
+  description: >-
+    The Organizations API from Confluent | the Data Streaming Platform — 2 operation(s) for organizations.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-organizations-api-openapi.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-service-accounts-api
+  name: Confluent | the Data Streaming Platform Service Accounts API
+  description: >-
+    The Service Accounts API from Confluent | the Data Streaming Platform — 2 operation(s) for service
+    accounts.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Service Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-service-accounts-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/confluent-the-data-streaming-platform-agentic-access.yml
