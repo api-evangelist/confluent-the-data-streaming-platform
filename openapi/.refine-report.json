@@ -1,0 +1,22 @@
+{
+  "provider": "confluent-the-data-streaming-platform",
+  "sources": [
+    "confluent-the-data-streaming-platform-api-keys-api-openapi.yml",
+    "confluent-the-data-streaming-platform-clusters-api-openapi.yml",
+    "confluent-the-data-streaming-platform-environments-api-openapi.yml",
+    "confluent-the-data-streaming-platform-organizations-api-openapi.yml",
+    "confluent-the-data-streaming-platform-service-accounts-api-openapi.yml"
+  ],
+  "outputs": [
+    "confluent-the-data-streaming-platform-api-keys-api-openapi.yml",
+    "confluent-the-data-streaming-platform-clusters-api-openapi.yml",
+    "confluent-the-data-streaming-platform-environments-api-openapi.yml",
+    "confluent-the-data-streaming-platform-organizations-api-openapi.yml",
+    "confluent-the-data-streaming-platform-service-accounts-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
