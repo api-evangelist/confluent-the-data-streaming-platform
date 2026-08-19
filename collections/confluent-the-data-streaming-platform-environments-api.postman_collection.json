@@ -1,0 +1,538 @@
+{
+  "item": [
+    {
+      "id": "6a9c4345-4c47-4f5f-938f-94f373310895",
+      "name": "Environments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d09534fe-e6a3-4df1-adc8-87f6287227d3",
+          "name": "List environments",
+          "request": {
+            "name": "List environments",
+            "description": {},
+            "url": {
+              "path": [
+                "org",
+                "v2",
+                "environments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "67a18243-cce5-4d05-a56a-14730b54de87",
+              "name": "A page of environments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "org",
+                    "v2",
+                    "environments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"api_version\": \"org/v2\",\n      \"kind\": \"Environment\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"https://rQx.jzgdRD3G.S.g39eGUpbZJjwhfeFtSWchAY1z-PiEBLq\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"1962-01-06T04:24:13.287Z\",\n        \"updated_at\": \"1997-06-22T12:45:16.010Z\",\n        \"deleted_at\": \"1974-02-23T16:07:31.889Z\"\n      },\n      \"display_name\": \"string\",\n      \"stream_governance_config\": {\n        \"package\": \"ESSENTIALS\"\n      }\n    },\n    {\n      \"api_version\": \"org/v2\",\n      \"kind\": \"Environment\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"http://EyDiCLgTzcJiLnwhlOauhFzQM.dvyQK-lu-xuoq6VE-A,dWyUx7TIYjA,eVYT8JRZc5nU,GE+vpUeh\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"1987-09-19T12:30:51.337Z\",\n        \"updated_at\": \"2001-02-16T08:45:43.554Z\",\n        \"deleted_at\": \"1979-09-20T15:32:44.842Z\"\n      },\n      \"display_name\": \"string\",\n      \"stream_governance_config\": {\n        \"package\": \"ESSENTIALS\"\n      }\n    }\n  ],\n  \"metadata\": {\n    \"first\": \"https://BLuagPqPETY.tegzAeaCjqRth8mbonnCtA\",\n    \"last\": \"http://PwCPAonshMfGQJEKXTCsRiYolTIlxkhon.dwoszTGnP35\",\n    \"prev\": \"https://cCqRcmLmtVUyqZaJprzyaFjKVs.vqiswtd\",\n    \"next\": \"http://IUikezycVBhAPnkboZwdby.fmwvL6z+eANteZr\",\n    \"total_size\": 9030\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f77c8261-897c-400a-98e4-3cb6d8f9bd59",
+          "name": "Create an environment",
+          "request": {
+            "name": "Create an environment",
+            "description": {},
+            "url": {
+              "path": [
+                "org",
+                "v2",
+                "environments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_version\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"<uri>\",\n    \"resource_name\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"deleted_at\": \"<dateTime>\"\n  },\n  \"display_name\": \"<string>\",\n  \"stream_governance_config\": {\n    \"package\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cda49244-59b9-4836-9ff8-7a0cea80f90e",
+              "name": "Environment created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "org",
+                    "v2",
+                    "environments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_version\": \"org/v2\",\n  \"kind\": \"Environment\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"https://xCaLPWO.luakcZ3HZMwLvjF+WgguoV4TJHzu8yvluFxglxSieGNfkkc,qsF0mxyTYRTzAhlSVmYKCFVX80k,g+ZfBeR6xoM3GBy\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1951-10-21T16:02:09.223Z\",\n    \"updated_at\": \"2017-12-25T22:47:45.231Z\",\n    \"deleted_at\": \"1968-06-15T20:43:24.921Z\"\n  },\n  \"display_name\": \"<string>\",\n  \"stream_governance_config\": {\n    \"package\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"org/v2\",\n  \"kind\": \"Environment\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://BS.keiQ9v+QbAkhQBOe1Ho\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1998-06-29T02:06:41.780Z\",\n    \"updated_at\": \"1965-10-25T05:07:44.580Z\",\n    \"deleted_at\": \"2006-09-13T22:47:09.420Z\"\n  },\n  \"display_name\": \"string\",\n  \"stream_governance_config\": {\n    \"package\": \"ADVANCED\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "deee133a-3aae-48b3-814a-d59aae1a4cff",
+          "name": "Get an environment",
+          "request": {
+            "name": "Get an environment",
+            "description": {},
+            "url": {
+              "path": [
+                "org",
+                "v2",
+                "environments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c72201ed-fc12-4ec8-b6c2-f6bcc3851d44",
+              "name": "An environment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "org",
+                    "v2",
+                    "environments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"org/v2\",\n  \"kind\": \"Environment\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://BS.keiQ9v+QbAkhQBOe1Ho\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1998-06-29T02:06:41.780Z\",\n    \"updated_at\": \"1965-10-25T05:07:44.580Z\",\n    \"deleted_at\": \"2006-09-13T22:47:09.420Z\"\n  },\n  \"display_name\": \"string\",\n  \"stream_governance_config\": {\n    \"package\": \"ADVANCED\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d4e6d16-cead-418e-bbfa-0e02870d1985",
+          "name": "Update an environment",
+          "request": {
+            "name": "Update an environment",
+            "description": {},
+            "url": {
+              "path": [
+                "org",
+                "v2",
+                "environments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_version\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"<uri>\",\n    \"resource_name\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"deleted_at\": \"<dateTime>\"\n  },\n  \"display_name\": \"<string>\",\n  \"stream_governance_config\": {\n    \"package\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "89e6f94f-170b-4667-9f02-bd90061f6d7f",
+              "name": "Environment updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "org",
+                    "v2",
+                    "environments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_version\": \"org/v2\",\n  \"kind\": \"Environment\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"https://xCaLPWO.luakcZ3HZMwLvjF+WgguoV4TJHzu8yvluFxglxSieGNfkkc,qsF0mxyTYRTzAhlSVmYKCFVX80k,g+ZfBeR6xoM3GBy\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1951-10-21T16:02:09.223Z\",\n    \"updated_at\": \"2017-12-25T22:47:45.231Z\",\n    \"deleted_at\": \"1968-06-15T20:43:24.921Z\"\n  },\n  \"display_name\": \"<string>\",\n  \"stream_governance_config\": {\n    \"package\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71b4a39b-1c94-43ad-a4b0-4b373ee758c9",
+          "name": "Delete an environment",
+          "request": {
+            "name": "Delete an environment",
+            "description": {},
+            "url": {
+              "path": [
+                "org",
+                "v2",
+                "environments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "af8e75b3-7394-4976-ab77-8ccfc0390ebf",
+              "name": "Environment deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "org",
+                    "v2",
+                    "environments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.confluent.cloud",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e2e87117-146d-4ba6-8854-9ce86ce161be",
+    "name": "Confluent Cloud REST API (selected) API Keys Environments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A best-effort subset of the Confluent Cloud control-plane REST APIs:\nOrganizations and Environments (org/v2), Service Accounts and Cloud\nAPI Keys (iam/v2), and Kafka Clusters (cmk/v2). Confluent Cloud\nadditionally publishes data-plane APIs (Kafka REST v3, Schema Registry,\nConnect, ksqlDB, Flink) on per-cluster endpoints that are not modeled\nhere. Authentication uses HTTP Basic with a Cloud API Key/Secret pair,\nor OAuth 2.0 (Confluent STS / external IdP).\n\n\nContact Support:\n Name: Confluent Cloud API Reference",
+      "type": "text/plain"
+    }
+  }
+}

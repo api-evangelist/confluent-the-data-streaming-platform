@@ -1,0 +1,446 @@
+{
+  "item": [
+    {
+      "id": "9aaf339f-102b-4c41-8f37-dd28cb1db4a5",
+      "name": "API Keys",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7b610ff8-0eb3-4ed1-af7e-3f263b13fc6d",
+          "name": "List API keys",
+          "request": {
+            "name": "List API keys",
+            "description": {},
+            "url": {
+              "path": [
+                "iam",
+                "v2",
+                "api-keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "spec.owner",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "spec.resource",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "443315c8-f039-4cc6-bbd3-4477816f153f",
+              "name": "A page of API keys",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "iam",
+                    "v2",
+                    "api-keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "spec.owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "spec.resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"api_version\": \"iam/v2\",\n      \"kind\": \"ApiKey\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"https://heu.hjrfuIOYSNRuKU5hoIZ\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"1959-10-30T23:46:46.951Z\",\n        \"updated_at\": \"2012-04-30T09:21:01.702Z\",\n        \"deleted_at\": \"1991-02-06T11:31:06.210Z\"\n      },\n      \"spec\": {\n        \"display_name\": \"string\",\n        \"description\": \"string\",\n        \"secret\": \"string\",\n        \"owner\": {\n          \"id\": \"string\",\n          \"api_version\": \"string\",\n          \"kind\": \"string\"\n        },\n        \"resource\": {\n          \"id\": \"string\",\n          \"api_version\": \"string\",\n          \"kind\": \"string\",\n          \"environment\": \"string\"\n        }\n      }\n    },\n    {\n      \"api_version\": \"iam/v2\",\n      \"kind\": \"ApiKey\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"https://rNCnXxYxJNmXdNvCpqktcNTKLXYiGMC.yuDw.33x2RupoObee0TjYXMb+HN3tjJj\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"2000-10-10T11:33:38.142Z\",\n        \"updated_at\": \"2008-09-03T22:06:46.017Z\",\n        \"deleted_at\": \"1967-07-26T08:36:49.910Z\"\n      },\n      \"spec\": {\n        \"display_name\": \"string\",\n        \"description\": \"string\",\n        \"secret\": \"string\",\n        \"owner\": {\n          \"id\": \"string\",\n          \"api_version\": \"string\",\n          \"kind\": \"string\"\n        },\n        \"resource\": {\n          \"id\": \"string\",\n          \"api_version\": \"string\",\n          \"kind\": \"string\",\n          \"environment\": \"string\"\n        }\n      }\n    }\n  ],\n  \"metadata\": {\n    \"first\": \"https://esRraWXnFwZMtSCdXtIqMxfWE.ouqowH\",\n    \"last\": \"http://RaUciHPno.sanVQQcs,3yVX7caIxNKW9hArNR6-wXpw\",\n    \"prev\": \"http://UpHWNkqniohmfo.njuJYDK5OGj9+Zbm22MXZ-9VNEmn,e-0ESdLxd,Kp+ADb3M0u\",\n    \"next\": \"https://XJXnauanvJATjtKjAvcrwKfnj.oegphv1DafBi0GQwwnb6xOk0E-rwd6kBzqiDMw\",\n    \"total_size\": 640\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b45dc16-4b81-47d2-b63c-58b3c7d8ee04",
+          "name": "Create an API key",
+          "request": {
+            "name": "Create an API key",
+            "description": {},
+            "url": {
+              "path": [
+                "iam",
+                "v2",
+                "api-keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_version\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"<uri>\",\n    \"resource_name\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"deleted_at\": \"<dateTime>\"\n  },\n  \"spec\": {\n    \"display_name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"owner\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"kind\": \"<string>\"\n    },\n    \"resource\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"environment\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1e9b0ee0-dc15-445f-b00d-1b10a757ac01",
+              "name": "API key created (secret returned exactly once)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "iam",
+                    "v2",
+                    "api-keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_version\": \"iam/v2\",\n  \"kind\": \"ApiKey\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"https://FFKfjvERFIbGhSgOwOiL.ydbfTAHgxWnFaP\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1947-04-27T07:31:01.463Z\",\n    \"updated_at\": \"1951-03-30T23:38:57.303Z\",\n    \"deleted_at\": \"2009-11-07T11:14:05.623Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"owner\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"kind\": \"<string>\"\n    },\n    \"resource\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"environment\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"iam/v2\",\n  \"kind\": \"ApiKey\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://iHclvRoYcLsRUtnsWTeKFcroVSvTwzXNO.zjom3nVbVcn.tj8Jzt2py.4M+uTUnfuo61mKJVYInNT\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1998-06-29T02:57:30.033Z\",\n    \"updated_at\": \"1954-03-22T05:38:07.968Z\",\n    \"deleted_at\": \"1970-05-04T00:27:22.885Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"secret\": \"string\",\n    \"owner\": {\n      \"id\": \"string\",\n      \"api_version\": \"string\",\n      \"kind\": \"string\"\n    },\n    \"resource\": {\n      \"id\": \"string\",\n      \"api_version\": \"string\",\n      \"kind\": \"string\",\n      \"environment\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b687bb31-0365-4968-a726-be0b52c67378",
+          "name": "Get an API key",
+          "request": {
+            "name": "Get an API key",
+            "description": {},
+            "url": {
+              "path": [
+                "iam",
+                "v2",
+                "api-keys",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c7c51e0-52da-4a9e-8421-bbf7b26e01bb",
+              "name": "An API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "iam",
+                    "v2",
+                    "api-keys",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"iam/v2\",\n  \"kind\": \"ApiKey\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://iHclvRoYcLsRUtnsWTeKFcroVSvTwzXNO.zjom3nVbVcn.tj8Jzt2py.4M+uTUnfuo61mKJVYInNT\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1998-06-29T02:57:30.033Z\",\n    \"updated_at\": \"1954-03-22T05:38:07.968Z\",\n    \"deleted_at\": \"1970-05-04T00:27:22.885Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"secret\": \"string\",\n    \"owner\": {\n      \"id\": \"string\",\n      \"api_version\": \"string\",\n      \"kind\": \"string\"\n    },\n    \"resource\": {\n      \"id\": \"string\",\n      \"api_version\": \"string\",\n      \"kind\": \"string\",\n      \"environment\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46912a65-2d9e-43c7-930d-82167e8cf8aa",
+          "name": "Delete an API key",
+          "request": {
+            "name": "Delete an API key",
+            "description": {},
+            "url": {
+              "path": [
+                "iam",
+                "v2",
+                "api-keys",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7ac39500-0810-4cfa-a38f-b43e8b61fcfa",
+              "name": "API key deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "iam",
+                    "v2",
+                    "api-keys",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.confluent.cloud",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fed8b2a3-d2f3-4b4f-bacf-884ae5dc4d09",
+    "name": "Confluent Cloud REST API (selected) API Keys API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A best-effort subset of the Confluent Cloud control-plane REST APIs:\nOrganizations and Environments (org/v2), Service Accounts and Cloud\nAPI Keys (iam/v2), and Kafka Clusters (cmk/v2). Confluent Cloud\nadditionally publishes data-plane APIs (Kafka REST v3, Schema Registry,\nConnect, ksqlDB, Flink) on per-cluster endpoints that are not modeled\nhere. Authentication uses HTTP Basic with a Cloud API Key/Secret pair,\nor OAuth 2.0 (Confluent STS / external IdP).\n\n\nContact Support:\n Name: Confluent Cloud API Reference",
+      "type": "text/plain"
+    }
+  }
+}

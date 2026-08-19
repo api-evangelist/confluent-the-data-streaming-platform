@@ -1,0 +1,462 @@
+{
+  "item": [
+    {
+      "id": "3e3d6229-d310-48e7-af35-96d2a0fcc3ae",
+      "name": "Clusters",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "71348909-b525-44ce-9169-86cf6a337cba",
+          "name": "List Kafka clusters",
+          "request": {
+            "name": "List Kafka clusters",
+            "description": {},
+            "url": {
+              "path": [
+                "cmk",
+                "v2",
+                "clusters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "environment",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c49857a4-a1e1-4bf7-9880-c1c846ccfc77",
+              "name": "A page of clusters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cmk",
+                    "v2",
+                    "clusters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "environment",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"api_version\": \"cmk/v2\",\n      \"kind\": \"Cluster\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"http://HhbuqQFjzsQYDjt.tdzdZsbjlL3pIU621XOZZ+Hri,cks7GIaGo,ZBdBJCBNNY,6Hj\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"1979-02-14T09:47:24.996Z\",\n        \"updated_at\": \"1996-09-30T06:02:07.516Z\",\n        \"deleted_at\": \"1991-09-18T12:32:17.882Z\"\n      },\n      \"spec\": {\n        \"display_name\": \"string\",\n        \"availability\": \"SINGLE_ZONE\",\n        \"cloud\": \"AZURE\",\n        \"region\": \"string\",\n        \"config\": {\n          \"kind\": \"Enterprise\"\n        },\n        \"environment\": {\n          \"id\": \"string\",\n          \"api_version\": \"org/v2\",\n          \"kind\": \"Environment\"\n        }\n      },\n      \"status\": {\n        \"phase\": \"string\",\n        \"cku\": 8810\n      }\n    },\n    {\n      \"api_version\": \"cmk/v2\",\n      \"kind\": \"Cluster\",\n      \"id\": \"string\",\n      \"metadata\": {\n        \"self\": \"http://nyd.swks.NawdWscR1bwjjTSl8aguNSXNNiMn5sk+7KjAuh72mGYu9Un-wnZ\",\n        \"resource_name\": \"string\",\n        \"created_at\": \"1977-06-20T10:57:54.982Z\",\n        \"updated_at\": \"1979-12-02T15:04:47.627Z\",\n        \"deleted_at\": \"1951-04-16T10:44:02.277Z\"\n      },\n      \"spec\": {\n        \"display_name\": \"string\",\n        \"availability\": \"MULTI_ZONE\",\n        \"cloud\": \"AWS\",\n        \"region\": \"string\",\n        \"config\": {\n          \"kind\": \"Basic\"\n        },\n        \"environment\": {\n          \"id\": \"string\",\n          \"api_version\": \"org/v2\",\n          \"kind\": \"Environment\"\n        }\n      },\n      \"status\": {\n        \"phase\": \"string\",\n        \"cku\": 4159\n      }\n    }\n  ],\n  \"metadata\": {\n    \"first\": \"https://ESkKWmZsinGotJLbdTHXDMwMdBi.qqyqQNHkDU23jdy7zl+FKWqw,cV8UkdcBSQIVxaZoA0dznNl7yL6kZ+x6fhc\",\n    \"last\": \"http://RSmVRuBJRauGNRUV.eqivKt4QgYZFQY.3r4ncQa4R9boVbTcynFUK5\",\n    \"prev\": \"https://jCgmEazX.gavDFroxUtMvdLO4xxDkOle2NufSUgS4ZwGx\",\n    \"next\": \"http://BqmvrWHYmwtNhWnZOgIBqpO.vflZAW28yemUXxjy684GXzVgpry.pBj4APX6PLdRNZz12M3+k0wcJqSVaIj25B9\",\n    \"total_size\": 3137\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cabb96b4-2ffd-4d66-86fe-c7e79323177a",
+          "name": "Create a Kafka cluster",
+          "request": {
+            "name": "Create a Kafka cluster",
+            "description": {},
+            "url": {
+              "path": [
+                "cmk",
+                "v2",
+                "clusters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_version\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"<uri>\",\n    \"resource_name\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"deleted_at\": \"<dateTime>\"\n  },\n  \"spec\": {\n    \"display_name\": \"<string>\",\n    \"availability\": \"<string>\",\n    \"cloud\": \"<string>\",\n    \"region\": \"<string>\",\n    \"config\": {\n      \"kind\": \"<string>\"\n    },\n    \"environment\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"kind\": \"<string>\"\n    }\n  },\n  \"status\": {\n    \"phase\": \"<string>\",\n    \"cku\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9cb2b653-463d-4fef-9788-fcbd41294c95",
+              "name": "Cluster being provisioned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cmk",
+                    "v2",
+                    "clusters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_version\": \"cmk/v2\",\n  \"kind\": \"Cluster\",\n  \"id\": \"<string>\",\n  \"metadata\": {\n    \"self\": \"http://bMXiWlVnzqktLI.jfgpG3chwHX+1A.Z,VlTPqRAJ5zeXwgBAkq9afvX244PqbXUbqt07bIns-js91sj\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1988-04-11T22:01:44.542Z\",\n    \"updated_at\": \"1984-10-25T16:56:32.398Z\",\n    \"deleted_at\": \"1964-12-21T05:59:33.070Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"<string>\",\n    \"availability\": \"<string>\",\n    \"cloud\": \"<string>\",\n    \"region\": \"<string>\",\n    \"config\": {\n      \"kind\": \"<string>\"\n    },\n    \"environment\": {\n      \"id\": \"<string>\",\n      \"api_version\": \"org/v2\",\n      \"kind\": \"Environment\"\n    }\n  },\n  \"status\": {\n    \"phase\": \"<string>\",\n    \"cku\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"cmk/v2\",\n  \"kind\": \"Cluster\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://lwwAoACEcgIrlLpgbQHDpinM.jzkagg3G9f1B+k6KcHWriLyWnfxF2bpDgfNYfierDKq4XpeEXFWS.V7PEshF43-GAFnM\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1988-05-13T15:43:55.220Z\",\n    \"updated_at\": \"2013-09-22T20:15:45.232Z\",\n    \"deleted_at\": \"1955-03-28T22:42:39.005Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"string\",\n    \"availability\": \"MULTI_ZONE\",\n    \"cloud\": \"GCP\",\n    \"region\": \"string\",\n    \"config\": {\n      \"kind\": \"Enterprise\"\n    },\n    \"environment\": {\n      \"id\": \"string\",\n      \"api_version\": \"org/v2\",\n      \"kind\": \"Environment\"\n    }\n  },\n  \"status\": {\n    \"phase\": \"string\",\n    \"cku\": 8146\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f07461d6-1ae0-43aa-b942-1ed3a19d7acf",
+          "name": "Get a Kafka cluster",
+          "request": {
+            "name": "Get a Kafka cluster",
+            "description": {},
+            "url": {
+              "path": [
+                "cmk",
+                "v2",
+                "clusters",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "environment",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "907a359f-2507-496e-b228-41593f14ba7f",
+              "name": "A cluster",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cmk",
+                    "v2",
+                    "clusters",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "environment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_version\": \"cmk/v2\",\n  \"kind\": \"Cluster\",\n  \"id\": \"string\",\n  \"metadata\": {\n    \"self\": \"http://lwwAoACEcgIrlLpgbQHDpinM.jzkagg3G9f1B+k6KcHWriLyWnfxF2bpDgfNYfierDKq4XpeEXFWS.V7PEshF43-GAFnM\",\n    \"resource_name\": \"string\",\n    \"created_at\": \"1988-05-13T15:43:55.220Z\",\n    \"updated_at\": \"2013-09-22T20:15:45.232Z\",\n    \"deleted_at\": \"1955-03-28T22:42:39.005Z\"\n  },\n  \"spec\": {\n    \"display_name\": \"string\",\n    \"availability\": \"MULTI_ZONE\",\n    \"cloud\": \"GCP\",\n    \"region\": \"string\",\n    \"config\": {\n      \"kind\": \"Enterprise\"\n    },\n    \"environment\": {\n      \"id\": \"string\",\n      \"api_version\": \"org/v2\",\n      \"kind\": \"Environment\"\n    }\n  },\n  \"status\": {\n    \"phase\": \"string\",\n    \"cku\": 8146\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64e2ad17-cace-41c5-acea-ae6184d22f1f",
+          "name": "Delete a Kafka cluster",
+          "request": {
+            "name": "Delete a Kafka cluster",
+            "description": {},
+            "url": {
+              "path": [
+                "cmk",
+                "v2",
+                "clusters",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "environment",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "789758f3-82c5-47c4-9799-da564e10904b",
+              "name": "Cluster being deprovisioned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cmk",
+                    "v2",
+                    "clusters",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "environment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.confluent.cloud",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fbfeef74-094f-4c20-8dc3-60e7c4114b1c",
+    "name": "Confluent Cloud REST API (selected) API Keys Clusters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A best-effort subset of the Confluent Cloud control-plane REST APIs:\nOrganizations and Environments (org/v2), Service Accounts and Cloud\nAPI Keys (iam/v2), and Kafka Clusters (cmk/v2). Confluent Cloud\nadditionally publishes data-plane APIs (Kafka REST v3, Schema Registry,\nConnect, ksqlDB, Flink) on per-cluster endpoints that are not modeled\nhere. Authentication uses HTTP Basic with a Cloud API Key/Secret pair,\nor OAuth 2.0 (Confluent STS / external IdP).\n\n\nContact Support:\n Name: Confluent Cloud API Reference",
+      "type": "text/plain"
+    }
+  }
+}
