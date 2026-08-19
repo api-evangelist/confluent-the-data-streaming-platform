@@ -32,7 +32,7 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml
 created: '2025-08-19'
 modified: '2026-04-28'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 kind: company
 tags:
   - Apache Flink
