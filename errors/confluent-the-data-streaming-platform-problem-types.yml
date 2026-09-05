@@ -1,0 +1,187 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+docs: https://docs.confluent.io/cloud/current/api.html#errors
+format: confluent-error-envelope
+format_note: NOT RFC 9457. Confluent Cloud returns application/json with a top-level "errors" array whose
+  members follow a JSON:API-influenced shape (id, status, code, title, detail, source.pointer/source.parameter).
+  The docs additionally describe a newer single-object envelope (status + error{code,message,details,timestamp,path,suggestion}
+  + requestId + doc_url) being rolled out across Confluent Cloud APIs. The Connect v1 API group uses a
+  third, different error structure, which Confluent states explicitly.
+envelope:
+  media_type: application/json
+  container: errors[]
+  fields:
+  - name: id
+    type: string
+    description: A unique identifier for this particular occurrence of the problem.
+  - name: status
+    type: string
+    description: The HTTP status code applicable to this problem, expressed as a string value.
+  - name: code
+    type: string
+    description: An application-specific error code, expressed as a string value. Uppercase with underscores,
+      e.g. RESOURCE_NOT_FOUND.
+  - name: title
+    type: string
+    description: A short, human-readable summary of the problem, stable across occurrences.
+  - name: detail
+    type: string
+    description: A human-readable explanation specific to this occurrence.
+  - name: source.pointer
+    type: string
+    description: JSON Pointer (RFC 6901) to the offending entity in the request document.
+  - name: source.parameter
+    type: string
+    description: The query parameter that caused the error.
+  - name: error_code
+    type: integer
+  - name: message
+    type: string
+    nullable: true
+  trace_header: X-Request-Id
+  trace_note: Every documented 4xx/5xx component response carries an X-Request-Id header for support and
+    tracing.
+documented_envelope_v2:
+  source: https://docs.confluent.io/cloud/current/api.html#errors
+  fields:
+  - status
+  - error.code
+  - error.message
+  - error.details
+  - error.timestamp
+  - error.path
+  - error.suggestion
+  - requestId
+  - doc_url
+  doc_url_pattern: https://docs.confluent.io/cloud/current/api/errors/{CODE}.html
+  note: Per-code documentation pages are referenced by doc_url in error payloads.
+problems:
+- status: '400'
+  title: Bad Request
+  occurrences: 475
+  component_response: BadRequestError
+  example_operations:
+  - listIamV2ApiKeys
+  - createIamV2ApiKey
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  headers:
+  - X-Request-Id
+- status: '401'
+  title: The request lacks valid authentication credentials for this resource.
+  occurrences: 464
+  component_response: UnauthenticatedError
+  example_operations:
+  - listIamV2ApiKeys
+  - createIamV2ApiKey
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  headers:
+  - X-Request-Id
+  - WWW-Authenticate
+- status: '402'
+  title: The request would exceed one or more quotas.
+  occurrences: 44
+  component_response: OverQuotaError
+  example_operations:
+  - createIamV2ApiKey
+  - updateIamV2ApiKey
+  - createOrgV2Environment
+  - updateOrgV2Environment
+  headers:
+  - X-Request-Id
+- status: '403'
+  title: The access credentials were considered insufficient to grant access
+  occurrences: 425
+  component_response: UnauthorizedError
+  example_operations:
+  - listIamV2ApiKeys
+  - createIamV2ApiKey
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  headers:
+  - X-Request-Id
+- status: '404'
+  title: Not Found
+  occurrences: 284
+  component_response: NotFoundError
+  example_operations:
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  - deleteIamV2ApiKey
+  - getOrgV2Environment
+  headers:
+  - X-Request-Id
+- status: '409'
+  title: The request is in conflict with the current server state
+  occurrences: 121
+  component_response: ConflictError
+  example_operations:
+  - createIamV2ApiKey
+  - updateIamV2ApiKey
+  - createOrgV2Environment
+  - updateOrgV2Environment
+  headers:
+  - X-Request-Id
+  - Location
+- status: '413'
+  title: Payload too large
+  occurrences: 1
+  component_response: null
+  example_operations:
+  - produceRecord
+- status: '415'
+  title: Unsupported media type
+  occurrences: 1
+  component_response: null
+  example_operations:
+  - produceRecord
+- status: '422'
+  title: Validation Failed
+  occurrences: 129
+  component_response: ValidationError
+  example_operations:
+  - createIamV2ApiKey
+  - updateIamV2ApiKey
+  - createOrgV2Environment
+  - updateOrgV2Environment
+  headers:
+  - X-Request-Id
+- status: '429'
+  title: Rate Limit Exceeded
+  occurrences: 487
+  component_response: RateLimitError
+  example_operations:
+  - listIamV2ApiKeys
+  - createIamV2ApiKey
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  headers:
+  - X-Request-Id
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - Retry-After
+- status: '500'
+  title: Oops, something went wrong!
+  occurrences: 417
+  component_response: DefaultSystemError
+  example_operations:
+  - listIamV2ApiKeys
+  - createIamV2ApiKey
+  - getIamV2ApiKey
+  - updateIamV2ApiKey
+  headers:
+  - X-Request-Id
+- status: 5XX
+  title: Oops, something went wrong!
+  occurrences: 75
+  component_response: DefaultSystemError
+  example_operations:
+  - getKafkaCluster
+  - batchCreateKafkaAcls
+  - getKafkaAcls
+  - createKafkaAcls
+  headers:
+  - X-Request-Id

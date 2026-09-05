@@ -3,122 +3,99 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Confluent | the Data Streaming Platform
 providerId: confluent-the-data-streaming-platform
+generated: '2026-09-05'
+method: searched
+source:
+- https://docs.confluent.io/cloud/current/api.html#rate-limiting
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Apache Flink
-  - Apache Kafka
-  - Confluent Cloud
-  - Connectors
-  - Data Streaming
-  - Event Streaming
-  - Kafka Connect
-  - ksqlDB
-  - Real-Time Data
-  - REST
-  - Schema Registry
-  - Stream Processing
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Confluent | the Data Streaming Platform API
-  surface. Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults
-  are scaffold values to be replaced with published provider limits.
+modified: '2026-09-05'
+limit_count: 0
+description: >-
+  Confluent documents the rate-limit SIGNALLING contract in full but publishes no
+  numeric per-endpoint limits, and says so explicitly: "Resource and rate limits, and
+  the default and maximum sizes of paginated data are not considered part of the API
+  contract and may change (possibly dynamically). It is the client's responsibility to
+  read the road signs and obey the speed limit." limit_count is therefore an honest
+  zero — the headers are the contract, the numbers are not. This artifact replaces a
+  2026-05-04 scaffold that asserted 10/100/1000 requests-per-minute tiers Confluent
+  has never published.
 headers:
   limit: X-RateLimit-Limit
   remaining: X-RateLimit-Remaining
   reset: X-RateLimit-Reset
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+header_semantics:
+- header: X-RateLimit-Limit
+  description: The maximum number of requests you're permitted to make per time period.
+  type: integer
+- header: X-RateLimit-Remaining
+  description: >-
+    The number of requests remaining in the current rate-limit window. Confluent flags
+    that this "differs from Github and Twitter's same-named header".
+  type: integer
+- header: X-RateLimit-Reset
+  description: The relative time in SECONDS until the current rate limit window resets.
+  type: integer
+  warning: >-
+    RELATIVE seconds, not a UTC epoch. Confluent states it chose relative time "to
+    avoid client/server time synchronization issues". A client that parses this as an
+    epoch timestamp — the GitHub convention for the identical header name — will
+    compute a reset date in 1970 or sleep for decades. This is the single most
+    dangerous detail in Confluent's runtime contract.
+- header: Retry-After
+  description: >-
+    Seconds to wait until the rate limit window resets. Only sent when the rate limit
+    has been reached.
+  type: integer
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
+  quotaExceeded: 402
+  quotaExceededKnownIssue: >-
+    Confluent documents a known issue: some "Quota Exceeded" errors are currently
+    returned as HTTP 400 instead of HTTP 402, with a stated resolution to return 402
+    consistently.
   serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Confluent Cloud REST API
-      - Confluent Kafka REST API
-      - Confluent Schema Registry REST API
-      - Kafka Connect REST API
-      - ksqlDB REST API
-      - Confluent Cloud for Apache Flink REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Confluent Cloud REST API
-      - Confluent Kafka REST API
-      - Confluent Schema Registry REST API
-      - Kafka Connect REST API
-      - ksqlDB REST API
-      - Confluent Cloud for Apache Flink REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Confluent Cloud REST API
-      - Confluent Kafka REST API
-      - Confluent Schema Registry REST API
-      - Kafka Connect REST API
-      - ksqlDB REST API
-      - Confluent Cloud for Apache Flink REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Confluent Cloud REST API
-      - Confluent Kafka REST API
-      - Confluent Schema Registry REST API
-      - Kafka Connect REST API
-      - ksqlDB REST API
-      - Confluent Cloud for Apache Flink REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Confluent Cloud REST API
-      - Confluent Kafka REST API
-      - Confluent Schema Registry REST API
-      - Kafka Connect REST API
-      - ksqlDB REST API
-      - Confluent Cloud for Apache Flink REST API
+coverage:
+  operations_declaring_429: 487
+  operations_total: 504
+  note: >-
+    487 of the 504 operations in the Confluent Cloud OpenAPI declare a 429 response
+    referencing the shared RateLimitError component, which carries all four headers.
+exceptions:
+- scope: Kafka REST API (v3)
+  behaviour: >-
+    Rate-limit headers are NOT returned on a 429 from this API group. Confluent states
+    this in the Rate Limiting section. A client throttled on kafka/v3 gets the status
+    code and nothing else, so it must fall back to its own backoff rather than reading
+    Retry-After.
+- scope: Confluent Cloud MCP servers
+  behaviour: >-
+    "Rate limits match the underlying Confluent Cloud API limits" — the MCP surface
+    introduces no separate budget.
+  source: https://docs.confluent.io/cloud/current/ai/ai-tools/managed-mcp-server.html
+limits: []
+limits_note: >-
+  Empty on purpose. No published numeric limit was found on any Confluent page during
+  this pass, and Confluent's own compatibility policy disclaims rate limits as part of
+  the contract. Inventing a number here would be worse than recording none.
+related_quota_surface:
+  note: >-
+    Separate from HTTP rate limiting, Confluent exposes two real quota surfaces as
+    APIs — the Service Quota API (service-quota/v1) for account and resource ceilings,
+    and Kafka Client Quotas (kafka-quotas/v1) for per-principal throughput. These are
+    resource quotas, not request-rate limits, and they are queryable rather than
+    documented as static numbers.
+  operations: [listServiceQuotaV1AppliedQuotas, listKafkaQuotasV1ClientQuotas]
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+- name: Multiple safeguards
+  description: >-
+    Confluent states it employs multiple safeguards; too many requests in quick
+    succession or too many concurrent operations may be throttled or rejected.
+- name: Client responsibility
+  description: >-
+    Limits may change dynamically and are not part of the API contract. Clients must
+    read the response headers rather than hard-coding a rate.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

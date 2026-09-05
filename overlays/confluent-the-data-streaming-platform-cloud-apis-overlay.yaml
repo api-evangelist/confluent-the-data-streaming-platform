@@ -1,0 +1,85 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Confluent Cloud APIs
+  version: 1.0.0
+extends: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+x-generated: '2026-09-05'
+x-method: generated
+x-source: >-
+  Derived from the harvested provider spec plus the artifacts in this repo. The original
+  document at openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml is
+  never mutated; every enhancement lives here as an Overlay 1.0.0 action.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: confluent-the-data-streaming-platform
+    x-apievangelist-harvested-from: https://docs.confluent.io/cloud/current/openapi.yaml
+    x-apievangelist-harvested-on: '2026-09-05'
+    x-apievangelist-discovery: >-
+      Found via <link rel="service-desc" type="application/yaml"> on
+      https://docs.confluent.io/cloud/current/api.html — the API host root
+      (api.confluent.cloud) 404s /openapi.json, /openapi.yaml, /swagger.json and
+      /api-docs, so the docs host is the only place this contract is published.
+    x-apievangelist-operations: 504
+    x-apievangelist-api-groups: 32
+- target: $.info
+  update:
+    x-api-lifecycle:
+      phases: [Early Access, Preview, Limited Availability, Generally Available, Deprecated,
+        Sunset]
+      default: Generally Available
+      deprecation_notice_days: 180
+      breaking_change_cadence: approximately once per year
+      artifact: lifecycle/confluent-the-data-streaming-platform-lifecycle.yml
+- target: $.info
+  update:
+    x-idempotency:
+      coverage: none
+      note: >-
+        No Idempotency-Key header or equivalent exists on this API. Kafka's idempotent
+        producer is a protocol feature and does not make an HTTP write replay-safe.
+      artifact: conventions/confluent-the-data-streaming-platform-conventions.yml
+- target: $.info
+  update:
+    x-rate-limit-signal:
+      status: 429
+      headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+      reset_units: relative-seconds
+      reset_warning: >-
+        X-RateLimit-Reset is relative seconds, NOT a UTC epoch, deliberately unlike the
+        GitHub header of the same name.
+      no_headers_on: Kafka REST API (v3)
+      artifact: rate-limits/confluent-the-data-streaming-platform-rate-limits.yml
+- target: $.info
+  update:
+    x-error-format:
+      format: confluent-error-envelope
+      rfc9457: false
+      container: errors[]
+      trace_header: X-Request-Id
+      artifact: errors/confluent-the-data-streaming-platform-problem-types.yml
+- target: $.info
+  update:
+    x-agent-surface:
+      mcp:
+        mode: both
+        remote: https://api.confluent.cloud/mcp/v1
+        local: npx -y @confluentinc/mcp-confluent
+        artifact: mcp/confluent-the-data-streaming-platform-mcp.yml
+      tool_crosswalk: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+      agent_skills: skills/_index.yml
+      agent_card: null
+- target: $.info
+  update:
+    x-pagination:
+      style: cursor
+      params: [page_size, page_token]
+      links: [next, prev, first, last]
+      opaque: true
+      unsupported_in: [connect/v1, kafka/v3]
+- target: $.servers[0]
+  update:
+    x-apievangelist-verified: '2026-09-05'
+    x-apievangelist-note: >-
+      api.confluent.cloud confirmed reachable; returns the Confluent JSON error envelope
+      for unknown paths rather than an HTML shell.

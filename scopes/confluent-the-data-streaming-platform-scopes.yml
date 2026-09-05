@@ -1,0 +1,61 @@
+generated: '2026-09-05'
+method: searched
+source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+schemes:
+- name: confluent-sts-access-token
+  source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+  description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth
+    2.0.
+- name: external-access-token
+  source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+  description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth
+    2.0.
+- name: oauth
+  source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /oauth2/token
+  description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+scopes:
+- scope: marketplace::describe
+  sources:
+  - openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- scope: partner:alter
+  description: enables partners to alter entitlements
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- scope: partner:create
+  description: enables partners to create entitlements and signup on behalf of customers
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- scope: partner:delete
+  description: enables partners to delete entitlements and organizations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- scope: partner:describe
+  description: enables partners to read and list entitlements and organizations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+docs: https://docs.confluent.io/cloud/current/security/access-control/rbac/predefined-rbac-roles.html
+docs_note: 'Confluent publishes no OAuth SCOPES reference page, because scopes are not how this API authorizes.
+  Only the partner OAuth scheme declares any (partner:describe / create / alter / delete, plus marketplace::describe),
+  and those cover a partner-entitlement surface most callers never touch. Every other request is authorized
+  by RBAC ROLE BINDINGS attached to the calling user, service account or identity pool — the predefined
+  role list at the docs URL above is the real permission reference for this provider, and it is what an
+  integrator should read where they would normally read a scope table. Searched 2026-09-05 and confirmed:
+  there is no scope catalogue to add.'
+authorization_model: rbac-role-bindings

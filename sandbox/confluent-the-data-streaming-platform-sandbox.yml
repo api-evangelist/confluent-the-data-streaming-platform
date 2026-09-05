@@ -1,0 +1,61 @@
+generated: '2026-09-05'
+method: searched
+source:
+- https://docs.confluent.io/cloud/current/get-started/free-trial.html
+- https://www.confluent.io/confluent-cloud/tryfree/
+- https://www.confluent.io/pricing/
+- https://docs.confluent.io/confluent-cli/current/overview.html
+docs: https://docs.confluent.io/cloud/current/get-started/free-trial.html
+shape: >-
+  Confluent has NO test-mode/live-mode key separation and no magic test values — there
+  is no sandbox environment distinct from production. What it offers instead is a
+  credited free trial on the real platform plus a local single-node runtime. Recorded
+  as it is, rather than forced into the test-card shape this artifact usually takes.
+test_live_separation:
+  present: false
+  key_prefixes: []
+  note: >-
+    Cloud API keys are the same shape in every environment. Isolation is achieved by
+    creating a separate Confluent Cloud ENVIRONMENT (env-*) and scoping API keys to its
+    clusters, not by a test mode. There is no equivalent of a sk_test_ prefix, so no
+    client-side check can tell a staging key from a production one.
+free_trial:
+  credit_usd: 400
+  duration_days: 30
+  terminates_on: whichever comes first — 30 days elapsed or the $400 credit consumed
+  included:
+  - Basic Kafka clusters (100 MB/s throughput, 5 TB storage)
+  - Connectors
+  - Schema Registry
+  - Apache Flink
+  signup: https://www.confluent.io/confluent-cloud/tryfree/
+  docs: https://docs.confluent.io/cloud/current/get-started/free-trial.html
+free_tier:
+  present: true
+  description: >-
+    Beyond the trial, the Basic cluster type carries a standing free allowance — the
+    pricing page states "First eCKU free, then $0.14" per eCKU-hour, with an estimated
+    monthly starting cost of $0/month.
+  source: https://www.confluent.io/pricing/
+marketplace_credits:
+  note: >-
+    AWS and Azure marketplace listings advertise $1,000 in credits ($400 instantly plus
+    $600 by promo code). Recorded as a marketplace offer, not a Confluent-published
+    sandbox term.
+startups:
+  program: Confluent for Startups
+  credit_usd_up_to: 20000
+local_runtime:
+  command: confluent local
+  description: >-
+    The CLI runs a local Confluent Platform for development against localhost:9092 and
+    a local Schema Registry on :8081, which is the closest thing to an offline sandbox.
+    The open-source MCP server ships ready-to-use local configs for exactly this
+    (sample_configs/ in confluentinc/mcp-confluent).
+  docs: https://docs.confluent.io/confluent-cli/current/overview.html
+test_values:
+  cards: []
+  identifiers: []
+  note: >-
+    None published, and none invented. A payments-style magic-value table does not
+    exist for this provider.

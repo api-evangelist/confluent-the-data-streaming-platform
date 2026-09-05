@@ -1,0 +1,128 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  npm registry.npmjs.org, pypi.org, api.nuget.org, proxy.golang.org,
+  packages.confluent.io/maven (Confluent publishes its Java artifacts to its own
+  Maven repository, not Maven Central), and the Confluent docs client pages
+  https://docs.confluent.io/platform/current/clients/index.html
+notes: >-
+  Confluent's client surface is unusually broad because it ships both Apache Kafka
+  clients (librdkafka and its language bindings) and Confluent Cloud control-plane
+  SDKs. Java artifacts (io.confluent:*) are NOT on Maven Central; they are served from
+  packages.confluent.io/maven, so the version below is read from that repository's
+  maven-metadata.xml rather than search.maven.org.
+packages:
+- language: python
+  registry: pypi
+  name: confluent-kafka
+  url: https://pypi.org/project/confluent-kafka/
+  install: pip install confluent-kafka
+  official: true
+  version: 2.15.0
+  published: '2026-06-30'
+  source_code: https://github.com/confluentinc/confluent-kafka-python
+- language: go
+  registry: pkg.go.dev
+  name: github.com/confluentinc/confluent-kafka-go/v2
+  url: https://pkg.go.dev/github.com/confluentinc/confluent-kafka-go/v2
+  install: go get github.com/confluentinc/confluent-kafka-go/v2/kafka
+  official: true
+  version: v2.15.0
+  published: '2026-06-30'
+  source_code: https://github.com/confluentinc/confluent-kafka-go
+- language: dotnet
+  registry: nuget
+  name: Confluent.Kafka
+  url: https://www.nuget.org/packages/Confluent.Kafka/
+  install: dotnet add package Confluent.Kafka
+  official: true
+  version: 2.15.0
+  published: '2026-06-30'
+  source_code: https://github.com/confluentinc/confluent-kafka-dotnet
+- language: javascript
+  registry: npm
+  name: '@confluentinc/kafka-javascript'
+  url: https://www.npmjs.com/package/@confluentinc/kafka-javascript
+  install: npm install @confluentinc/kafka-javascript
+  official: true
+  version: 1.10.0
+  published: '2026-07-01'
+  source_code: https://github.com/confluentinc/confluent-kafka-javascript
+- language: javascript
+  registry: npm
+  name: '@confluentinc/schemaregistry'
+  url: https://www.npmjs.com/package/@confluentinc/schemaregistry
+  install: npm install @confluentinc/schemaregistry
+  official: true
+  version: 1.10.0
+  published: '2026-07-01'
+  source_code: https://github.com/confluentinc/confluent-kafka-javascript
+- language: javascript
+  registry: npm
+  name: '@confluentinc/mcp-confluent'
+  url: https://www.npmjs.com/package/@confluentinc/mcp-confluent
+  install: npx -y @confluentinc/mcp-confluent
+  official: true
+  version: 1.5.0
+  published: '2026-07-07'
+  source_code: https://github.com/confluentinc/mcp-confluent
+  note: >-
+    The open-source Confluent MCP server. Local stdio distribution — see
+    mcp/confluent-the-data-streaming-platform-mcp.yml for the deployment modes.
+- language: java
+  registry: confluent-maven
+  name: io.confluent:kafka-avro-serializer
+  url: https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/
+  install: >-
+    Add https://packages.confluent.io/maven/ as a repository, then the
+    io.confluent:kafka-avro-serializer dependency
+  official: true
+  version: 8.3.1
+  published: '2026-08-27'
+  note: >-
+    Read from packages.confluent.io/maven maven-metadata.xml <release> and
+    <lastUpdated> (20260827034149). Not published to Maven Central, so
+    search.maven.org returns zero results for g:io.confluent.
+- language: java
+  registry: confluent-maven
+  name: io.confluent:kafka-schema-registry-client
+  url: https://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/
+  install: >-
+    Add https://packages.confluent.io/maven/ as a repository, then the
+    io.confluent:kafka-schema-registry-client dependency
+  official: true
+  version: null
+  published: null
+  note: >-
+    The artifact directory is served from packages.confluent.io/maven and ships in
+    lockstep with the Confluent Platform release train (8.3.x as of this pass), but the
+    maven-metadata.xml read attempted in this pass did not return, so no version is
+    asserted here rather than a guessed one.
+- language: c
+  registry: github
+  name: librdkafka
+  url: https://github.com/confluentinc/librdkafka
+  install: brew install librdkafka  # or apt-get install librdkafka-dev
+  official: true
+  version: null
+  published: null
+  note: >-
+    The C/C++ Apache Kafka client that underpins the Python, Go, .NET and JavaScript
+    clients above. Distributed through OS package managers and source releases rather
+    than a single language registry with a metadata endpoint, so no registry version is
+    recorded — checked, nothing to read.
+- language: go
+  registry: pkg.go.dev
+  name: github.com/confluentinc/ccloud-sdk-go-v2
+  url: https://pkg.go.dev/github.com/confluentinc/ccloud-sdk-go-v2
+  install: go get github.com/confluentinc/ccloud-sdk-go-v2
+  official: true
+  version: v0.7.3
+  published: '2025-03-26'
+  source_code: https://github.com/confluentinc/ccloud-sdk-go-v2
+  note: >-
+    The generated Go SDK for the Confluent Cloud control-plane REST API. Latest tagged
+    release is 18 months older than the API it wraps (the Cloud OpenAPI now carries 504
+    operations across 32 API groups, several of which — Tableflow, Real Time Context
+    Engine, Unified Stream Manager, Analytics — post-date this tag). Recorded as a
+    currency signal, not a defect claim.

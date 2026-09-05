@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Confluent Cloud REST API (selected) API Keys Environments API
   description: 'A best-effort subset of the Confluent Cloud control-plane REST APIs:
@@ -120,6 +120,15 @@ paths:
           description: Environment deleted
 components:
   schemas:
+    EnvironmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Environment'
+        metadata:
+          $ref: '#/components/schemas/ListMetadata'
     Environment:
       type: object
       properties:
@@ -143,15 +152,6 @@ components:
               enum:
               - ESSENTIALS
               - ADVANCED
-    EnvironmentList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Environment'
-        metadata:
-          $ref: '#/components/schemas/ListMetadata'
     ListMetadata:
       type: object
       properties:

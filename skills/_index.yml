@@ -1,0 +1,86 @@
+generated: '2026-09-05'
+method: searched
+source: https://github.com/confluentinc/agent-skills
+note: >-
+  Confluent PUBLISHES its own Agent Skills — one of the few providers in this catalog
+  that does. The seven skills under agent-skills/ are the provider's own files, vendored
+  verbatim from confluentinc/agent-skills, and are the authoritative set. The four
+  files at the top of skills/ are API Evangelist-generated operating instructions for
+  the Confluent Cloud REST API itself, which Confluent's skills deliberately do not
+  cover (theirs target application development — clients, Flink jobs, schema design —
+  not control-plane API calls). Every operationId referenced in the generated skills was
+  grepped out of
+  openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml.
+published_by_provider:
+  repo: https://github.com/confluentinc/agent-skills
+  commit: 9095afceac13c8924c7b9993b26f0f57abd8b267
+  commit_date: '2026-06-12'
+  vendored_at: skills/agent-skills/
+  license: see skills/agent-skills/LICENSE
+  install:
+  - /plugin marketplace add confluentinc/agent-skills
+  - /plugin install streaming-skills-plugin@confluent-agent-skills
+  - npx skills add confluentinc/agent-skills
+  announced: blogs/2026-05-19-ai-tools-for-builders-confluent-s-mcp-server-agent-skills.md
+skills:
+- file: agent-skills/skills/kafka-schema-registry/SKILL.md
+  name: kafka-schema-registry
+  method: searched
+  origin: provider
+  description: >-
+    Scan a project for Kafka usage, extract schemas from data models, tag PII fields,
+    generate Terraform for Schema Registry registration, and produce a migration report.
+- file: agent-skills/skills/kafka-streams-programming/SKILL.md
+  name: kafka-streams-programming
+  method: searched
+  origin: provider
+- file: agent-skills/skills/developing-kafka-python-client/SKILL.md
+  name: developing-kafka-python-client
+  method: searched
+  origin: provider
+- file: agent-skills/skills/flink-udf/SKILL.md
+  name: flink-udf
+  method: searched
+  origin: provider
+- file: agent-skills/skills/confluent-cloud-cdc-tableflow/SKILL.md
+  name: confluent-cloud-cdc-tableflow
+  method: searched
+  origin: provider
+- file: agent-skills/skills/confluent-skill-creator/SKILL.md
+  name: confluent-skill-creator
+  method: searched
+  origin: provider
+- file: agent-skills/skills/confluent-skill-reviewer/SKILL.md
+  name: confluent-skill-reviewer
+  method: searched
+  origin: provider
+- file: confluent-the-data-streaming-platform-provision-kafka-cluster.md
+  name: confluent-provision-kafka-cluster
+  method: generated
+  origin: api-evangelist
+  api: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  operations: [listOrgV2Environments, createOrgV2Environment, createCmkV2Cluster, getCmkV2Cluster,
+    createIamV2ApiKey, deleteCmkV2Cluster]
+- file: confluent-the-data-streaming-platform-deploy-connector.md
+  name: confluent-deploy-connector
+  method: generated
+  origin: api-evangelist
+  api: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  operations: [listConnectv1ConnectorPlugins, validateConnectv1ConnectorPlugin, createConnectv1Connector,
+    readConnectv1ConnectorStatus, getConnectv1ConnectorConfig, createOrUpdateConnectv1ConnectorConfig,
+    pauseConnectv1Connector, resumeConnectv1Connector, restartConnectv1Connector, deleteConnectv1Connector]
+- file: confluent-the-data-streaming-platform-run-flink-sql.md
+  name: confluent-run-flink-sql
+  method: generated
+  origin: api-evangelist
+  api: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  operations: [listFcpmV2ComputePools, createSqlv1Statement, getSqlv1Statement, getSqlv1StatementResult,
+    getSqlv1StatementExceptions, patchSqlv1Statement, deleteSqlv1Statement]
+- file: confluent-the-data-streaming-platform-webhook-notifications.md
+  name: confluent-webhook-notifications
+  method: generated
+  origin: api-evangelist
+  api: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  operations: [listNotificationsV1NotificationTypes, createNotificationsV1Integration,
+    testNotificationsV1Integration, listNotificationsV1Integrations, createNotificationsV1Subscription,
+    createNotificationsV1ResourceSubscription, deleteNotificationsV1Integration]

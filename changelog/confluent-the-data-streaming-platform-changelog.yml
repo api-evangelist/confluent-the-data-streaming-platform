@@ -1,0 +1,85 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.confluent.io/cloud/current/release-notes/index.html
+docs: https://docs.confluent.io/cloud/current/release-notes/index.html
+scheme: dated
+scheme_note: >-
+  Confluent Cloud release notes are dated, not versioned — entries are chronological
+  sections anchored by date (e.g. #august-31-2026). There is no product version number
+  attached to a Cloud entry because each API group versions independently. Confluent
+  Platform, by contrast, IS versioned (8.3 shipped 2026-07-29 per the Confluent blog).
+current_version: null
+current_version_note: >-
+  Not applicable to Confluent Cloud. The nearest analogue is the Confluent Platform
+  release train, currently 8.3.x (io.confluent Maven artifacts at 8.3.1, published
+  2026-08-27).
+window: 2026-07-27 .. 2026-08-31
+entries:
+- date: '2026-08-31'
+  breaking: false
+  additions: true
+  highlight: >-
+    Custom SMTs on fully managed connectors can now make external network calls
+    (egress) to endpoints beyond Confluent Cloud.
+- date: '2026-08-27'
+  breaking: false
+  additions: true
+  highlight: IP filtering extended to protect public Kafka and ksqlDB access.
+- date: '2026-08-26'
+  breaking: false
+  additions: true
+  highlight: >-
+    IBM MQ Source connector supports configurable output and input key formats with
+    STRING/BYTES data types.
+- date: '2026-08-25'
+  breaking: false
+  additions: true
+  highlight: >-
+    Unified Stream Manager adds alerting for registered Confluent Platform clusters.
+- date: '2026-08-19'
+  breaking: false
+  additions: true
+  highlight: >-
+    Secret manager integration extended to HTTP Sink/Source V2 and Oracle XStream CDC
+    connectors.
+- date: '2026-08-18'
+  breaking: false
+  additions: true
+  highlight: >-
+    Baseline CFU lets you set minimum scaling targets for Flink SQL statements.
+- date: '2026-08-17'
+  breaking: false
+  additions: true
+  highlight: >-
+    Flink changelog conversion functions FROM_CHANGELOG and TO_CHANGELOG reach general
+    availability.
+- date: '2026-08-12'
+  breaking: false
+  additions: true
+  highlight: >-
+    Advanced Message Search enables filtering Kafka topics by specific fields in
+    retained history.
+- date: '2026-07-31'
+  breaking: false
+  additions: true
+  highlight: Tableflow emits structured log events across topic lifecycle operations.
+- date: '2026-07-30'
+  breaking: false
+  additions: false
+  highlight: >-
+    SSO configuration moved to a dedicated console page, separate from account settings.
+- date: '2026-07-28'
+  breaking: false
+  additions: true
+  highlight: >-
+    Amazon S3 and Snowflake Sink connectors gain cross-region and cross-cloud
+    connectivity.
+- date: '2026-07-27'
+  breaking: false
+  additions: true
+  highlight: >-
+    Notifications dashboard shows a centralized view of alerts from the past 30 days.
+related:
+  platform_release_notes: https://docs.confluent.io/platform/current/release-notes/index.html
+  cli_release_notes: https://docs.confluent.io/confluent-cli/current/release-notes.html
+  deprecation_policy: lifecycle/confluent-the-data-streaming-platform-lifecycle.yml

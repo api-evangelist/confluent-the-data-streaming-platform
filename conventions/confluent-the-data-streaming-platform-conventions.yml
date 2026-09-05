@@ -1,0 +1,227 @@
+generated: '2026-09-05'
+method: searched
+source:
+- https://docs.confluent.io/cloud/current/api.html
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+docs: https://docs.confluent.io/cloud/current/api.html
+note: >-
+  Confluent publishes its cross-cutting API semantics inside the OpenAPI itself —
+  info.description carries full Introduction, Authentication, Errors, Rate Limiting,
+  Identifiers and URLs, Data Types, Versioning and HTTP Guidelines sections. Everything
+  below is read from that document (the provider's own words) or from the spec's
+  operations, not inferred.
+authentication:
+  styles:
+  - name: Cloud API key
+    scheme: http-basic
+    description: >-
+      Cloud API key ID as username, secret as password. Grants access to the Confluent
+      Cloud management APIs (provisioning, metrics integrations).
+    security_scheme: cloud-api-key
+  - name: Resource-specific API key
+    scheme: http-basic
+    description: >-
+      Scoped to one Kafka cluster, Schema Registry cluster, ksqlDB cluster or Flink
+      region.
+    security_scheme: resource-api-key
+  - name: Global API key
+    scheme: http-basic
+    security_scheme: global-api-key
+  - name: Confluent STS access token
+    scheme: oauth2
+    flow: clientCredentials
+    token_url: https://api.confluent.cloud/sts/v1/oauth2/token
+    security_scheme: confluent-sts-access-token
+  - name: External IdP access token
+    scheme: oauth2
+    flow: clientCredentials
+    security_scheme: external-access-token
+  - name: Partner OAuth
+    scheme: oauth2
+    flow: clientCredentials
+    scopes: [partner:describe, partner:create, partner:alter, partner:delete]
+    security_scheme: oauth
+    note: Currently supported only for partner APIs.
+  detail: authentication/confluent-the-data-streaming-platform-authentication.yml
+  scopes: scopes/confluent-the-data-streaming-platform-scopes.yml
+idempotency:
+  coverage: none
+  supported: false
+  mechanism: null
+  scope: []
+  evidence: >-
+    No Idempotency-Key (or equivalent) header, parameter or documented replay-protection
+    contract appears anywhere in the 504-operation Confluent Cloud OpenAPI, and the
+    API's own Introduction, HTTP Guidelines and Versioning sections do not describe one.
+    Grepped for /idempoten/i across the harvested spec: 5 matches, none of them an HTTP
+    replay contract — two are the Kafka ACL operation enum IDEMPOTENT_WRITE, two are
+    Flink changelog-semantics prose, and one describes Tableflow auto-creating a
+    dead-letter topic. Checked, and there is nothing to record.
+  mitigations: >-
+    Confluent's declarative, intent-oriented object model is the substitute it offers:
+    resources are created with a client-supplied display_name and reconciled through
+    PATCH against desired state, and most control-plane writes are name-scoped rather
+    than free-creating. That reduces but does not remove double-fire risk — POST
+    /cmk/v2/clusters called twice creates two clusters.
+  not_to_be_confused_with: >-
+    Apache Kafka's idempotent producer (enable.idempotence=true) and exactly-once
+    semantics are properties of the KAFKA PROTOCOL that Confluent implements, not of
+    this REST API. They do not make an HTTP write to api.confluent.cloud replay-safe,
+    and conflating the two is the easy mistake to make with this provider.
+reversibility:
+  grade: documented
+  summary: >-
+    A real reversal surface exists for connectors, cluster links and Flink statements,
+    but Confluent publishes no reversal WINDOW for any of them, so this grades
+    documented rather than verified. Resource deletes on the control plane are
+    terminal.
+  surfaces:
+  - write: pauseConnectv1Connector
+    reversal: resumeConnectv1Connector
+    window: null
+    note: Pause/resume is a true round trip; no time limit is stated.
+    docs: https://docs.confluent.io/cloud/current/api.html
+  - write: createOrUpdateConnectv1ConnectorConfig
+    reversal: createOrUpdateConnectv1ConnectorConfig
+    window: null
+    note: >-
+      A config change is reversed by writing the previous config back. Read the current
+      config with getConnectv1ConnectorConfig BEFORE writing so a rollback is possible;
+      Confluent stores no prior-version history you can restore from.
+  - write: alterConnectv1ConnectorOffsetsRequest
+    reversal: alterConnectv1ConnectorOffsetsRequest
+    window: null
+    note: >-
+      Offsets can be re-altered, but records already emitted downstream by the
+      connector are not recalled.
+  - write: updateKafkaMirrorTopicsPromote
+    reversal: updateKafkaMirrorTopicsReverseAndStartMirror
+    window: null
+    note: >-
+      Cluster Linking exposes an explicit reverse operation
+      (:reverse-and-start-mirror / :reverse-and-pause-mirror) and a
+      :truncate-and-restore. This is the strongest reversal path in the API.
+  - write: updateKafkaMirrorTopicsPause
+    reversal: updateKafkaMirrorTopicsResume
+    window: null
+  - write: createSqlv1Statement
+    reversal: deleteSqlv1Statement
+    window: null
+    note: >-
+      Stopping a Flink statement stops future processing; it does not undo rows already
+      written to a sink.
+  irreversible:
+  - deleteCmkV2Cluster
+  - deleteOrgV2Environment
+  - deleteKafkaTopic
+  - deleteSchemaVersion
+  - deleteTableflowV1TableflowTopic
+  - deleteIamV2ApiKey
+  irreversible_note: >-
+    Deleting a Kafka cluster, environment or topic destroys the data it holds and there
+    is no restore operation in the spec. deleteSchemaVersion is a soft delete followed
+    by an optional permanent delete in the Schema Registry API, but the Cloud aggregate
+    spec exposes no undelete. Treat every delete on this API as final and require human
+    confirmation.
+pagination:
+  style: cursor
+  request_params:
+  - name: page_size
+    description: Client-provided max items per page; only valid on the first request.
+  - name: page_token
+    description: Server-generated opaque token for traversing the result set.
+  response:
+    envelope: '{api_version, kind: <Kind>List, metadata: {...}, data: [...]}'
+    links: [next, prev, first, last]
+    link_registry: https://www.iana.org/assignments/link-relations/link-relations.xml
+    location: metadata
+  opacity: Clients must treat pagination links and page_token as opaque strings.
+  exceptions:
+  - The Connect v1 API group does not support pagination on list operations.
+  - The Kafka REST v3 API group does not support pagination on list operations.
+field_expansion:
+  supported: partial
+  mechanism: '?expand=info,status,id'
+  operations: [listConnectv1ConnectorsWithExpansions]
+  note: >-
+    Expansion is a Connect v1 affordance, not a platform-wide convention; there is no
+    sparse-fieldset or generic expand parameter across the rest of the surface.
+metadata:
+  user_defined: false
+  note: >-
+    There is no free-form key/value metadata bag on Confluent Cloud resources. The
+    metadata block is server-owned (id, self, resource_name, created_at, updated_at,
+    deleted_at). User-defined labelling is done through Stream Catalog tags
+    (catalog/v1 tagdefs + entity tags), which are a governance feature, not a
+    per-request metadata field.
+request_tracing:
+  header: X-Request-Id
+  direction: response
+  coverage: >-
+    Declared on every named error component response (BadRequestError,
+    UnauthenticatedError, UnauthorizedError, NotFoundError, ConflictError,
+    ValidationError, OverQuotaError, RateLimitError, DefaultSystemError).
+  also: error.id in the errors[] envelope, and requestId in the newer error envelope.
+  use: Quote it in support tickets; it is the only correlation handle the API returns.
+versioning:
+  scheme: uri-path-per-api-group
+  description: >-
+    The version in the path (v1, v2, v3) is a GENERATIONAL version per API group, not a
+    semver major. There is no single "Confluent Cloud API version" — connect/v1 and
+    cmk/v2 advance independently, and a breaking change bumps only the group it
+    affects.
+  api_groups: 32
+  examples: [org/v2, iam/v2, cmk/v2, connect/v1, kafka/v3, srcm/v2, srcm/v3, sql/v1, fcpm/v2,
+    tableflow/v1, notifications/v1, networking/v1, byok/v1, billing/v1, cdx/v1, usm/v1, rtce/v1]
+  compatibility_policy: https://docs.confluent.io/cloud/current/clusters/upgrade-policy.html
+  rules:
+  - MUST IGNORE — unrecognised request/response parameters, properties and headers are ignored.
+  - MUST FORWARD — unrecognised response properties must be sent back on subsequent PUTs.
+  - Confluent uses PATCH for partial updates specifically so MUST FORWARD is not required of clients.
+  - Object IDs are opaque, may gain or lose fixed prefixes, and can be up to 255 characters.
+  - A resource may start returning a redirect (301/307); clients must follow Location.
+  detail: lifecycle/confluent-the-data-streaming-platform-lifecycle.yml
+error_envelope:
+  format: confluent-error-envelope
+  rfc9457: false
+  container: errors[]
+  fields: [id, status, code, title, detail, source.pointer, source.parameter, error_code, message]
+  validation_status: 422
+  quota_status: 402
+  known_issue: >-
+    Confluent documents that some "Quota Exceeded" errors are currently returned as
+    HTTP 400 instead of HTTP 402, with a stated resolution to return 402 consistently.
+  connect_v1_divergence: >-
+    The Connect v1 API group uses a different error structure; Confluent says so
+    explicitly rather than leaving it to be discovered.
+  detail: errors/confluent-the-data-streaming-platform-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  reset_semantics: >-
+    X-RateLimit-Reset is RELATIVE seconds until the window resets — Confluent flags in
+    its own docs that this deliberately differs from the GitHub/Twitter header of the
+    same name, which uses a UTC epoch. A client that assumes epoch will sleep for
+    decades.
+  exception: >-
+    Rate-limit headers are NOT returned on a 429 from the Kafka REST API (v3) group.
+  detail: rate-limits/confluent-the-data-streaming-platform-rate-limits.yml
+http_guidelines:
+  methods: [GET, POST, PUT, PATCH, DELETE]
+  partial_update: PATCH
+  media_types:
+  - application/json
+  - application/vnd.schemaregistry.v1+json
+  - application/vnd.schemaregistry+json; qs=0.9
+  async_writes: >-
+    Provisioning operations return 202 Accepted and are reconciled asynchronously;
+    poll the resource's status.phase (e.g. PROVISIONING -> RUNNING) rather than
+    treating the write response as final state.
+  async_response_count: 32
+cross_links:
+  authentication: authentication/confluent-the-data-streaming-platform-authentication.yml
+  scopes: scopes/confluent-the-data-streaming-platform-scopes.yml
+  errors: errors/confluent-the-data-streaming-platform-problem-types.yml
+  lifecycle: lifecycle/confluent-the-data-streaming-platform-lifecycle.yml
+  rate_limits: rate-limits/confluent-the-data-streaming-platform-rate-limits.yml
+  data_model: data-model/confluent-the-data-streaming-platform-data-model.yml

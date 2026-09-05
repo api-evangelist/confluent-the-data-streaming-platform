@@ -1,0 +1,162 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Live GET of the named /.well-known/ path list against every host this record knows —
+  the registrable domain and www, the Cloud API baseURL host, the docs host, the
+  console host, and the developer portal host.
+hit_count: 1
+notes: >-
+  One real document was served: RFC 9116 security.txt on www.confluent.io, saved
+  verbatim. confluent.cloud (the Confluent Cloud console) is a single-page-app
+  catch-all that answers HTTP 200 with the same 22,731-byte HTML shell for EVERY
+  /.well-known/* path including the negative control, so none of its 200s are
+  documents and none are recorded as hits. docs.confluent.io 302s every /.well-known/
+  path. api.confluent.cloud returns its own JSON 404 envelope for all of them, which is
+  a clean, honest negative.
+hosts:
+- host: https://www.confluent.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: confluent-the-data-streaming-platform-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/confluent-negative-control-7f3ab91c.json
+    status: 404
+  path_echo_control: passed
+- host: https://confluent.io
+  note: >-
+    Apex 301-redirects every path to www.confluent.io; probed for completeness, all
+    documents are served (or not) at the www host above.
+  documents:
+  - path: /.well-known/security.txt
+    status: 301
+  - path: /.well-known/apis.json
+    status: 301
+  - path: /apis.json
+    status: 301
+  - path: /.well-known/agent-card.json
+    status: 301
+  - path: /.well-known/agent.json
+    status: 301
+  - path: /.well-known/aauth-resource.json
+    status: 301
+- host: https://api.confluent.cloud
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/confluent-negative-control-7f3ab91c.json
+    status: 404
+  path_echo_control: passed
+  note: >-
+    Returns the Confluent Cloud API JSON error envelope
+    ({"errors":[{"status":"404",...}]}) for every unknown path, including the negative
+    control — a real 404, not an SPA shell. Notable absence: the managed MCP server at
+    https://api.confluent.cloud/mcp/v1 is an OAuth/API-key protected resource but the
+    host serves no RFC 9728 /.well-known/oauth-protected-resource document for it.
+- host: https://docs.confluent.io
+  note: >-
+    Every /.well-known/ path 302s. The docs host DOES serve two machine-readable
+    documents outside the well-known surface: /llms.txt (200, harvested to llms/) and
+    /cloud/current/openapi.yaml (200, the 504-operation Confluent Cloud OpenAPI,
+    harvested to openapi/), the latter declared on the API reference page as
+    <link rel="service-desc" type="application/yaml">.
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+  - path: /.well-known/openid-configuration
+    status: 302
+  - path: /.well-known/api-catalog
+    status: 302
+  - path: /.well-known/apis.json
+    status: 302
+  - path: /apis.json
+    status: 302
+  - path: /.well-known/agent-card.json
+    status: 302
+  - path: /.well-known/agent.json
+    status: 302
+  - path: /.well-known/aauth-resource.json
+    status: 302
+  - path: /.well-known/confluent-negative-control-7f3ab91c.json
+    status: 302
+  path_echo_control: passed
+- host: https://confluent.cloud
+  soft_404_control:
+    path: /.well-known/confluent-negative-control-7f3ab91c.json
+    status: 200
+    bytes: 22731
+    content_type: text/html
+    verdict: >-
+      catch-all — the console SPA returns the identical 22,731-byte HTML shell with
+      HTTP 200 for every path probed, so no 200 on this host is evidence of a document
+  documents: []
+  hit_count: 0
+  path_echo_control: failed
+- host: https://developer.confluent.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/confluent-negative-control-7f3ab91c.json
+    status: 404
+  path_echo_control: passed

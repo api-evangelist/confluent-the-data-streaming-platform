@@ -1,0 +1,112 @@
+generated: '2026-09-05'
+method: searched
+source:
+- https://docs.confluent.io/cloud/current/api.html
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- https://docs.confluent.io/cloud/current/release-notes/upgrade-policy.html
+- https://status.confluent.cloud/
+versioning:
+  scheme: uri-path-per-api-group
+  current: no single version — each API group carries its own generational version
+  note: >-
+    The path version (v1/v2/v3) is a generational version, explicitly NOT a semver
+    major. There are 32 independently-versioned API groups in the Cloud API; a breaking
+    change raises the version of only the affected group.
+  groups: [org/v2, iam/v2, iam/v2/sso, cmk/v2, ksqldbcm/v2, connect/v1, kafka/v3, srcm/v2,
+    srcm/v3, sql/v1, fcpm/v2, tableflow/v1, notifications/v1, networking/v1, byok/v1,
+    billing/v1, cdx/v1, pim/v1, pim/v2, usm/v1, rtce/v1, catalog/v1, kafka-quotas/v1,
+    service-quota/v1, sts/v1, partner/v2, query/v1alpha1]
+  docs: https://docs.confluent.io/cloud/current/api.html#versioning
+lifecycle_phases:
+- phase: Early Access
+  meaning: >-
+    May change at any time. Not recommended for production. Not officially supported.
+    Access granted explicitly by Confluent.
+- phase: Preview
+  meaning: >-
+    Unlikely to change between Preview and GA. Not recommended for production.
+    Officially supported for non-production. Accessible to all users.
+- phase: Limited Availability
+  meaning: >-
+    Available to select customers in a subset of regions/providers/networks. Recommended
+    for production.
+- phase: Generally Available
+  meaning: >-
+    Will not change at short notice. Recommended and officially supported for
+    production. An API is GA unless explicitly marked otherwise.
+- phase: Deprecated
+  meaning: >-
+    Still supported, no longer under active development. Will be removed at an announced
+    date; migration strongly recommended.
+- phase: Sunset
+  meaning: Removed, no longer supported or available.
+deprecation:
+  policy_url: https://docs.confluent.io/cloud/current/api.html#deprecation-policy
+  notice_period_days: 180
+  notice_note: >-
+    Confluent announces deprecations at least 180 days before a breaking change and
+    maintains the deprecated API in its original form for that period. Exceptions apply
+    for critical security vulnerabilities or functional defects.
+  breaking_change_cadence: >-
+    Backward-incompatible changes and deprecations are made approximately once per year
+    under the Confluent Cloud Upgrade Policy, with 180 days notice emailed to all
+    registered Confluent Cloud users.
+  sunset_header: false
+  deprecation_header: false
+  header_note: >-
+    No RFC 8594 Sunset or Deprecation response header is declared anywhere in the
+    OpenAPI. Deprecation is signalled in the spec (deprecated: true) and out-of-band by
+    email, blog, Community Slack, the Google Group and @ConfluentInc — not on the wire.
+  channels:
+  - https://www.confluent.io/blog/
+  - https://confluentcommunity.slack.com
+  - https://groups.google.com/forum/#!forum/confluent-platform
+  - https://twitter.com/ConfluentInc
+  - Direct email to enterprise contacts
+compatibility:
+  policy_url: https://docs.confluent.io/cloud/current/release-notes/upgrade-policy.html
+  backward_compatible_changes:
+  - Adding new API resources
+  - Adding new optional request parameters
+  - Adding new properties to existing resources
+  - Reordering properties in responses
+  - Changing the length or format of object IDs, including adding or removing fixed prefixes
+  - Adding new API event types or properties on them
+  - Omitting null-valued properties from responses
+  forward_compatibility: not guaranteed; MUST IGNORE / MUST FORWARD rules apply to clients
+  client_responsibilities:
+  - Rate limits and pagination sizes are NOT part of the API contract and may change dynamically
+  - Do not assume a primitive property is constrained to a fixed value set
+  - Do not assume an undeclared property will be present
+  - Handle 301/307 redirects and honour Location
+sla:
+  url: null
+  note: >-
+    No SLA page URL is recorded. https://www.confluent.io/confluent-cloud/sla/ was
+    probed 2026-09-05 and returned HTTP 404, and no replacement was located from the
+    provider's own navigation during this pass, so nothing is asserted rather than
+    linking a dead page. Uptime commitments are referenced from the Confluent Cloud
+    Upgrade Policy and from contractual terms for Enterprise/Dedicated clusters.
+status_page: https://status.confluent.cloud/
+status_page_verified:
+  url: https://status.confluent.cloud/
+  http_status: 200
+  fetched: '2026-09-05'
+deprecated_operations:
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#listSrcmV2Regions
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#getSrcmV2Region
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#listSrcmV2Clusters
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#createSrcmV2Cluster
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#getSrcmV2Cluster
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#updateSrcmV2Cluster
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml#deleteSrcmV2Cluster
+deprecated_operations_note: >-
+  All 7 operations marked deprecated: true in the harvested spec belong to the Schema
+  Registry Cluster Management group srcm/v2, superseded by srcm/v3 — a textbook
+  generational-version bump inside one API group with both generations live at once.
+known_issues:
+- issue: Quota Exceeded
+  description: Some "Quota Exceeded" errors are returned as HTTP 400 instead of HTTP 402
+  proposed_resolution: Return 402 consistently for Quota Exceeded errors
+  source: https://docs.confluent.io/cloud/current/api.html#known-issues
+changelog: changelog/confluent-the-data-streaming-platform-changelog.yml

@@ -1,0 +1,106 @@
+generated: '2026-09-05'
+method: searched
+source:
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- https://docs.confluent.io/cloud/current/api.html
+- https://docs.confluent.io/cloud/current/stream-governance/async-api.html
+spec_type: Webhooks
+asyncapi_document: null
+asyncapi_note: >-
+  Confluent publishes NO AsyncAPI document describing its own platform, and none is
+  authored here. What it does ship is AsyncAPI tooling: `confluent asyncapi export`
+  generates an AsyncAPI spec from a live Kafka cluster plus its Schema Registry
+  subjects, and `confluent asyncapi import` applies one back
+  (https://docs.confluent.io/cloud/current/stream-governance/async-api.html). The
+  document that produces belongs to the customer's cluster, not to Confluent, so there
+  is nothing first-party to harvest. Recorded as an honest absence with the tooling
+  named.
+event_surface:
+  kind: outbound-notification-webhooks
+  api_group: notifications/v1
+  description: >-
+    Confluent Cloud delivers platform notifications to customer endpoints through
+    Integrations. An integration is created with a target, and Webhook is one of the
+    supported target types alongside Slack, Microsoft Teams and role-based email.
+    Subscriptions bind notification types to integrations.
+  targets:
+  - type: Webhook
+    schema: notifications.v1.WebhookTarget
+    field: webhook_url
+    description: URL endpoint for the webhook
+    example: https://my.webhook.url/{id}
+  - type: Slack
+    schema: notifications.v1.SlackTarget
+    field: webhook_url
+    example: https://hooks.slack.com/services/{id}/{id}/{id}
+  - type: MsTeams
+    schema: notifications.v1.MsTeamsTarget
+    field: webhook_url
+    example: https://admin.webhook.office.com/webhookb2/{id}/IncomingWebhook/{id}
+  - type: RoleEmail
+    note: >-
+      Managed by Confluent — the spec states integrations of type RoleEmail cannot be
+      created, updated or deleted by API callers, only Webhook, Slack and MsTeams can.
+  operations:
+  - operationId: createNotificationsV1Integration
+    method: POST
+    path: /notifications/v1/integrations
+    purpose: Register a webhook (or Slack/Teams) delivery target
+  - operationId: listNotificationsV1Integrations
+    method: GET
+    path: /notifications/v1/integrations
+  - operationId: getNotificationsV1Integration
+    method: GET
+    path: /notifications/v1/integrations/{id}
+  - operationId: updateNotificationsV1Integration
+    method: PATCH
+    path: /notifications/v1/integrations/{id}
+  - operationId: deleteNotificationsV1Integration
+    method: DELETE
+    path: /notifications/v1/integrations/{id}
+  - operationId: testNotificationsV1Integration
+    method: POST
+    path: /notifications/v1/integrations:test
+    purpose: >-
+      Send a test notification to validate a Webhook, Slack or Microsoft Teams
+      integration. This is the delivery-verification affordance an agent needs before
+      trusting a subscription.
+  - operationId: listNotificationsV1NotificationTypes
+    method: GET
+    path: /notifications/v1/notification-types
+    purpose: >-
+      Enumerate the event types available for a resource type — the closest thing
+      Confluent publishes to a machine-readable event catalog. The list is served at
+      runtime rather than in the contract, so the event names are not transcribed here.
+  - operationId: getNotificationsV1NotificationType
+    method: GET
+    path: /notifications/v1/notification-types/{id}
+  - operationId: createNotificationsV1Subscription
+    method: POST
+    path: /notifications/v1/subscriptions
+    purpose: Bind notification types to integrations
+  - operationId: createNotificationsV1ResourceSubscription
+    method: POST
+    path: /notifications/v1/resource-subscriptions
+    purpose: Subscribe to notifications scoped to one resource
+  - operationId: listNotificationsV1UserNotifications
+    method: GET
+    path: /notifications/v1/user-notifications
+    purpose: Poll the in-product notification feed
+  operation_count: 28
+  security: >-
+    Delivery targets are customer-supplied URLs. The spec documents no signing secret,
+    HMAC signature header or replay window for Confluent-originated webhook deliveries,
+    so a receiver cannot verify a payload came from Confluent from the contract alone.
+    Recorded because it is what the contract says, not as a criticism.
+streaming_surface:
+  note: >-
+    Confluent's actual event surface is Apache Kafka itself — the product IS the event
+    bus. The webhook catalog above covers only platform notifications about Confluent
+    Cloud resources. Topic-level event contracts belong to the customer and are
+    described by their own Schema Registry subjects (Avro / JSON Schema / Protobuf) and,
+    optionally, by an exported AsyncAPI document.
+  data_plane:
+  - Kafka protocol (native clients — see packages/)
+  - Kafka REST v3 produce/consume over HTTP (produceRecord)
+  - Flink SQL push queries (sql/v1)

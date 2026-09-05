@@ -1,0 +1,184 @@
+generated: '2026-09-05'
+method: searched
+status: published
+source:
+- https://docs.confluent.io/cloud/current/ai/ai-tools/managed-mcp-server.html
+- https://docs.confluent.io/cloud/current/ai/ai-tools/open-source-mcp-server.html
+- https://github.com/confluentinc/mcp-confluent
+- https://www.npmjs.com/package/@confluentinc/mcp-confluent
+deployment:
+  mode: both
+  endpoint: https://api.confluent.cloud/mcp/v1
+  install: npx -y @confluentinc/mcp-confluent
+  package: https://www.npmjs.com/package/@confluentinc/mcp-confluent
+  auth: api-key
+  verified: probed
+  note: >-
+    Confluent ships BOTH shapes and they are different products. The managed servers
+    are remote HTTP endpoints an agent POSTs to today; the open-source server is an npm
+    package a human installs and runs locally, and is the only one that reaches
+    self-managed Confluent Platform or a standalone Apache Kafka cluster. Probed
+    2026-09-05: POST tools/list and initialize to https://api.confluent.cloud/mcp/v1
+    both returned HTTP 401 with the Confluent Cloud JSON error envelope, so the live
+    tool schemas are auth-gated; the tool names below are the provider's own published
+    lists, not an introspection result. No WWW-Authenticate challenge and no RFC 9728
+    /.well-known/oauth-protected-resource document is served for the endpoint.
+servers:
+- name: confluent-managed-global
+  kind: managed
+  transport: http
+  url: https://api.confluent.cloud/mcp/v1
+  auth:
+    scheme: http-basic
+    header: 'Authorization: Basic <base64(api_key:api_secret)>'
+    key_types:
+    - Global API key
+    - Cloud API key
+  scope: >-
+    Organization-wide discovery, connector operation and metrics. Access is governed by
+    the caller's existing Confluent Cloud RBAC.
+  tools:
+  - list_environments
+  - read_environment
+  - list_clusters
+  - read_cluster
+  - list_connectors
+  - get_connector_config
+  - get_connector_status
+  - get_connector_logs
+  - get_connector_offsets
+  - get_connector_metrics
+  - get_connector_error_summary
+  - get_connector_fix_recommendations
+  - restart_connector
+  - update_connector_config
+  - list_metrics
+  - query_metrics
+- name: confluent-managed-regional
+  kind: managed
+  transport: http
+  url_template: https://mcp.{region}.{cloud}.confluent.cloud/mcp/v1/organizations/{org_id}
+  private_url_template: https://mcp.{region}.{cloud}.private.confluent.cloud/mcp/v1/organizations/{org_id}
+  auth:
+    scheme: http-basic
+    key_types:
+    - Global API key
+    - Flink API key
+  scope: Data-plane reads against a specific region's Kafka and Schema Registry.
+  tools:
+  - list_kafka_topics
+  - describe_kafka_topic
+  - consume_kafka_messages
+  - list_schema_subjects
+  - read_schema_subject
+  note: >-
+    Templated host — {region} (e.g. us-west-2), {cloud} (aws|gcp|azure) and {org_id}
+    are supplied by the customer. The private variant is reached over PrivateLink
+    Gateway.
+- name: mcp-confluent
+  kind: open-source
+  transport: stdio
+  package: '@confluentinc/mcp-confluent'
+  repo: https://github.com/confluentinc/mcp-confluent
+  install: npx -y @confluentinc/mcp-confluent
+  init: npx @confluentinc/mcp-confluent --init-config
+  run: npx @confluentinc/mcp-confluent --config ./config.yaml
+  list_tools: npx -y @confluentinc/mcp-confluent --list-tools
+  auth:
+    schemes:
+    - static API key/secret per service block (direct connection)
+    - browser-based OAuth sign-in to Confluent Cloud (most tool categories)
+  targets:
+  - Confluent Cloud
+  - Confluent Platform (self-managed)
+  - standalone Apache Kafka
+  tool_count: 60
+  tool_groups:
+  - group: Documentation
+    always_available: true
+    tools: [search-product-docs, get-product-doc-page]
+  - group: Diagnostics
+    always_available: true
+    tools: [explain-disabled-tools, list-configured-connections, config-help, describe-configured-connection]
+  - group: Kafka
+    tools: [list-topics, create-topics, delete-topics, produce-message, consume-messages,
+      list-consumer-groups, describe-consumer-group, get-consumer-group-lag, alter-topic-config,
+      get-topic-config]
+  - group: Flink SQL
+    tools: [create-flink-statement, list-flink-statements, get-flink-statement-results,
+      delete-flink-statements, get-flink-statement-exceptions, list-compute-pools]
+  - group: Flink Catalog
+    tools: [list-flink-catalogs, list-flink-databases, list-flink-tables, describe-flink-table,
+      get-flink-table-info]
+  - group: Flink Diagnostics
+    tools: [check-flink-statement-health, detect-flink-statement-issues, get-flink-statement-profile]
+  - group: Connectors
+    tools: [list-connectors, get-connector-config, get-connector-offsets, get-connector-status,
+      get-connector-tasks, get-connector-error-summary, get-connector-error-recommendations,
+      get-connector-logs, create-connector, delete-connector, pause-connector, resume-connector,
+      restart-connector, update-connector-config]
+  - group: Schema Registry
+    tools: [list-schemas, create-schema, delete-schema]
+  - group: Catalog & Tags
+    tools: [search-topics-by-tag, search-topics-by-name, create-topic-tags, delete-tag,
+      remove-tag-from-entity, add-tags-to-topic, list-tags]
+  - group: Organizations, Environments & Clusters
+    tools: [list-organizations, list-environments, read-environment, list-clusters]
+  - group: Tableflow
+    tools: [create-tableflow-topic, list-tableflow-topics, read-tableflow-topic, update-tableflow-topic,
+      delete-tableflow-topic, list-tableflow-regions]
+  - group: Tableflow Catalog
+    tools: [create-tableflow-catalog-integration, list-tableflow-catalog-integrations,
+      read-tableflow-catalog-integration, update-tableflow-catalog-integration, delete-tableflow-catalog-integration]
+  - group: Metrics
+    tools: [list-available-metrics, query-metrics]
+  - group: Billing
+    tools: [list-billing-costs]
+governance:
+  rbac: >-
+    Managed MCP access is governed by the caller's existing Confluent Cloud RBAC role
+    bindings; the server grants no capability the API key does not already have.
+  rate_limits: >-
+    "Rate limits match the underlying Confluent Cloud API limits" — see
+    rate-limits/confluent-the-data-streaming-platform-rate-limits.yml
+  write_tools:
+  - restart_connector
+  - update_connector_config
+  - create-topics
+  - delete-topics
+  - produce-message
+  - alter-topic-config
+  - create-flink-statement
+  - delete-flink-statements
+  - create-connector
+  - delete-connector
+  - pause-connector
+  - resume-connector
+  - restart-connector
+  - update-connector-config
+  - create-schema
+  - delete-schema
+  - create-topic-tags
+  - delete-tag
+  - remove-tag-from-entity
+  - add-tags-to-topic
+  - create-tableflow-topic
+  - update-tableflow-topic
+  - delete-tableflow-topic
+  - create-tableflow-catalog-integration
+  - update-tableflow-catalog-integration
+  - delete-tableflow-catalog-integration
+x-evidence:
+  fetched: '2026-09-05'
+  probes:
+  - url: https://api.confluent.cloud/mcp/v1
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+  - url: https://api.confluent.cloud/mcp/v1
+    method: POST
+    body: initialize
+    http_status: 401
+  - url: https://registry.npmjs.org/@confluentinc/mcp-confluent
+    http_status: 200
+    latest: 1.5.0

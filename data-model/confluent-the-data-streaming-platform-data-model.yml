@@ -1,0 +1,930 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+docs: https://docs.confluent.io/cloud/current/api.html#object-model
+object_model:
+  shape: metadata / spec / status
+  description: 'Confluent Cloud resources are declarative and intent-oriented. Every resource carries
+    api_version, kind, a metadata block (id, self, resource_name, created_at, updated_at), a spec block
+    describing desired state, and a status block describing observed state. List responses are {api_version,
+    kind: <Kind>List, metadata: {next,...}, data: [...]}.'
+  blocks:
+  - api_version
+  - kind
+  - metadata
+  - spec
+  - status
+  metadata_fields:
+  - id
+  - self
+  - resource_name
+  - created_at
+  - updated_at
+  - deleted_at
+  resource_name_scheme: crn://confluent.cloud/<type>=<id>
+id_prefixes:
+- prefix: env-
+  entity: Environment
+  example_source: org/v2 environments
+- prefix: lkc-
+  entity: Kafka cluster
+  example_source: cmk/v2 clusters
+- prefix: lsrc-
+  entity: Schema Registry cluster
+  example_source: srcm/v2 clusters
+- prefix: lksqlc-
+  entity: ksqlDB cluster
+  example_source: ksqldbcm/v2 clusters
+- prefix: lcc-
+  entity: Connector
+  example_source: connect/v1 connectors
+- prefix: lfcp-
+  entity: Flink compute pool
+  example_source: fcpm/v2 compute-pools
+- prefix: sa-
+  entity: Service account
+  example_source: iam/v2 service-accounts
+- prefix: u-
+  entity: User
+  example_source: iam/v2 users
+- prefix: pool-
+  entity: Identity pool
+  example_source: iam/v2 identity-pools
+- prefix: op-
+  entity: Identity provider
+  example_source: iam/v2 identity-providers
+- prefix: cck-
+  entity: BYOK / encryption key
+  example_source: byok/v1 keys
+- prefix: ccp-
+  entity: Custom connector plugin
+  example_source: connect/v1 custom-connector-plugins
+- prefix: dlz-
+  entity: Networking resource
+  example_source: networking/v1
+- prefix: tgw-
+  entity: Transit gateway attachment
+  example_source: networking/v1
+- prefix: pla-
+  entity: Private link attachment
+  example_source: networking/v1
+- prefix: dnsrec-
+  entity: DNS record
+  example_source: networking/v1 dns-records
+id_prefix_caveat: Confluent states in its compatibility policy that adding or removing a fixed prefix
+  (such as lkc- on Kafka cluster IDs) is a BACKWARD-COMPATIBLE change, and that clients must treat IDs
+  as opaque strings of up to 255 characters. Do not parse these prefixes as a contract.
+containment:
+- Organization -> Environment -> {Kafka cluster, Schema Registry cluster, ksqlDB cluster, Flink compute
+  pool}
+- Kafka cluster -> {Topic, Consumer group, ACL, Cluster link, Mirror topic, Connector}
+- Schema Registry cluster -> {Subject -> Schema version, Tag, Entity}
+- Environment -> Flink statement (scoped by organization_id + environment_id in the path)
+entity_count: 624
+entities:
+- entity: networking.v1.GatewaySpec
+  relationships:
+  - to: networking.v1.AzureEgressPrivateLinkGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AwsIngressPrivateLinkGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.GcpPeeringGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AwsPeeringGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AzureIngressPrivateLinkGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.GcpEgressPrivateServiceConnectGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AwsEgressPrivateLinkGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AwsPrivateNetworkInterfaceGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.GcpIngressPrivateServiceConnectGatewaySpec
+    type: has_one
+    via: config
+  - to: networking.v1.AzurePeeringGatewaySpec
+    type: has_one
+    via: config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+- entity: cmk.v2.ClusterSpec
+  relationships:
+  - to: cmk.v2.Basic
+    type: has_one
+    via: config
+  - to: cmk.v2.Freight
+    type: has_one
+    via: config
+  - to: cmk.v2.Standard
+    type: has_one
+    via: config
+  - to: cmk.v2.Enterprise
+    type: has_one
+    via: config
+  - to: cmk.v2.Dedicated
+    type: has_one
+    via: config
+  - to: cmk.v2.EndpointsMap
+    type: has_one
+    via: endpoints
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: network
+  - to: GlobalObjectReference
+    type: has_one
+    via: byok
+- entity: networking.v1.AccessPointSpec
+  relationships:
+  - to: networking.v1.AzureIngressPrivateLinkEndpoint
+    type: has_one
+    via: config
+  - to: networking.v1.AwsEgressPrivateLinkEndpoint
+    type: has_one
+    via: config
+  - to: networking.v1.GcpIngressPrivateServiceConnectEndpoint
+    type: has_one
+    via: config
+  - to: networking.v1.AwsPrivateNetworkInterface
+    type: has_one
+    via: config
+  - to: networking.v1.GcpEgressPrivateServiceConnectEndpoint
+    type: has_one
+    via: config
+  - to: networking.v1.AzureEgressPrivateLinkEndpoint
+    type: has_one
+    via: config
+  - to: networking.v1.AwsIngressPrivateLinkEndpoint
+    type: has_one
+    via: config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: gateway
+- entity: networking.v1.GatewayStatus
+  relationships:
+  - to: networking.v1.GcpEgressPrivateServiceConnectGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.AwsEgressPrivateLinkGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.AwsIngressPrivateLinkGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.GcpPeeringGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.GcpIngressPrivateServiceConnectGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.AzureIngressPrivateLinkGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.AzureEgressPrivateLinkGatewayStatus
+    type: has_one
+    via: cloud_gateway
+  - to: networking.v1.AwsPrivateNetworkInterfaceGatewayStatus
+    type: has_one
+    via: cloud_gateway
+- entity: notifications.v1.UserNotification
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: notifications.v1.ResourceSnapshot
+    type: has_one
+    via: resource
+  - to: notifications.v1.NotificationAction
+    type: has_many
+    via: actions
+  - to: notifications.v1.NotificationType
+    type: has_one
+    via: notification_type
+  - to: notifications.v1.Integration
+    type: has_many
+    via: integrations
+  - to: notifications.v1.RecommendedActions
+    type: has_one
+    via: recommended_actions
+- entity: cdx.v1.ProviderShare
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cdx.v1.EmailConsumerRestriction
+    type: has_one
+    via: consumer_restriction
+  - to: GlobalObjectReference
+    type: has_one
+    via: provider_user
+  - to: GlobalObjectReference
+    type: has_one
+    via: service_account
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: cloud_cluster
+  - to: cdx.v1.ProviderShareStatus
+    type: has_one
+    via: status
+- entity: networking.v1.AccessPointStatus
+  relationships:
+  - to: networking.v1.AzureEgressPrivateLinkEndpointStatus
+    type: has_one
+    via: config
+  - to: networking.v1.GcpIngressPrivateServiceConnectEndpointStatus
+    type: has_one
+    via: config
+  - to: networking.v1.AzureIngressPrivateLinkEndpointStatus
+    type: has_one
+    via: config
+  - to: networking.v1.AwsEgressPrivateLinkEndpointStatus
+    type: has_one
+    via: config
+  - to: networking.v1.GcpEgressPrivateServiceConnectEndpointStatus
+    type: has_one
+    via: config
+  - to: networking.v1.AwsIngressPrivateLinkEndpointStatus
+    type: has_one
+    via: config
+- entity: tableflow.v1.TableflowTopicSpec
+  relationships:
+  - to: tableflow.v1.TableFlowTopicConfigsSpec
+    type: has_one
+    via: config
+  - to: tableflow.v1.ByobAwsSpec
+    type: has_one
+    via: storage
+  - to: tableflow.v1.AzureAdlsSpec
+    type: has_one
+    via: storage
+  - to: tableflow.v1.ManagedStorageSpec
+    type: has_one
+    via: storage
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: kafka_cluster
+- entity: networking.v1.NetworkStatus
+  relationships:
+  - to: networking.v1.ConnectionType
+    type: has_many
+    via: supported_connection_types
+  - to: networking.v1.ConnectionType
+    type: has_many
+    via: active_connection_types
+  - to: networking.v1.GcpNetwork
+    type: has_one
+    via: cloud
+  - to: networking.v1.AzureNetwork
+    type: has_one
+    via: cloud
+  - to: networking.v1.AwsNetwork
+    type: has_one
+    via: cloud
+- entity: networking.v1.NetworkSpec
+  relationships:
+  - to: networking.v1.ConnectionType
+    type: has_many
+    via: connection_types
+  - to: networking.v1.ZoneInfo
+    type: has_many
+    via: zones_info
+  - to: networking.v1.DnsConfig
+    type: has_one
+    via: dns_config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: TypedEnvScopedObjectReference
+    type: has_one
+    via: gateway
+- entity: networking.v1.PeeringSpec
+  relationships:
+  - to: networking.v1.AwsPeering
+    type: has_one
+    via: cloud
+  - to: networking.v1.GcpPeering
+    type: has_one
+    via: cloud
+  - to: networking.v1.AzurePeering
+    type: has_one
+    via: cloud
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: network
+- entity: networking.v1.PrivateLinkAccessSpec
+  relationships:
+  - to: networking.v1.GcpPrivateServiceConnectAccess
+    type: has_one
+    via: cloud
+  - to: networking.v1.AzurePrivateLinkAccess
+    type: has_one
+    via: cloud
+  - to: networking.v1.AwsPrivateLinkAccess
+    type: has_one
+    via: cloud
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: network
+- entity: networking.v1.PrivateLinkAttachmentConnectionSpec
+  relationships:
+  - to: networking.v1.GcpPrivateLinkAttachmentConnection
+    type: has_one
+    via: cloud
+  - to: networking.v1.AzurePrivateLinkAttachmentConnection
+    type: has_one
+    via: cloud
+  - to: networking.v1.AwsPrivateLinkAttachmentConnection
+    type: has_one
+    via: cloud
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: private_link_attachment
+- entity: byok.v1.Key
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: byok.v1.GcpKey
+    type: has_one
+    via: key
+  - to: byok.v1.AzureKey
+    type: has_one
+    via: key
+  - to: byok.v1.AwsKey
+    type: has_one
+    via: key
+  - to: byok.v1.KeyValidation
+    type: has_one
+    via: validation
+- entity: pim.v2.IntegrationValidateRequest
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: pim.v2.AzureIntegrationConfig
+    type: has_one
+    via: config
+  - to: pim.v2.AwsIntegrationConfig
+    type: has_one
+    via: config
+  - to: pim.v2.GcpIntegrationConfig
+    type: has_one
+    via: config
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+- entity: tableflow.v1.CatalogIntegrationUpdateSpec
+  relationships:
+  - to: tableflow.v1.CatalogIntegrationAwsGlueUpdateSpec
+    type: has_one
+    via: config
+  - to: tableflow.v1.CatalogIntegrationUnityUpdateSpec
+    type: has_one
+    via: config
+  - to: tableflow.v1.CatalogIntegrationSnowflakeUpdateSpec
+    type: has_one
+    via: config
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: kafka_cluster
+- entity: tableflow.v1.CatalogIntegrationSpec
+  relationships:
+  - to: tableflow.v1.CatalogIntegrationAwsGlueSpec
+    type: has_one
+    via: config
+  - to: tableflow.v1.CatalogIntegrationUnitySpec
+    type: has_one
+    via: config
+  - to: tableflow.v1.CatalogIntegrationSnowflakeSpec
+    type: has_one
+    via: config
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: kafka_cluster
+- entity: cdx.v1.RedeemTokenResponse
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cdx.v1.SharedTopic
+    type: has_many
+    via: resources
+  - to: cdx.v1.SharedSubject
+    type: has_many
+    via: resources
+  - to: cdx.v1.SharedGroup
+    type: has_many
+    via: resources
+- entity: cdx.v1.Network
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cdx.v1.GcpNetwork
+    type: has_one
+    via: cloud
+  - to: cdx.v1.AwsNetwork
+    type: has_one
+    via: cloud
+  - to: cdx.v1.AzureNetwork
+    type: has_one
+    via: cloud
+- entity: kafka-quotas.v1.ClientQuotaSpec
+  relationships:
+  - to: kafka-quotas.v1.Throughput
+    type: has_one
+    via: throughput
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: cluster
+  - to: GlobalObjectReference
+    type: has_many
+    via: principals
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+- entity: sql.v1.MaterializedTableSpec
+  relationships:
+  - to: sql.v1.ColumnDetails
+    type: has_many
+    via: columns
+  - to: sql.v1.Watermark
+    type: has_one
+    via: watermark
+  - to: sql.v1.Constraint
+    type: has_many
+    via: constraints
+  - to: sql.v1.Distribution
+    type: has_one
+    via: distribution
+- entity: sql.v1.Statement
+  relationships:
+  - to: StatementObjectMeta
+    type: has_one
+    via: metadata
+  - to: sql.v1.StatementSpec
+    type: has_one
+    via: spec
+  - to: sql.v1.StatementStatus
+    type: has_one
+    via: status
+  - to: sql.v1.StatementResult
+    type: has_one
+    via: result
+- entity: sql.v1.StatementStatus
+  relationships:
+  - to: sql.v1.ScalingStatus
+    type: has_one
+    via: scaling_status
+  - to: sql.v1.StateLimitStatus
+    type: has_one
+    via: state_limit_status
+  - to: sql.v1.StatementWarning
+    type: has_many
+    via: warnings
+  - to: sql.v1.StatementTraits
+    type: has_one
+    via: traits
+- entity: pim.v2.Integration
+  relationships:
+  - to: pim.v2.AzureIntegrationConfig
+    type: has_one
+    via: config
+  - to: pim.v2.AwsIntegrationConfig
+    type: has_one
+    via: config
+  - to: pim.v2.GcpIntegrationConfig
+    type: has_one
+    via: config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+- entity: iam.v2.Invitation
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: GlobalObjectReference
+    type: has_one
+    via: user
+  - to: GlobalObjectReference
+    type: has_one
+    via: creator
+- entity: notifications.v1.Subscription
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: GlobalObjectReference
+    type: has_one
+    via: notification_type
+  - to: GlobalObjectReference
+    type: has_many
+    via: integrations
+- entity: notifications.v1.ResourceSubscription
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: GlobalObjectReference
+    type: has_one
+    via: notification_type
+  - to: GlobalObjectReference
+    type: has_many
+    via: integrations
+- entity: cmk.v2.Cluster
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cmk.v2.ClusterSpec
+    type: has_one
+    via: spec
+  - to: cmk.v2.ClusterStatus
+    type: has_one
+    via: status
+- entity: ksqldbcm.v2.Cluster
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: ksqldbcm.v2.ClusterSpec
+    type: has_one
+    via: spec
+  - to: ksqldbcm.v2.ClusterStatus
+    type: has_one
+    via: status
+- entity: ksqldbcm.v2.ClusterSpec
+  relationships:
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: kafka_cluster
+  - to: TypedGlobalObjectReference
+    type: has_one
+    via: credential_identity
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+- entity: srcm.v2.Cluster
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: srcm.v2.ClusterSpec
+    type: has_one
+    via: spec
+  - to: srcm.v2.ClusterStatus
+    type: has_one
+    via: status
+- entity: srcm.v3.Cluster
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: srcm.v3.ClusterSpec
+    type: has_one
+    via: spec
+  - to: srcm.v3.ClusterStatus
+    type: has_one
+    via: status
+- entity: cdx.v1.ProviderSharedResource
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cdx.v1.Schema
+    type: has_many
+    via: schemas
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: cloud_cluster
+- entity: cdx.v1.ConsumerSharedResource
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: cdx.v1.ConnectionType
+    type: has_many
+    via: network_connection_types
+  - to: cdx.v1.Schema
+    type: has_many
+    via: schemas
+- entity: cdx.v1.ConsumerShare
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: GlobalObjectReference
+    type: has_one
+    via: consumer_user
+  - to: cdx.v1.ConsumerShareStatus
+    type: has_one
+    via: status
+- entity: networking.v1.Network
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.NetworkSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.NetworkStatus
+    type: has_one
+    via: status
+- entity: networking.v1.Peering
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.PeeringSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.PeeringStatus
+    type: has_one
+    via: status
+- entity: networking.v1.TransitGatewayAttachment
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.TransitGatewayAttachmentSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.TransitGatewayAttachmentStatus
+    type: has_one
+    via: status
+- entity: networking.v1.PrivateLinkAccess
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.PrivateLinkAccessSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.PrivateLinkAccessStatus
+    type: has_one
+    via: status
+- entity: networking.v1.NetworkLinkService
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.NetworkLinkServiceSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.NetworkLinkServiceStatus
+    type: has_one
+    via: status
+- entity: networking.v1.NetworkLinkEndpoint
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.NetworkLinkEndpointSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.NetworkLinkEndpointStatus
+    type: has_one
+    via: status
+- entity: networking.v1.NetworkLinkServiceAssociation
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.NetworkLinkServiceAssociationSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.NetworkLinkServiceAssociationStatus
+    type: has_one
+    via: status
+- entity: networking.v1.TransitGatewayAttachmentSpec
+  relationships:
+  - to: networking.v1.AwsTransitGatewayAttachment
+    type: has_one
+    via: cloud
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: network
+- entity: networking.v1.NetworkLinkServiceSpec
+  relationships:
+  - to: networking.v1.NetworkLinkServiceAcceptPolicy
+    type: has_one
+    via: accept
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: network
+- entity: networking.v1.NetworkLinkEndpointSpec
+  relationships:
+  - to: GlobalObjectReference
+    type: has_one
+    via: environment
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: network
+  - to: EnvScopedObjectReference
+    type: has_one
+    via: network_link_service
+- entity: networking.v1.PrivateLinkAttachment
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.PrivateLinkAttachmentSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.PrivateLinkAttachmentStatus
+    type: has_one
+    via: status
+- entity: networking.v1.PrivateLinkAttachmentStatus
+  relationships:
+  - to: networking.v1.GcpPrivateLinkAttachmentStatus
+    type: has_one
+    via: cloud
+  - to: networking.v1.AwsPrivateLinkAttachmentStatus
+    type: has_one
+    via: cloud
+  - to: networking.v1.AzurePrivateLinkAttachmentStatus
+    type: has_one
+    via: cloud
+- entity: networking.v1.PrivateLinkAttachmentConnection
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.PrivateLinkAttachmentConnectionSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.PrivateLinkAttachmentConnectionStatus
+    type: has_one
+    via: status
+- entity: networking.v1.PrivateLinkAttachmentConnectionStatus
+  relationships:
+  - to: networking.v1.AzurePrivateLinkAttachmentConnectionStatus
+    type: has_one
+    via: cloud
+  - to: networking.v1.AwsPrivateLinkAttachmentConnectionStatus
+    type: has_one
+    via: cloud
+  - to: networking.v1.GcpPrivateLinkAttachmentConnectionStatus
+    type: has_one
+    via: cloud
+- entity: fcpm.v2.ComputePool
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: fcpm.v2.ComputePoolSpec
+    type: has_one
+    via: spec
+  - to: fcpm.v2.ComputePoolStatus
+    type: has_one
+    via: status
+- entity: sql.v1.MaterializedTable
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: sql.v1.MaterializedTableSpec
+    type: has_one
+    via: spec
+  - to: sql.v1.MaterializedTableStatus
+    type: has_one
+    via: status
+- entity: sql.v1.Connection
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: sql.v1.ConnectionSpec
+    type: has_one
+    via: spec
+  - to: sql.v1.ConnectionStatus
+    type: has_one
+    via: status
+- entity: sql.v1.Agent
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: sql.v1.AgentSpec
+    type: has_one
+    via: spec
+  - to: sql.v1.AgentStatus
+    type: has_one
+    via: status
+- entity: sql.v1.Tool
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: sql.v1.ToolSpec
+    type: has_one
+    via: spec
+  - to: sql.v1.ToolStatus
+    type: has_one
+    via: status
+- entity: networking.v1.DnsForwarder
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.DnsForwarderSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.DnsForwarderStatus
+    type: has_one
+    via: status
+- entity: networking.v1.DnsForwarderSpec
+  relationships:
+  - to: networking.v1.ForwardViaIp
+    type: has_one
+    via: config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: ObjectReference
+    type: has_one
+    via: gateway
+- entity: networking.v1.AccessPoint
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.AccessPointSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.AccessPointStatus
+    type: has_one
+    via: status
+- entity: networking.v1.DnsRecord
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.DnsRecordSpec
+    type: has_one
+    via: spec
+  - to: networking.v1.DnsRecordStatus
+    type: has_one
+    via: status
+- entity: networking.v1.DnsRecordSpec
+  relationships:
+  - to: networking.v1.PrivateLinkAccessPoint
+    type: has_one
+    via: config
+  - to: ObjectReference
+    type: has_one
+    via: environment
+  - to: TypedEnvScopedObjectReference
+    type: has_one
+    via: gateway
+- entity: networking.v1.Gateway
+  relationships:
+  - to: ObjectMeta
+    type: has_one
+    via: metadata
+  - to: networking.v1.GatewaySpec
+    type: has_one
+    via: spec
+  - to: networking.v1.GatewayStatus
+    type: has_one
+    via: status

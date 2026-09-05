@@ -38,13 +38,13 @@ accessModel:
   - security
   generated: '2026-09-03'
   method: derived
-position: Consuming
+position: Producing
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/confluent-the-data-streaming-platform.png
 url: >-
   https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml
 created: '2025-08-19'
-modified: '2026-04-28'
+modified: '2026-09-05'
 specificationVersion: '0.23'
 kind: company
 tags:
@@ -80,6 +80,15 @@ apis:
     url: https://docs.confluent.io/cloud/current/api.html
   - type: APIReference
     url: https://docs.confluent.io/cloud/current/api.html
+  - type: OpenAPI
+    name: Confluent Cloud APIs (504 operations, harvested from the provider)
+    url: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+  - type: Overlay
+    url: overlays/confluent-the-data-streaming-platform-cloud-apis-overlay.yaml
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
   x-features:
   - Cluster Lifecycle Management
   - Environments and Organizations
@@ -103,7 +112,7 @@ apis:
     Kafka library can produce and consume records, manage topics, and inspect metadata over HTTP. Cloud
     variants additionally enforce RBAC and Confluent Cloud authentication.
   humanURL: https://docs.confluent.io/platform/current/kafka-rest/api.html
-  baseURL: https://pkc-XXXXX.region.aws.confluent.cloud
+  baseURL: https://pkc-00000.region.provider.confluent.cloud
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Apache Kafka
@@ -114,7 +123,7 @@ apis:
   - type: Documentation
     url: https://docs.confluent.io/platform/current/kafka-rest/api.html
   - type: Cloud Documentation
-    url: https://docs.confluent.io/cloud/current/kafka-rest/index.html
+    url: https://docs.confluent.io/cloud/current/kafka-rest/kafka-rest-cc.html
   x-features:
   - Topic Management
   - Produce and Consume over HTTP
@@ -135,7 +144,7 @@ apis:
     self-managed component of Confluent Platform. The full developer profile lives in the api-evangelist/confluent-schema-registry
     repository.
   humanURL: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
-  baseURL: https://psrc-XXXXX.region.aws.confluent.cloud
+  baseURL: https://psrc-00000.region.provider.confluent.cloud
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Avro
@@ -170,7 +179,7 @@ apis:
     restart failed tasks. In Confluent Cloud, managed connectors are provisioned through the Cloud REST
     API while runtime status is exposed via the Connect REST surface.
   humanURL: https://docs.confluent.io/platform/current/connect/references/restapi.html
-  baseURL: https://localhost:8083
+  baseURL: https://api.confluent.cloud
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Connectors
@@ -194,7 +203,7 @@ apis:
     The ksqlDB REST API exposes ksqlDB, Confluent's streaming SQL engine, over HTTP. Clients submit streaming
     SQL statements, query streams and tables (push and pull queries), and inspect server status.
   humanURL: https://docs.ksqldb.io/en/latest/developer-guide/api/
-  baseURL: https://localhost:8088
+  baseURL: https://pksqlc-00000.region.provider.confluent.cloud
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - ksqlDB
@@ -217,7 +226,7 @@ apis:
     The Confluent Cloud for Apache Flink REST API manages Flink compute pools, statements, and workspaces
     for stateful stream processing on Confluent Cloud. It is part of the Confluent Cloud REST surface.
   humanURL: https://docs.confluent.io/cloud/current/flink/index.html
-  baseURL: https://flink.region.aws.confluent.cloud
+  baseURL: https://flink.region.provider.confluent.cloud
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Apache Flink
@@ -238,6 +247,7 @@ apis:
     The API Keys API from Confluent | the Data Streaming Platform — 2 operation(s) for api keys.
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - APIKeys
   tags_raw:
@@ -251,6 +261,7 @@ apis:
     The Clusters API from Confluent | the Data Streaming Platform — 2 operation(s) for clusters.
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Cluster
   tags_raw:
@@ -265,6 +276,7 @@ apis:
     The Environments API from Confluent | the Data Streaming Platform — 2 operation(s) for environments.
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Environments
   properties:
@@ -277,6 +289,7 @@ apis:
     The Organizations API from Confluent | the Data Streaming Platform — 2 operation(s) for organizations.
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Organization
   tags_raw:
@@ -292,12 +305,15 @@ apis:
     accounts.
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Service Accounts
   properties:
   - type: OpenAPI
     url: openapi/confluent-the-data-streaming-platform-service-accounts-api-openapi.yml
 common:
+  - type: OAuthScopes
+    url: scopes/confluent-the-data-streaming-platform-scopes.yml
   - type: AgenticAccess
     url: agentic-access/confluent-the-data-streaming-platform-agentic-access.yml
   - type: VulnerabilityDisclosure
@@ -334,15 +350,75 @@ common:
   - type: Training
     url: https://training.confluent.io/
   - type: TermsOfService
-    url: https://www.confluent.io/terms-of-service/
+    url: https://www.confluent.io/terms-of-use/
   - type: PrivacyPolicy
-    url: https://www.confluent.io/privacy-policy/
+    url: https://www.confluent.io/legal/confluent-privacy-notice/
   - type: Integrations
     url: https://www.confluent.io/partner/
   - type: LlmsText
     url: https://docs.confluent.io/llms.txt
+  - type: LLMsTxt
+    url: llms/confluent-the-data-streaming-platform-llms.txt
+  - type: Packages
+    url: packages/confluent-the-data-streaming-platform-packages.yml
+  - type: SDKs
+    url: packages/confluent-the-data-streaming-platform-packages.yml
+  - type: CLI
+    url: cli/confluent-the-data-streaming-platform-cli.yml
+  - type: MCPServer
+    name: Confluent managed MCP server
+    url: mcp/confluent-the-data-streaming-platform-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Conventions
+    url: conventions/confluent-the-data-streaming-platform-conventions.yml
+  - type: ErrorCatalog
+    url: errors/confluent-the-data-streaming-platform-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/confluent-the-data-streaming-platform-lifecycle.yml
+  - type: Deprecation
+    url: https://docs.confluent.io/cloud/current/api.html#deprecation-policy
+  - type: ChangeLog
+    url: changelog/confluent-the-data-streaming-platform-changelog.yml
+  - type: Conformance
+    url: conformance/confluent-the-data-streaming-platform-conformance.yml
+  - type: Compliance
+    url: https://www.confluent.io/trust-and-security/
+  - type: TrustCenter
+    url: security/confluent-the-data-streaming-platform-trust-center.yml
+  - type: Security
+    url: https://www.confluent.io/trust-and-security/
+  - type: SecurityTxt
+    url: well-known/confluent-the-data-streaming-platform-security.txt
+  - type: WellKnown
+    url: well-known/confluent-the-data-streaming-platform-well-known.yml
+  - type: Webhooks
+    url: asyncapi/confluent-the-data-streaming-platform-webhooks.yml
+  - type: Sandbox
+    url: sandbox/confluent-the-data-streaming-platform-sandbox.yml
+  - type: Plans
+    url: plans/confluent-the-data-streaming-platform-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/confluent-the-data-streaming-platform-rate-limits.yml
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: GettingStarted
+    url: https://docs.confluent.io/cloud/current/get-started/index.html
+  - type: Support
+    url: https://support.confluent.io/
+  - type: Community
+    url: https://developer.confluent.io/community/
+  - type: GitHubOrganization
+    url: https://github.com/confluentinc
+  - type: SignUp
+    url: https://www.confluent.io/confluent-cloud/tryfree/
 integrations:
   - name: Become a Partner
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3

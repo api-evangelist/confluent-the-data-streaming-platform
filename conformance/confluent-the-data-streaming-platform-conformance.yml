@@ -1,0 +1,175 @@
+generated: '2026-09-05'
+method: searched
+source:
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+- https://docs.confluent.io/cloud/current/api.html
+- https://www.confluent.io/trust-and-security/
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    openapi: 3.0.0, 299 paths / 504 operations, 624 component schemas, published by the
+    provider at https://docs.confluent.io/cloud/current/openapi.yaml and declared on the
+    API reference page as <link rel="service-desc" type="application/yaml">.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    components.securitySchemes declares three oauth2 schemes
+    (confluent-sts-access-token, external-access-token, oauth), all clientCredentials,
+    tokenUrl https://api.confluent.cloud/sts/v1/oauth2/token.
+- id: oidc
+  conforms: partial
+  evidence: >-
+    Confluent Cloud supports OIDC identity providers and identity pools for workload
+    identity federation (iam/v2 identity-providers, identity-pools), but serves no
+    /.well-known/openid-configuration of its own — it is an OIDC relying party, not an
+    OIDC provider. Probed 2026-09-05: 404 on www.confluent.io and api.confluent.cloud.
+- id: rfc6749-client-credentials
+  conforms: true
+  evidence: sts/v1 Security Token Service exchanges client credentials for a JWT.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are application/json with a JSON:API-influenced errors[] envelope
+    (id/status/code/title/detail/source.pointer). No application/problem+json response
+    exists anywhere in the spec.
+- id: jsonapi
+  conforms: partial
+  evidence: >-
+    The error object borrows JSON:API's shape verbatim (errors[], source.pointer,
+    source.parameter) but resource documents use Confluent's own
+    metadata/spec/status Kubernetes-style envelope, not JSON:API data/attributes.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation response header is declared. Deprecation is signalled by
+    `deprecated: true` in the spec and by a 180-day out-of-band notice.
+- id: rfc6901-json-pointer
+  conforms: true
+  evidence: 'Error.source.pointer is documented as "A JSON Pointer [RFC6901]".'
+- id: cursor-pagination
+  conforms: true
+  evidence: >-
+    page_size + opaque page_token, with IANA link relations next/prev/first/last
+    returned in metadata. Not supported by the Connect v1 and Kafka v3 groups.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or equivalent replay contract in the spec or docs. See
+    conventions/confluent-the-data-streaming-platform-conventions.yml (coverage: none).
+- id: rate-limit-headers
+  conforms: partial
+  evidence: >-
+    X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset / Retry-After on 429,
+    declared on the RateLimitError component response. These are the legacy
+    X-RateLimit-* names, not the IETF draft RateLimit-* fields, and X-RateLimit-Reset
+    carries RELATIVE seconds rather than the epoch value the same header name carries
+    at GitHub. Not returned at all by the Kafka REST v3 group.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Model Context Protocol servers published in two deployments — managed remote HTTP
+    at https://api.confluent.cloud/mcp/v1 and open-source stdio via
+    @confluentinc/mcp-confluent. See mcp/confluent-the-data-streaming-platform-mcp.yml.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    Probed 2026-09-05: /.well-known/agent-card.json and /.well-known/agent.json return
+    404 on www.confluent.io, api.confluent.cloud and developer.confluent.io, and an SPA
+    shell on confluent.cloud. No agent card is published.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    https://www.confluent.io/.well-known/security.txt returns 200 with Contact, Canonical,
+    Policy, Expires and Hiring fields. Saved verbatim to well-known/.
+- id: llmstxt
+  conforms: true
+  evidence: https://docs.confluent.io/llms.txt returns 200 (38,542 bytes), harvested verbatim to llms/.
+domain_standards:
+- id: apache-kafka-protocol
+  conforms: true
+  market: data streaming / event streaming
+  evidence: >-
+    Confluent is the Apache Kafka distribution and managed service built by Kafka's
+    original creators; the wire protocol IS the domain standard for this market, and
+    every client in packages/ speaks it. The REST surface here is the control plane
+    around it.
+  spec_location: >-
+    Kafka ACL operation vocabulary appears verbatim in the contract
+    (components.schemas AclOperation x-extensible-enum: UNKNOWN, ANY, ALL, READ, WRITE, CREATE, DELETE, ALTER,
+    DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, IDEMPOTENT_WRITE) —
+    the Kafka authorizer model expressed in the API rather than a bespoke permission
+    scheme.
+- id: confluent-schema-registry-api
+  conforms: true
+  market: schema governance for event streams
+  evidence: >-
+    The contract serves the Schema Registry API under its own registered media types
+    application/vnd.schemaregistry.v1+json and
+    application/vnd.schemaregistry+json; qs=0.9 — used on 218 responses. This media
+    type and path shape (/subjects/{subject}/versions, /schemas/ids/{id},
+    /compatibility, /mode, /config) is the de-facto standard the whole Kafka ecosystem
+    implements, including third parties such as Redpanda and Apicurio.
+  spec_location: >-
+    components.responses content keys; paths /schemas/ids/{id}, /subjects/{subject},
+    /subjects/{subject}/versions/{version}, /schemas/types
+- id: avro-json-schema-protobuf
+  conforms: true
+  market: schema serialization formats
+  evidence: >-
+    getSchemaTypes (GET /schemas/types) enumerates the supported schema formats; the
+    Avro, JSON Schema and Protobuf serializers are shipped as first-party artifacts
+    (io.confluent:kafka-avro-serializer 8.3.1).
+- id: apache-flink-sql
+  conforms: true
+  market: stream processing
+  evidence: >-
+    The sql/v1 API group submits Apache Flink SQL statements to managed compute pools
+    (createSqlv1Statement, listSqlv1Statements, getSqlv1StatementResult), and the
+    Flink Catalog surface follows Flink's catalog/database/table model.
+- id: apache-iceberg
+  conforms: true
+  market: open table formats / lakehouse
+  evidence: >-
+    The tableflow/v1 API group materialises Kafka topics as Iceberg tables and
+    registers them with external catalogs (createTableflowV1CatalogIntegration, AWS
+    Glue), which is the open-table-format standard for this market.
+- id: asyncapi
+  conforms: partial
+  market: event-driven API description
+  evidence: >-
+    Confluent ships first-class AsyncAPI tooling — `confluent asyncapi export` and
+    `confluent asyncapi import` generate and apply an AsyncAPI document from a live
+    Kafka cluster and Schema Registry
+    (https://docs.confluent.io/cloud/current/stream-governance/async-api.html) — but
+    the document produced is per-customer-cluster. Confluent publishes no AsyncAPI
+    document describing its own platform, so nothing is captured in asyncapi/ beyond
+    the webhook catalog. Recorded as tooling conformance, not a published artifact.
+compliance:
+  published: true
+  page: https://www.confluent.io/trust-and-security/
+  trust_center: https://confluent.safebase.us/
+  certifications:
+  - SOC 1 Type 2
+  - SOC 2 Type 2
+  - SOC 3
+  - ISO 27001
+  - ISO 27701
+  - PCI DSS
+  - CSA STAR Level 2
+  - HITRUST CSF
+  - TISAX
+  regulatory_readiness:
+  - GDPR
+  - CCPA
+  - HIPAA (with a Business Associate Agreement)
+  - LGPD
+  - DORA
+  - FedRAMP Moderate (Confluent Cloud for Government)
+  fedramp_evidence: >-
+    Confluent's own blog post "Confluent Cloud for Government Achieves FedRAMP Moderate"
+    (2026-03-10, harvested to blogs/) plus the Confluent Cloud for Government
+    documentation at https://docs.confluent.io/confluentgov/current/overview.md, which
+    the docs llms.txt links. The FedRAMP claim is NOT on the trust-and-security page
+    that supplied the other certifications, so it is sourced separately here.
+  detail: security/confluent-the-data-streaming-platform-trust-center.yml

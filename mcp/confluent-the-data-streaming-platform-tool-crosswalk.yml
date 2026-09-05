@@ -1,0 +1,424 @@
+generated: '2026-09-05'
+method: derived
+source:
+- mcp/confluent-the-data-streaming-platform-mcp.yml
+- openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+note: >-
+  Binds every published Confluent MCP tool to the backing Confluent Cloud OpenAPI
+  operationId(s), so each tool inherits a real inputSchema from the spec rather than a
+  guessed one. The live MCP tools/list is auth-gated (HTTP 401 on
+  https://api.confluent.cloud/mcp/v1, probed 2026-09-05), so the mapping is by name and
+  documented semantics against verified operationIds, and confidence is set
+  accordingly. Every operationId below was grepped out of the harvested spec; none is
+  invented.
+surfaces:
+  openapi:
+    file: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
+    source: https://docs.confluent.io/cloud/current/openapi.yaml
+    server: https://api.confluent.cloud
+    operations: 504
+    gated: false
+  mcp:
+    managed_global: https://api.confluent.cloud/mcp/v1
+    managed_regional: https://mcp.{region}.{cloud}.confluent.cloud/mcp/v1/organizations/{org_id}
+    open_source: '@confluentinc/mcp-confluent (stdio)'
+    gated: true
+    gate_evidence: 'POST tools/list -> HTTP 401'
+  graphql:
+    present: false
+coverage:
+  tools_named: 66
+  tools_bound: 48
+  mcp_only: 18
+  rest_operations_total: 504
+  rest_operations_with_a_tool: 52
+crosswalk:
+- tool: list_environments
+  category: Organizations, Environments & Clusters
+  rest: [listOrgV2Environments]
+  binding: rest
+  confidence: high
+- tool: read_environment
+  category: Organizations, Environments & Clusters
+  rest: [getOrgV2Environment]
+  binding: rest
+  confidence: high
+- tool: list-organizations
+  category: Organizations, Environments & Clusters
+  rest: [listOrgV2Organizations]
+  binding: rest
+  confidence: high
+- tool: list_clusters
+  category: Organizations, Environments & Clusters
+  rest: [listCmkV2Clusters]
+  binding: rest
+  confidence: high
+- tool: read_cluster
+  category: Organizations, Environments & Clusters
+  rest: [getCmkV2Cluster, getKafkaCluster]
+  binding: rest
+  confidence: medium
+  note: >-
+    Fans out — cmk/v2 is the control-plane cluster record, kafka/v3 is the data-plane
+    cluster view. Which one the tool returns is not stated in the docs.
+- tool: list_connectors
+  category: Connectors
+  rest: [listConnectv1Connectors, listConnectv1ConnectorsWithExpansions]
+  binding: rest
+  confidence: high
+- tool: get_connector_config
+  category: Connectors
+  rest: [getConnectv1ConnectorConfig]
+  binding: rest
+  confidence: high
+- tool: get_connector_status
+  category: Connectors
+  rest: [readConnectv1ConnectorStatus]
+  binding: rest
+  confidence: high
+- tool: get-connector-tasks
+  category: Connectors
+  rest: [listConnectv1ConnectorTasks]
+  binding: rest
+  confidence: high
+- tool: get_connector_offsets
+  category: Connectors
+  rest: [getConnectv1ConnectorOffsets]
+  binding: rest
+  confidence: high
+- tool: restart_connector
+  category: Connectors
+  rest: [restartConnectv1Connector]
+  binding: rest
+  confidence: high
+- tool: update_connector_config
+  category: Connectors
+  rest: [createOrUpdateConnectv1ConnectorConfig]
+  binding: rest
+  confidence: high
+- tool: create-connector
+  category: Connectors
+  rest: [createConnectv1Connector]
+  binding: rest
+  confidence: high
+- tool: delete-connector
+  category: Connectors
+  rest: [deleteConnectv1Connector]
+  binding: rest
+  confidence: high
+- tool: pause-connector
+  category: Connectors
+  rest: [pauseConnectv1Connector]
+  binding: rest
+  confidence: high
+- tool: resume-connector
+  category: Connectors
+  rest: [resumeConnectv1Connector]
+  binding: rest
+  confidence: high
+- tool: list-topics
+  category: Kafka
+  rest: [listKafkaTopics]
+  binding: rest
+  confidence: high
+- tool: list_kafka_topics
+  category: Kafka (managed regional)
+  rest: [listKafkaTopics]
+  binding: rest
+  confidence: high
+- tool: describe_kafka_topic
+  category: Kafka (managed regional)
+  rest: [getKafkaTopic, listKafkaTopicConfigs]
+  binding: rest
+  confidence: medium
+  note: A describe view composes the topic record with its config list.
+- tool: create-topics
+  category: Kafka
+  rest: [createKafkaTopic]
+  binding: rest
+  confidence: high
+- tool: delete-topics
+  category: Kafka
+  rest: [deleteKafkaTopic]
+  binding: rest
+  confidence: high
+- tool: produce-message
+  category: Kafka
+  rest: [produceRecord]
+  binding: rest
+  confidence: high
+- tool: get-topic-config
+  category: Kafka
+  rest: [listKafkaTopicConfigs, getKafkaTopicConfig]
+  binding: rest
+  confidence: high
+- tool: alter-topic-config
+  category: Kafka
+  rest: [updateKafkaTopicConfigBatch, updateKafkaTopicConfig]
+  binding: rest
+  confidence: high
+- tool: list-consumer-groups
+  category: Kafka
+  rest: [listKafkaConsumerGroups]
+  binding: rest
+  confidence: high
+- tool: describe-consumer-group
+  category: Kafka
+  rest: [getKafkaConsumerGroup, listKafkaConsumers]
+  binding: rest
+  confidence: high
+- tool: get-consumer-group-lag
+  category: Kafka
+  rest: [getKafkaConsumerGroupLagSummary, listKafkaConsumerLags]
+  binding: rest
+  confidence: high
+- tool: create-flink-statement
+  category: Flink SQL
+  rest: [createSqlv1Statement]
+  binding: rest
+  confidence: high
+- tool: list-flink-statements
+  category: Flink SQL
+  rest: [listSqlv1Statements]
+  binding: rest
+  confidence: high
+- tool: get-flink-statement-results
+  category: Flink SQL
+  rest: [getSqlv1StatementResult]
+  binding: rest
+  confidence: high
+- tool: delete-flink-statements
+  category: Flink SQL
+  rest: [deleteSqlv1Statement]
+  binding: rest
+  confidence: high
+- tool: get-flink-statement-exceptions
+  category: Flink SQL
+  rest: [getSqlv1StatementExceptions]
+  binding: rest
+  confidence: high
+- tool: list-compute-pools
+  category: Flink SQL
+  rest: [listFcpmV2ComputePools]
+  binding: rest
+  confidence: high
+- tool: check-flink-statement-health
+  category: Flink Diagnostics
+  rest: [getSqlv1Statement, getSqlv1StatementExceptions]
+  binding: rest
+  confidence: low
+  note: >-
+    A server-side composite. The docs describe a health verdict, not a single
+    operation; these are the operations that carry the phase and exception data it
+    would read.
+- tool: detect-flink-statement-issues
+  category: Flink Diagnostics
+  rest: [getSqlv1Statement, getSqlv1StatementExceptions]
+  binding: rest
+  confidence: low
+  note: Composite — same caveat as check-flink-statement-health.
+- tool: list-schemas
+  category: Schema Registry
+  rest: [getSchemas]
+  binding: rest
+  confidence: high
+- tool: list_schema_subjects
+  category: Schema Registry (managed regional)
+  rest: [getSchemas]
+  binding: rest
+  confidence: medium
+  note: >-
+    The subject list is served by the Schema Registry API group carried in this spec
+    under application/vnd.schemaregistry.v1+json.
+- tool: read_schema_subject
+  category: Schema Registry (managed regional)
+  rest: [getSchemaByVersion, getSchemaOnly_1]
+  binding: rest
+  confidence: high
+- tool: create-schema
+  category: Schema Registry
+  rest: [lookUpSchemaUnderSubject]
+  binding: rest
+  confidence: medium
+  note: >-
+    Registration and lookup share the POST /subjects/{subject} surface in this
+    aggregate spec.
+- tool: delete-schema
+  category: Schema Registry
+  rest: [deleteSchemaVersion]
+  binding: rest
+  confidence: high
+- tool: list-tags
+  category: Catalog & Tags
+  rest: [getAllTagDefs]
+  binding: rest
+  confidence: high
+- tool: create-topic-tags
+  category: Catalog & Tags
+  rest: [createTags, createTagDefs]
+  binding: rest
+  confidence: medium
+- tool: add-tags-to-topic
+  category: Catalog & Tags
+  rest: [createTags, updateTags]
+  binding: rest
+  confidence: medium
+- tool: delete-tag
+  category: Catalog & Tags
+  rest: [deleteTagDef]
+  binding: rest
+  confidence: high
+- tool: remove-tag-from-entity
+  category: Catalog & Tags
+  rest: [deleteTag]
+  binding: rest
+  confidence: high
+- tool: create-tableflow-topic
+  category: Tableflow
+  rest: [createTableflowV1TableflowTopic]
+  binding: rest
+  confidence: high
+- tool: list-tableflow-topics
+  category: Tableflow
+  rest: [listTableflowV1TableflowTopics]
+  binding: rest
+  confidence: high
+- tool: read-tableflow-topic
+  category: Tableflow
+  rest: [getTableflowV1TableflowTopic]
+  binding: rest
+  confidence: high
+- tool: update-tableflow-topic
+  category: Tableflow
+  rest: [updateTableflowV1TableflowTopic]
+  binding: rest
+  confidence: high
+- tool: delete-tableflow-topic
+  category: Tableflow
+  rest: [deleteTableflowV1TableflowTopic]
+  binding: rest
+  confidence: high
+- tool: list-tableflow-regions
+  category: Tableflow
+  rest: [listTableflowV1Regions]
+  binding: rest
+  confidence: high
+- tool: create-tableflow-catalog-integration
+  category: Tableflow Catalog
+  rest: [createTableflowV1CatalogIntegration]
+  binding: rest
+  confidence: high
+- tool: list-tableflow-catalog-integrations
+  category: Tableflow Catalog
+  rest: [listTableflowV1CatalogIntegrations]
+  binding: rest
+  confidence: high
+- tool: read-tableflow-catalog-integration
+  category: Tableflow Catalog
+  rest: [getTableflowV1CatalogIntegration]
+  binding: rest
+  confidence: high
+- tool: update-tableflow-catalog-integration
+  category: Tableflow Catalog
+  rest: [updateTableflowV1CatalogIntegration]
+  binding: rest
+  confidence: high
+- tool: delete-tableflow-catalog-integration
+  category: Tableflow Catalog
+  rest: [deleteTableflowV1CatalogIntegration]
+  binding: rest
+  confidence: high
+- tool: list-billing-costs
+  category: Billing
+  rest: [listBillingV1Costs]
+  binding: rest
+  confidence: high
+mcp_only:
+- tool: search-product-docs
+  reason: >-
+    Searches docs.confluent.io content. No public REST operation — the docs search is a
+    site feature, not a Confluent Cloud API.
+- tool: get-product-doc-page
+  reason: Fetches a docs page by URL. Not a Confluent Cloud API operation.
+- tool: explain-disabled-tools
+  reason: Server-local introspection of the MCP server's own configuration.
+- tool: list-configured-connections
+  reason: Server-local introspection of the MCP server's own configuration.
+- tool: describe-configured-connection
+  reason: Server-local introspection of the MCP server's own configuration.
+- tool: config-help
+  reason: Server-local — emits YAML config guidance for the MCP server itself.
+- tool: list_metrics
+  reason: >-
+    Backed by the Confluent Cloud Metrics (Telemetry) API on
+    api.telemetry.confluent.cloud, which is documented separately and is not part of
+    the api.confluent.cloud aggregate OpenAPI harvested here.
+- tool: list-available-metrics
+  reason: Metrics/Telemetry API — see list_metrics.
+- tool: query_metrics
+  reason: Metrics/Telemetry API — see list_metrics.
+- tool: query-metrics
+  reason: Metrics/Telemetry API — see list_metrics.
+- tool: get_connector_metrics
+  reason: >-
+    Composite over the Metrics/Telemetry API scoped to one connector; no single REST
+    operation.
+- tool: get_connector_logs
+  reason: >-
+    Connector log retrieval is not exposed as an operation in the aggregate Cloud
+    OpenAPI.
+- tool: get-connector-logs
+  reason: See get_connector_logs.
+- tool: get_connector_error_summary
+  reason: >-
+    Server-side summarisation over connector status and logs; no backing REST
+    operation.
+- tool: get-connector-error-summary
+  reason: See get_connector_error_summary.
+- tool: get_connector_fix_recommendations
+  reason: >-
+    AI-generated remediation advice. This is the clearest example of an MCP-only
+    capability in Confluent's surface — there is no REST equivalent to call.
+- tool: get-connector-error-recommendations
+  reason: See get_connector_fix_recommendations.
+- tool: consume_kafka_messages
+  reason: >-
+    Kafka REST v3 consume is a per-cluster data-plane endpoint on the cluster host, not
+    an operation in the api.confluent.cloud aggregate spec.
+rest_only:
+- capability: Identity & Access Management (iam/v2)
+  note: >-
+    API keys, users, service accounts, identity providers, identity pools, IP filters
+    and groups, role bindings, SSO group mappings — ~60 operations, no MCP tool.
+    Credential and access management is deliberately outside the agent surface.
+  examples: [listIamV2ApiKeys, createIamV2ApiKey, deleteIamV2ApiKey, listIamV2ServiceAccounts,
+    listIamV2IdentityProviders]
+- capability: Networking (networking/v1)
+  note: >-
+    14 tag groups covering networks, peerings, transit gateway attachments, private
+    link accesses/attachments, DNS records and gateways — ~70 operations, no MCP tool.
+  examples: [listNetworkingV1DnsRecords, createNetworkingV1DnsRecord]
+- capability: Cluster lifecycle writes
+  note: >-
+    Creating, updating and deleting Kafka, ksqlDB and Schema Registry clusters is REST
+    only; the MCP surface reads clusters but does not provision them.
+  examples: [createCmkV2Cluster, deleteCmkV2Cluster, createKsqldbcmV2Cluster, createSrcmV2Cluster]
+- capability: Cluster Linking (v3)
+  note: 20 operations for links and mirror topics, including failover and promote — no MCP tool.
+  examples: [createKafkaMirrorTopic, updateKafkaMirrorTopicsPromote, updateKafkaMirrorTopicsFailover]
+- capability: Notifications (notifications/v1)
+  note: >-
+    The webhook/Slack/Teams notification surface — subscriptions, integrations,
+    preferences — is REST only.
+  examples: [createNotificationsV1Integration, testNotificationsV1Integration, createNotificationsV1Subscription]
+- capability: Stream Sharing (cdx/v1)
+  note: Provider and consumer shares and shared resources — REST only.
+  examples: [listCdxV1ConsumerShares, listCdxV1ConsumerSharedResources]
+- capability: BYOK, Client Quotas, Service Quotas, Partner API
+  note: Encryption keys, quota management and partner entitlements are REST only.
+  examples: [listPartnerV2Organizations, getPartnerV2Organization]
+- capability: Unified Stream Manager (usm/v1) and Real Time Context Engine (rtce/v1)
+  note: >-
+    Registration of self-managed Kafka/Connect clusters and RTCE topics — newer API
+    groups with no MCP tool yet.
+  examples: [listUsmV1KafkaClusters, listRtceV1RtceTopics]

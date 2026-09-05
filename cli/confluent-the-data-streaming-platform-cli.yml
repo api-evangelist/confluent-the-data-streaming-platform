@@ -1,0 +1,77 @@
+generated: '2026-09-05'
+method: searched
+source:
+- https://docs.confluent.io/confluent-cli/current/overview.html
+- https://docs.confluent.io/confluent-cli/current/install.html
+- https://docs.confluent.io/confluent-cli/current/command-reference/index.html
+docs: https://docs.confluent.io/confluent-cli/current/overview.html
+binary: confluent
+description: >-
+  The Confluent CLI is the first-party command-line client for Confluent Cloud and
+  Confluent Platform. It covers the same control-plane surface as the Cloud REST API
+  plus local-development commands, and it is the tool Confluent's own docs use for
+  quickstarts and API-key provisioning.
+install:
+- method: script
+  command: curl -sL --http1.1 https://cnfl.io/cli | sh -s -- latest
+  note: >-
+    The documented installer, quoted verbatim from the upgrade guidance in the CLI
+    overview. Version-pinned installs substitute a version for `latest`.
+  verbatim: true
+- method: docs
+  url: https://docs.confluent.io/confluent-cli/current/install.html
+  note: >-
+    Per-OS installation instructions (package managers, archives, Docker) live on this
+    page. Only the script above is recorded verbatim; the rest are not transcribed here
+    rather than guessed at.
+commands:
+- group: kafka
+  covers: topics, clusters, brokers, ACLs, consumer groups, cluster links, quotas
+- group: connect
+  covers: connectors, connector plugins, custom plugins, offsets
+- group: flink
+  covers: Flink SQL statements, compute pools, artifacts, connections, applications
+- group: ksql
+  covers: ksqlDB cluster lifecycle
+- group: schema-registry
+  covers: subjects, schemas, exporters, data encryption keys, compatibility
+- group: asyncapi
+  covers: export and import of an AsyncAPI document describing a Kafka cluster
+  note: >-
+    `confluent asyncapi export` generates an AsyncAPI spec from a live cluster and
+    Schema Registry; `confluent asyncapi import` applies one back. This is the only
+    AsyncAPI surface Confluent ships and it is per-customer-cluster, so there is no
+    single published AsyncAPI document for the platform itself.
+  docs: https://docs.confluent.io/confluent-cli/current/command-reference/asyncapi/
+- group: environment
+  covers: environment lifecycle and selection
+- group: organization
+  covers: organization settings
+- group: iam
+  covers: users, service accounts, role bindings, identity providers and pools
+- group: api-key
+  covers: creating, listing, storing and deleting Cloud and resource API keys
+- group: network
+  covers: networks, peerings, private link, transit gateway, DNS
+- group: byok
+  covers: bring-your-own-key encryption keys
+- group: billing
+  covers: costs and payment
+- group: provider-integration
+  covers: cloud provider integrations
+- group: context
+  covers: CLI context and configuration
+- group: cluster
+  covers: cluster describe and list across types
+- group: local
+  covers: running a local Confluent Platform for development
+- group: plugin
+  covers: CLI plugin management
+key_flows:
+- Authenticate (`confluent login`) and select an environment and cluster context
+- Provision a Kafka cluster and a Cloud API key without touching the REST API directly
+- Export a running cluster's topics and schemas as an AsyncAPI document
+- Submit and monitor Flink SQL statements against a compute pool
+- Run a local Confluent Platform for development
+packages: packages/confluent-the-data-streaming-platform-packages.yml
+release_notes: https://docs.confluent.io/confluent-cli/current/release-notes.html
