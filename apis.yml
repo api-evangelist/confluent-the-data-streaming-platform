@@ -422,3 +422,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 23
   pass: local-v3
+x-parent: confluent
+x-relationship: product
