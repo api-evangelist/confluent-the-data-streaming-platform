@@ -61,49 +61,6 @@ tags:
   - Schema Registry
   - Stream Processing
 apis:
-- aid: confluent-the-data-streaming-platform:cloud-rest-api
-  name: Confluent Cloud REST API
-  description: >-
-    The Confluent Cloud REST API is the management plane for Confluent Cloud. It is used to manage organizations,
-    environments, Kafka and Flink clusters, service accounts, API keys, role bindings, networking, schema
-    registry clusters, and connector instances. The API uses Cloud API keys for authentication and follows
-    Confluent's resource-oriented v2 conventions.
-  humanURL: https://docs.confluent.io/cloud/current/api.html
-  baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  tags:
-  - Confluent Cloud
-  - Management
-  - REST
-  properties:
-  - type: Documentation
-    url: https://docs.confluent.io/cloud/current/api.html
-  - type: APIReference
-    url: https://docs.confluent.io/cloud/current/api.html
-  - type: OpenAPI
-    name: Confluent Cloud APIs (504 operations, harvested from the provider)
-    url: openapi/confluent-the-data-streaming-platform-cloud-apis-openapi.yml
-  - type: Overlay
-    url: overlays/confluent-the-data-streaming-platform-cloud-apis-overlay.yaml
-  - type: ToolCrosswalk
-    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
-  - type: DataModel
-    url: data-model/confluent-the-data-streaming-platform-data-model.yml
-  x-features:
-  - Cluster Lifecycle Management
-  - Environments and Organizations
-  - API Key Management
-  - RBAC and Service Accounts
-  - Networking and Private Link
-  - Schema Registry Cluster Management
-  - Connector Provisioning
-  - Flink Compute Pools
-  x-use-cases:
-  - Provision Kafka clusters in Confluent Cloud
-  - Automate environment and access management
-  - Rotate API keys and manage service accounts
-  - Wire up private networking for clusters
-  - Manage Flink compute pools and statements
 - aid: confluent-the-data-streaming-platform:kafka-rest-api
   name: Confluent Kafka REST API
   description: >-
@@ -241,77 +198,4052 @@ apis:
   x-use-cases:
   - Run stateful stream processing on Confluent Cloud
   - Deploy Flink SQL jobs through automation
-- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-api-keys-api
-  name: Confluent | the Data Streaming Platform API Keys API
-  description: >-
-    The API Keys API from Confluent | the Data Streaming Platform — 2 operation(s) for api keys.
-  humanURL: https://docs.confluent.io/cloud/current/api.html
-  baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  tags:
-  - APIKeys
-  tags_raw:
-  - API Keys
-  properties:
-  - type: OpenAPI
-    url: openapi/confluent-the-data-streaming-platform-api-keys-api-openapi.yml
-- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-api
-  name: Confluent | the Data Streaming Platform Clusters API
-  description: >-
-    The Clusters API from Confluent | the Data Streaming Platform — 2 operation(s) for clusters.
-  humanURL: https://docs.confluent.io/cloud/current/api.html
-  baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  tags:
-  - Cluster
-  tags_raw:
-  - Clusters
-  properties:
-  - type: OpenAPI
-    url: openapi/confluent-the-data-streaming-platform-clusters-api-openapi.yml
 - aid: >-
-    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-environments-api
-  name: Confluent | the Data Streaming Platform Environments API
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-access-points-networking-v1-api
+  name: Confluent | the Data Streaming Platform Access Points (networking/v1) API
   description: >-
-    The Environments API from Confluent | the Data Streaming Platform — 2 operation(s) for environments.
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    AccessPoint objects represent network connections in and out of Gateways.
+
+    This API allows you to list, create, read, update, and delete your access points.
+
+
+
+    ## The Access Points Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.AccessPoint" />
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
-  - Environments
+  - Access Points (networking/v1)
   properties:
   - type: OpenAPI
-    url: openapi/confluent-the-data-streaming-platform-environments-api-openapi.yml
+    url: >-
+      openapi/confluent-the-data-streaming-platform-access-points-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-acl-v3-api
+  name: Confluent | the Data Streaming Platform ACL (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - ACL (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-acl-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
 - aid: >-
-    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-organizations-api
-  name: Confluent | the Data Streaming Platform Organizations API
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-agents-sql-v1-api
+  name: Confluent | the Data Streaming Platform Agents (sql/v1) API
   description: >-
-    The Organizations API from Confluent | the Data Streaming Platform — 2 operation(s) for organizations.
+    [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Agent` models an AI agent that uses a specified model, prompt, and set of tools
+
+    to autonomously perform tasks.
+
+    The API allows you to create your agents.
+
+    ## The Agents Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.Agent" />
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
-  - Organization
-  tags_raw:
-  - Organizations
+  - Agents (sql/v1)
   properties:
   - type: OpenAPI
-    url: openapi/confluent-the-data-streaming-platform-organizations-api-openapi.yml
+    url: openapi/confluent-the-data-streaming-platform-agents-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
 - aid: >-
-    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-service-accounts-api
-  name: Confluent | the Data Streaming Platform Service Accounts API
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-api-keys-iam-v2-api
+  name: Confluent | the Data Streaming Platform API Keys (iam/v2) API
   description: >-
-    The Service Accounts API from Confluent | the Data Streaming Platform — 2 operation(s) for service
-    accounts.
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ApiKey` objects represent access to different parts of Confluent Cloud. Some types
+
+    of API keys represent access to a single cluster/resource such as a Kafka cluster,
+
+    Schema Registry cluster or a ksqlDB cluster. Cloud API Keys represent access to resources within an
+    organization
+
+    that are not tied to a specific cluster, such as the Org API, IAM API, Metrics API or Connect API.
+
+    Tableflow API keys and Global API keys are not tied to a specific cluster.
+
+
+    The API allows you to list, create, update and delete your API Keys.
+
+
+
+    Related guide: [API Keys in Confluent Cloud](https://docs.confluent.io/cloud/current/client-apps/api-keys.html).
+
+
+    ## The API Keys Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.ApiKey" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `apikeys_per_org` | API Keys in one Confluent Cloud organization |
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
-  - Service Accounts
+  - API Keys (iam/v2)
   properties:
   - type: OpenAPI
-    url: openapi/confluent-the-data-streaming-platform-service-accounts-api-openapi.yml
+    url: openapi/confluent-the-data-streaming-platform-api-keys-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-applied-quotas-service-quota-v1-api
+  name: Confluent | the Data Streaming Platform Applied Quotas (service-quota/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A `quota` object represents a quota configuration for a specific Confluent Cloud resource.
+
+    Use this API to retrieve an individual quota or list of quotas for a given scope.
+
+
+
+    Related guide: [Service Quotas for Confluent Cloud](https://docs.confluent.io/cloud/current/quotas/index.html).
+
+
+    ## The Applied Quotas Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/service-quota.v1.AppliedQuota" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Applied Quotas (service-quota/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-applied-quotas-service-quota-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-catalog-integrations-tableflow-v1-api
+  name: Confluent | the Data Streaming Platform Catalog Integrations (tableflow/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A Catalog Integration represents configuration related to a catalog integration
+
+
+
+    ## The Catalog Integrations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/tableflow.v1.CatalogIntegration" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Catalog Integrations (tableflow/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-catalog-integrations-tableflow-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api
+  name: Confluent | the Data Streaming Platform Certificate Authorities (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `CertificateAuthority` objects represent signing certificate authorities in Confluent Cloud.
+
+
+    The API allows you to list, create, read, update, and delete your Certificate Authority.
+
+
+
+    Related guide: [Manage certificate authorities used for client authentication with X.509 certificates.](https://docs.confluent.io/cloud/current/access-management/authenticate/mtls/overview.html).
+
+
+    ## The Certificate Authorities Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.CertificateAuthority" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `certificate_authorities_per_org` | Number of certificate authorities per organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Certificate Authorities (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api
+  name: Confluent | the Data Streaming Platform Certificate Identity Pools (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Identitypool` objects represent workload identities in Confluent Cloud.
+
+
+    The API allows you to list, create, read, update, and delete your identity pools associated
+
+    with Certificate Authorities
+
+
+
+    Related guide: [Manage Certificate Identity Pools for Granular Client Access Management](https://docs.confluent.io/cloud/current/access-management/authenticate/mtls/configure.html#step-2-create-certificate-identity-pools-for-granular-access-control).
+
+
+    ## The Certificate Identity Pools Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.CertificateIdentityPool" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `identity_pools_per_certificate_authority` | Number of Identity Pools per Certificate Authority
+    |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Certificate Identity Pools (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-client-quotas-kafka-quotas-v1-api
+  name: Confluent | the Data Streaming Platform Client Quotas (kafka-quotas/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ClientQuota` objects represent Client Quotas you can set at the service account level.
+
+
+    The API allows you to list, create, read, update, and delete your client quotas.
+
+
+
+    Related guide: [Client Quotas in Confluent Cloud](https://docs.confluent.io/cloud/current/clusters/client-quotas.html).
+
+
+    ## The Client Quotas Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/kafka-quotas.v1.ClientQuota" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-client-quotas-kafka-quotas-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-cluster-linking-v3-api
+  name: Confluent | the Data Streaming Platform Cluster Linking (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Cluster Linking (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-cluster-linking-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-cluster-v3-api
+  name: Confluent | the Data Streaming Platform Cluster (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Cluster (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-cluster-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-cmk-v2-api
+  name: Confluent | the Data Streaming Platform Clusters (cmk/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Clusters` objects represent Apache Kafka Clusters on Confluent Cloud.
+
+
+    The API allows you to list, create, read, update, and delete your Kafka clusters.
+
+
+
+    Related guide: [Confluent Cloud Cluster Management for Apache Kafka APIs](https://docs.confluent.io/cloud/current/clusters/cluster-api.html).
+
+
+    ## The Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cmk.v2.Cluster" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `kafka_clusters_per_environment` | Number of clusters in one Confluent Cloud environment |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Clusters (cmk/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-clusters-cmk-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api
+  name: Confluent | the Data Streaming Platform Clusters (ksqldbcm/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Cluster` represents a ksqlDB runtime that you can issue queries to using its API endpoint.
+
+    It executes SQL statements and queries which under the hood get built into corresponding
+
+    Kafka Streams topologies. The API allows you to list, create, read, and delete your ksqlDB clusters.
+
+
+
+    Related guide: [ksqlDB in Confluent Cloud](https://docs.confluent.io/cloud/current/ksqldb/ksqldb-cluster-api.html).
+
+
+    ## The Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/ksqldbcm.v2.Cluster" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the following quotas:
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `ksql.limits.max_apps_per_cluster` | Clusters in one Confluent Cloud Kafka Cluster. |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Clusters (ksqldbcm/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-srcm-v2-api
+  name: Confluent | the Data Streaming Platform Clusters (srcm/v2) API
+  description: >-
+    [![Deprecated](https://img.shields.io/badge/Lifecycle%20Stage-Deprecated-%23ff005c)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Clusters` objects represent Schema Registry Clusters on Confluent Cloud.
+
+
+    The API allows you to list, create, read, and delete your Schema Registry clusters.
+
+
+
+    Related guides:
+
+    * [Confluent Cloud Schema Registry Cluster APIs](https://docs.confluent.io/cloud/current/stream-governance/clusters-regions-api.html#schema-registry-cluster-management).
+
+    * [srcm/v3 Migration Guide](https://docs.confluent.io/cloud/current/stream-governance/packages.html#deprecation-of-srcm-v2-clusters-and-regions-apis-and-upgrade-guide).
+
+
+
+    ## The Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/srcm.v2.Cluster" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Clusters (srcm/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-clusters-srcm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-clusters-srcm-v3-api
+  name: Confluent | the Data Streaming Platform Clusters (srcm/v3) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Clusters` objects represent Schema Registry Clusters on Confluent Cloud.
+
+
+    The API allows you to list and read your Schema Registry clusters.
+
+
+
+    Related guide: [Confluent Cloud Schema Registry Cluster APIs](https://docs.confluent.io/cloud/current/stream-governance/clusters-regions-api.html#schema-registry-cluster-management).
+
+
+    ## The Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/srcm.v3.Cluster" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Clusters (srcm/v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-clusters-srcm-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-compatibility-v1-api
+  name: Confluent | the Data Streaming Platform Compatibility (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to test schema compatibility.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Compatibility (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-compatibility-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api
+  name: Confluent | the Data Streaming Platform Compute Pools (fcpm/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A Compute Pool represents a set of compute resources that is used to run your Queries.
+
+    The resources (CPUs, memory,…) provided by a Compute Pool are shared between all Queries that use
+    it.
+
+    Note that the Compute Pool API supports a limited pagination API, only the `next` field will be populated.
+
+
+
+    ## The Compute Pools Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.ComputePool" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Compute Pools (fcpm/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-config-v1-api
+  name: Confluent | the Data Streaming Platform Config (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to manage and query schema compatibility settings and cluster configurations.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Config (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-config-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-configs-v3-api
+  name: Confluent | the Data Streaming Platform Configs (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Configs (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-configs-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-connect-artifacts-cam-v1-api
+  name: Confluent | the Data Streaming Platform Connect Artifacts (cam/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Connect Artifact` objects represent collection of Custom SMTs, user-defined message
+
+    transformations that can be applied to Kafka connectors.
+
+
+    The API allows you to upload, retrieve, and delete Connect Artifact, as well as list all
+
+    available Connect Artifact for use in your connectors.
+
+    Currently, Connect Artifacts can only be used by connectors running on
+
+    Enterprise, Freight, or Dedicated Kafka Connect clusters on AWS,
+
+    configured with one of the following network types: PrivateLink, Peering/Transit Gateway, or PNI.
+
+
+
+    ## The Connect Artifacts Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cam.v1.ConnectArtifact" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Connect Artifacts (cam/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-connect-artifacts-cam-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-connect-clusters-usm-v1-api
+  name: Confluent | the Data Streaming Platform Connect Clusters (usm/v1) API
+  description: >-
+    [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ConnectCluster` object represent Confluent Platform Connect clusters registered with Confluent Cloud.
+
+    The API allows you to create and delete ConnectCluster.
+
+
+
+    ## The Connect Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/usm.v1.ConnectCluster" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Connect Clusters (usm/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-connect-clusters-usm-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-connections-sql-v1-api
+  name: Confluent | the Data Streaming Platform Connections (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Connection` represents a core resource used to model SQL connections for execution.
+
+    A connection generalizes DDL, DML, DQL, etc., but doesn’t attempt to handle session
+
+    management or any higher-level functionality.
+
+    The API allows you to list, create, read, and delete your connections.
+
+    ## The Connections Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.Connection" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Connections (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-connections-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-connectors-connect-v1-api
+  name: Confluent | the Data Streaming Platform Connectors (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for Managed Connectors or Custom Connectors in Confluent Cloud.
+
+
+    The API allows you to list, create, get, update and delete a Managed Connector or Custom Connector
+    in Confluent Cloud.
+
+
+    Connect metrics are available through the [Metrics v2 API](https://api.telemetry.confluent.cloud/docs#tag/Version-2).
+
+
+    Related guide: [Confluent Cloud API and Managed Connectors](https://docs.confluent.io/cloud/current/connectors/connect-api-section.html).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Connectors (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-connectors-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-consumer-group-v3-api
+  name: Confluent | the Data Streaming Platform Consumer Group (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Consumer Group (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-consumer-group-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-consumer-shared-resources-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Consumer Shared Resources (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ConsumerSharedResource` object contains details of the data stream
+
+    (topic, schema registry subjects, sharing metadata) that you received through Stream Sharing.
+
+
+
+    ## The Consumer Shared Resources Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.ConsumerSharedResource" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Consumer Shared Resources (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-consumer-shared-resources-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-consumer-shares-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Consumer Shares (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ConsumerShare` object respresents the share that you received through Stream Sharing.
+
+
+
+    Related guide: [Consumer Stream Shares in Confluent Cloud](https://docs.confluent.io/cloud/current/stream-sharing/consume-shared-data.html).
+
+
+    ## The Consumer Shares Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.ConsumerShare" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Consumer Shares (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-consumer-shares-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-contexts-v1-api
+  name: Confluent | the Data Streaming Platform Contexts (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to retrieve information about schema contexts.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Contexts (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-contexts-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-costs-billing-v1-api
+  name: Confluent | the Data Streaming Platform Costs (billing/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Cost` objects represent the aggregated billing costs for an organization
+
+
+
+    Related guide: [Retrieve costs for a range of dates](https://docs.confluent.io/cloud/current/billing/overview.html#retrieve-costs-for-a-range-of-dates).
+
+
+    ## The Costs Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/billing.v1.Cost" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Costs (billing/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-costs-billing-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-custom-code-loggings-ccl-v1-api
+  name: Confluent | the Data Streaming Platform Custom Code Loggings (ccl/v1) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To Custom Code Logging API EA](https://img.shields.io/badge/-Request%20Access%20To%20Custom%20Code%20Logging%20API%20EA-%23bc8540)](mailto:ccloud-api-access+ccl-v1-early-access@confluent.io?subject=Request%20to%20join%20ccl/v1%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20ccl/v1%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    CustomCodeLogging objects represent Custom Code Logging on Confluent Cloud.
+
+    The API allows you to list, create, read, update, and delete your Custom Code Logging.
+
+
+
+    ## The Custom Code Loggings Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/ccl.v1.CustomCodeLogging" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Custom Code Loggings (ccl/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-custom-code-loggings-ccl-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-custom-connect-plugin-versions-ccpm-v1-api
+  name: Confluent | the Data Streaming Platform Custom Connect Plugin Versions (ccpm/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    CustomConnectPluginVersion objects represent Custom Connect Plugin Versions on Confluent Cloud.
+
+    The API allows you to list, create, read, update, and delete your Custom Connect Plugin Versions.
+
+
+
+    ## The Custom Connect Plugin Versions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/ccpm.v1.CustomConnectPluginVersion" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Custom Connect Plugin Versions (ccpm/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-custom-connect-plugin-versions-ccpm-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-custom-connect-plugins-ccpm-v1-api
+  name: Confluent | the Data Streaming Platform Custom Connect Plugins (ccpm/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    CustomConnectPlugins objects represent Custom Connect artifacts containing connector, and SMT jars
+    on Confluent
+     Cloud.
+    The API allows you to list, create, read, update, and delete your Custom Connect Plugins.
+
+    Related guide:
+
+    [Custom Connect Plugin API](https://docs.confluent.io/cloud/current/connectors/connect-api-section.html).
+
+
+
+    ## The Custom Connect Plugins Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/ccpm.v1.CustomConnectPlugin" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-custom-connect-plugins-ccpm-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-custom-connector-plugins-connect-v1-api
+  name: Confluent | the Data Streaming Platform Custom Connector Plugins (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    CustomConnectorPlugins objects represent Custom Connector Plugins on Confluent Cloud.
+
+    The API allows you to list, create, read, update, and delete your Custom Connector Plugins.
+
+    Related guide:
+
+    [Custom Connector Plugin API](https://docs.confluent.io/cloud/current/connectors/connect-api-section.html).
+
+
+
+    ## The Custom Connector Plugins Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/connect.v1.CustomConnectorPlugin" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Custom Connector Plugins (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-custom-connector-plugins-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-custom-connector-runtimes-connect-v1-api
+  name: Confluent | the Data Streaming Platform Custom Connector Runtimes (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    List of supported runtime languages for Custom Connector Plugin. The list defines the supported
+
+    entries for confluent.custom.connect.plugin.runtime attribute in CustomConnectorPlugin object.
+
+    Each entry also defines the set of supported java versions for that runtime which can be specified
+    during
+
+    connector provisioning via the confluent.custom.connect.plugin.java.version attribute.
+
+
+
+    ## The Custom Connector Runtimes Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/connect.v1.CustomConnectorRuntime" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Custom Connector Runtimes (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-custom-connector-runtimes-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-data-encryption-keys-v1-api
+  name: Confluent | the Data Streaming Platform Data Encryption Keys (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete data encryption keys.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Data Encryption Keys (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-data-encryption-keys-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-dns-forwarders-networking-v1-api
+  name: Confluent | the Data Streaming Platform DNS Forwarders (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Add, remove, and update DNS forwarder for your gateway.
+
+
+    Related guides:
+
+    * [Use VPC peering connections with Confluent Cloud on AWS](https://docs.confluent.io/cloud/current/networking/peering/aws-peering.html).
+
+    * [Use VNet peering connections with Confluent Cloud on Azure](https://docs.confluent.io/cloud/current/networking/peering/azure-peering.html).
+
+
+
+    ## The DNS Forwarders Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.DnsForwarder" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - DNS Forwarders (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-dns-forwarders-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-dns-records-networking-v1-api
+  name: Confluent | the Data Streaming Platform DNS Records (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    DNS record objects are associated with Confluent Cloud networking resources. This API allows you to
+    list, create, read, update, and delete your DNS records.
+
+
+    ## The DNS Records Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.DnsRecord" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - DNS Records (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-dns-records-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-endpoints-endpoint-v1-api
+  name: Confluent | the Data Streaming Platform Endpoints (endpoint/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    An Endpoint object represents a Fully Qualified Domain Name (FQDN) for a Confluent service resource
+
+    via a specific networking solution for a given Confluent Cloud environment.
+
+    This API provides a list of Confluent Cloud endpoints filtered by service, cloud provider, region,
+    etc.
+
+
+
+    Related guides:
+
+    * [Resource Overview in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/resource-overview.html).
+
+    * [Manage Networking on Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
+
+
+
+    ## The Endpoints Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/endpoint.v1.Endpoint" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Endpoints (endpoint/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-endpoints-endpoint-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-entitlements-partner-v2-api
+  name: Confluent | the Data Streaming Platform Entitlements (partner/v2) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To Partner v2](https://img.shields.io/badge/-Request%20Access%20To%20Partner%20v2-%23bc8540)](mailto:ccloud-api-access+partner-v2-early-access@confluent.io?subject=Request%20to%20join%20partner/v2%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20partner/v2%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    `Entitlement` objects represent metadata about a marketplace entitlement.
+
+
+    An entitlement includes metadata about a marketplace purchase
+
+    (start date, end date, billing information, partner IDs, etc).
+
+    The API allows partners to create, read, and list entitlements. (Unless you
+
+    need entitlement creation and customer registration to be separate,
+
+    we recommend using the Signup API to create an organization and entitlement
+
+    at the same time)
+
+
+    The API only allows authorized partners to interact with the Entitlements API.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Entitlements (partner/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-entitlements-partner-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-entity-v1-api
+  name: Confluent | the Data Streaming Platform Entity (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete catalog entities.
+
+
+    Related guide: [Catalog API Documentation](https://docs.confluent.io/cloud/current/stream-governance/stream-catalog.html#catalog-api-documentation).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Entity (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-entity-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-environments-org-v2-api
+  name: Confluent | the Data Streaming Platform Environments (org/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Environment` objects represent an isolated namespace for your Confluent resources
+
+    for organizational purposes.
+
+
+    The API allows you to create, delete, and update your environments. You can retrieve
+
+    individual environments as well as a list of all your environments.
+
+
+
+    Related guide: [Environments in Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/environments.html).
+
+
+    ## The Environments Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/org.v2.Environment" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `environments_per_org` | Environments in one Confluent Cloud organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Environments (org/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-environments-org-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-exporters-v1-api
+  name: Confluent | the Data Streaming Platform Exporters (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete exporters.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Exporters (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-exporters-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-flink-artifacts-artifact-v1-api
+  name: Confluent | the Data Streaming Platform Flink Artifacts (artifact/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
+
+
+
+    ## The Flink Artifacts Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.FlinkArtifact" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Flink Artifacts (artifact/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-flink-artifacts-artifact-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-gateways-networking-v1-api
+  name: Confluent | the Data Streaming Platform Gateways (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A Gateway represents a slice of traffic capacity in a region that is reserved for a customer.
+
+
+
+    ## The Gateways Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Gateway" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `gateways_per_region_per_environment` | Number of Gateways per region per environment |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Gateways (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-gateways-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-group-mappings-iam-v2-sso-api
+  name: Confluent | the Data Streaming Platform Group Mappings (iam/v2/sso) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `GroupMapping` objects establish relationships between user groups in your SSO
+
+    identity provider and specific RBAC roles in Confluent Cloud.
+
+
+    Group mappings enable automated and secure access control to Confluent Cloud resources,
+
+    reducing administrative workload by streamlining user provisioning and authorization.
+
+
+
+    Related guide: [Use group mappings with your SSO identity provider](https://docs.confluent.io/cloud/current/access-management/authenticate/sso/group-mapping/overview.html).
+
+
+    ## The Group Mappings Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.sso.GroupMapping" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `group_mappings_per_org` | Number of group mappings per organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Group Mappings (iam/v2/sso)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-group-mappings-iam-v2-sso-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-identity-pools-iam-v2-api
+  name: Confluent | the Data Streaming Platform Identity Pools (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `IdentityPool` objects represent groups of identities tied to a given a `IdentityProvider`
+
+    that authorizes them to Confluent Cloud resources.
+
+
+    It provides a mapping functionality of your `Identity Provider` user to a Confluent identity pool
+    that
+
+    is then used to provide access to Confluent Resources.
+
+
+
+    Related guide: [Use identity pools with your OAuth provider](https://docs.confluent.io/cloud/current/access-management/authenticate/oauth/identity-pools.html).
+
+
+    ## The Identity Pools Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.IdentityPool" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `identity_pools_per_provider` | Number of Identity Pools per Identity Provider |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Identity Pools (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-identity-pools-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-identity-providers-iam-v2-api
+  name: Confluent | the Data Streaming Platform Identity Providers (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `IdentityProvider` objects represent external OAuth-OIDC providers in Confluent Cloud.
+
+
+    The API allows you to list, create, read, update, and delete your Identity Provider.
+
+
+
+    Related guide: [OAuth for Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/authenticate/oauth/overview.html).
+
+
+    ## The Identity Providers Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.IdentityProvider" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `identity_providers_per_org` | Number of OAuth identity providers per organization |
+
+    | `public_keys_per_provider` | Number of public keys saved per identity provider |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Identity Providers (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-identity-providers-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-integrations-notifications-v1-api
+  name: Confluent | the Data Streaming Platform Integrations (notifications/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    You can create an `Integration` to specify how we can notify you when we receive an alert/notification
+    for
+
+    a subscription. Please note that you can only perform create, update and delete operations for integrations
+
+    of type `Webhook`, `Slack` and `MsTeams`. You cannot create, update or delete integrations of type
+    `RoleEmail`
+
+    and `UserEmail`.
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The Integrations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.Integration" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `integrations_per_org` | Maximum number of integrations in one Confluent Cloud organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Integrations (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-integrations-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-integrations-pim-v1-api
+  name: Confluent | the Data Streaming Platform Integrations (pim/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Provider Integration` objects represent access to public cloud service provider (CSP) resources
+
+    that may be accessed by Confluent resources (for example, connectors).
+
+
+    The API allows you to create, retrieve, and delete individual integrations, and also obtain a
+
+    list of all your provider integrations.
+
+
+
+    Related guide: [Provider Integration in Confluent Cloud](https://docs.confluent.io/home/overview.html).
+
+
+    ## The Integrations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/pim.v1.Integration" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Integrations (pim/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-integrations-pim-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-integrations-pim-v2-api
+  name: Confluent | the Data Streaming Platform Integrations (pim/v2) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To Provider Integration](https://img.shields.io/badge/-Request%20Access%20To%20Provider%20Integration-%23bc8540)](mailto:ccloud-api-access+pim-v2-early-access@confluent.io?subject=Request%20to%20join%20pim/v2%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20pim/v2%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    `Provider Integration` objects represent access to public cloud service provider (CSP) resources
+
+    that may be accessed by Confluent resources (for example, connectors).
+
+
+    The API allows you to create, retrieve, update, delete, and validate individual integrations, and
+    also obtain a
+
+    list of all your provider integrations.
+
+
+    Note: The pim/v2 API currently supports only Azure and GCP provider integrations.
+
+
+
+    Related guide: [Provider Integration in Confluent Cloud](https://docs.confluent.io/home/overview.html).
+
+
+    ## The Integrations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/pim.v2.Integration" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Integrations (pim/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-integrations-pim-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-invitations-iam-v2-api
+  name: Confluent | the Data Streaming Platform Invitations (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Invitation` objects represent invitations to invite users to join your organizations in Confluent
+    Cloud.
+
+
+    The API allows you to list all your invitations, as well as create, read, and delete a specified invitation.
+
+
+
+    Related guide: [User invitations in Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/identity/user-accounts.html).
+
+
+    ## The Invitations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.Invitation" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `invitations_per_org` | Invitations in a Confluent Cloud organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Invitations (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-invitations-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-ip-addresses-networking-v1-api
+  name: Confluent | the Data Streaming Platform IP Addresses (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    IP Addresses
+
+
+    Related guide: [Use Public Egress IP addresses on Confluent Cloud](https://docs.confluent.io/cloud/current/networking/static-egress-ip-addresses.html)
+
+
+    ## The IP Addresses Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.IpAddress" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - IP Addresses (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-ip-addresses-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-ip-filter-summaries-iam-v2-api
+  name: Confluent | the Data Streaming Platform IP Filter Summaries (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The IP Filter Summary endpoint returns an aggregation of the IP Filters across the system.
+
+    This API can be queried in the context of an organization or an environment. It returns a
+
+    summary of every operation group in the system grouped with a higher summary by operation
+
+    group category.
+
+
+
+    ## The IP Filter Summaries Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.IpFilterSummary" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - IP Filter Summaries (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-ip-filter-summaries-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-ip-filters-iam-v2-api
+  name: Confluent | the Data Streaming Platform IP Filters (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `IP Filter` objects are bindings between IP Groups and Confluent resource(s).
+
+    For example, a binding between "CorpNet" and "Management APIs" will enforce that
+
+    access must come from one of the CIDR blocks associated with CorpNet.
+
+    If there are multiple IP filters bound to a resource, a request matching any of the CIDR blocks
+
+    for any of the IP Group will allow the request.
+
+    If there are no IP Filters for a resource, then access will be granted to requests originating
+
+    from any IP Address.
+
+
+
+    ## The IP Filters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.IpFilter" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - IP Filters (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-ip-filters-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-ip-groups-iam-v2-api
+  name: Confluent | the Data Streaming Platform IP Groups (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Definitions of networks which can be named and referred by IP blocks, commonly used to attach to IP
+    Filter rules.
+
+
+
+    ## The IP Groups Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.IpGroup" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - IP Groups (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-ip-groups-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-jwks-iam-v2-api
+  name: Confluent | the Data Streaming Platform Jwks (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `JWKS` objects represent public key sets for a specific OAuth/OpenID Connect provider within
+
+    Confluent Cloud.
+
+
+    The API allows you to refresh JWKS public key data.
+
+
+
+    Related guide: [OAuth for Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/authenticate/oauth/overview.html).
+
+
+    ## The Jwks Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.Jwks" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Jwks (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-jwks-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-kafka-clusters-usm-v1-api
+  name: Confluent | the Data Streaming Platform Kafka Clusters (usm/v1) API
+  description: >-
+    [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `KafkaCluster` object represent Confluent Platform Kafka clusters registered with Confluent Cloud.
+
+    The API allows you to create and delete KafkaCluster.
+
+
+
+    ## The Kafka Clusters Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/usm.v1.KafkaCluster" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Kafka Clusters (usm/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-kafka-clusters-usm-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-key-encryption-keys-v1-api
+  name: Confluent | the Data Streaming Platform Key Encryption Keys (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete key encryption keys.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Key Encryption Keys (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-key-encryption-keys-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-keys-byok-v1-api
+  name: Confluent | the Data Streaming Platform Keys (byok/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Key` objects represent customer managed keys on dedicated Confluent Cloud clusters.
+
+
+    Keys are used to protect data at rest stored in your dedicated Confluent Cloud clusters on AWS, Azure,
+    and GCP.
+
+    This API allows you to upload and retrieve self-managed keys on Confluent Cloud.
+
+
+
+    Related guide: [Confluent Cloud Bring Your Own Key (BYOK) Management API](https://docs.confluent.io/cloud/current/clusters/byok/index.html).
+
+
+    ## The Keys Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/byok.v1.Key" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `byok.max_keys.per_org` | BYOK keys in one Confluent Cloud organisation. |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Keys (byok/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-keys-byok-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-lifecycle-connect-v1-api
+  name: Confluent | the Data Streaming Platform Lifecycle (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for managing the lifecycle for a Managed Connector or Custom Connector in Confluent Cloud. Operations
+    currently supported are Pause and Resume.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Lifecycle (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-lifecycle-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-managed-connector-plugins-connect-v1-api
+  name: Confluent | the Data Streaming Platform Managed Connector Plugins (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for Managed connectors in Confluent Cloud.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Managed Connector Plugins (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-managed-connector-plugins-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-materialized-table-versions-sql-v1-api
+  name: Confluent | the Data Streaming Platform Materialized Table Versions (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `MaterializedTableVersion` represents a specific version of a Materialized Table, capturing the state
+    and changes at that point in time.
+
+    The API allows you to list and read versions of your materialized tables.
+
+    ## The Materialized Table Version Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.MaterializedTableVersion" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Materialized Table Versions (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-materialized-table-versions-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-materialized-tables-sql-v1-api
+  name: Confluent | the Data Streaming Platform Materialized Tables (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `MaterializedTable` represents a core resource used to define and manage streaming SQL queries that
+    persist results.
+
+    The API allows you to list, create, read, update, and delete your materialized tables.
+
+    ## The Materialized Table Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.MaterializedTable" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Materialized Tables (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-materialized-tables-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-modes-v1-api
+  name: Confluent | the Data Streaming Platform Modes (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete schema subjects modes of operation.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Modes (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-modes-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-network-link-endpoints-networking-v1-api
+  name: Confluent | the Data Streaming Platform Network Link Endpoints (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A Network Link Enpoint is associated with a Private Link Confluent Cloud Network at the origin and
+    a
+
+    Network Link Service (associated with another Private Link Confluent Cloud Network) at the target.
+
+    It enables connectivity between the origin network and the target network.
+
+    It can only be associated with a Private Link network.
+
+
+
+    Related guide: [Network Linking Overview](https://docs.confluent.io/cloud/current/networking/network-linking.html).
+
+
+    ## The Network Link Endpoints Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.NetworkLinkEndpoint" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `network_link_endpoints_per_network` | Number of network link endpoints per network |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Network Link Endpoints (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-network-link-endpoints-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-network-link-service-associations-networking-v1-api
+  name: >-
+    Confluent | the Data Streaming Platform Network Link Service Associations (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    List of incoming Network Link Enpoints associated with the Network Link Service.
+
+
+
+    Related guide: [Network Linking Overview](https://docs.confluent.io/cloud/current/networking/network-linking.html).
+
+
+    ## The Network Link Service Associations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.NetworkLinkServiceAssociation" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Network Link Service Associations (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-network-link-service-associations-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-network-link-services-networking-v1-api
+  name: Confluent | the Data Streaming Platform Network Link Services (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Network Link Service is associated with a Private Link Confluent Cloud Network.
+
+    It enables connectivity from other Private Link Confluent Cloud Networks based on
+
+    the configured accept policies.
+
+
+
+    Related guide: [Network Linking Overview](https://docs.confluent.io/cloud/current/networking/network-linking.html).
+
+
+    ## The Network Link Services Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.NetworkLinkService" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `network_link_service_per_network` | Number of network link services per network |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Network Link Services (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-network-link-services-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-networks-networking-v1-api
+  name: Confluent | the Data Streaming Platform Networks (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Network` represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed
+    cloud
+
+    provider accounts. Dedicated networks support more networking options but can only contain Dedicated
+    clusters.
+
+    Shared networks can contain any cluster type.
+
+
+    The API allows you to list, create, read, update, and delete your networks.
+
+
+
+    Related guide: [APIs to manage networks in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
+
+
+    ## The Networks Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Network" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `dedicated_networks_per_environment` | Number of dedicated networks per Confluent Cloud environment
+    |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Networks (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-networks-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-notification-types-notifications-v1-api
+  name: Confluent | the Data Streaming Platform Notification Types (notifications/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The type of notifications (and their corresponding metadata) supported by Confluent.
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The Notification Types Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.NotificationType" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Notification Types (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-notification-types-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-oauth-tokens-sts-v1-api
+  name: Confluent | the Data Streaming Platform OAuth Tokens (sts/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    OAuth Token is a [JSON Web Token (JWT)](https://www.rfc-editor.org/rfc/rfc7519) that enables the use
+    of
+
+    external identities to access Confluent Cloud APIs
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - OAuth Tokens (sts/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-oauth-tokens-sts-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-offsets-connect-v1-api
+  name: Confluent | the Data Streaming Platform Offsets (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for managing the offsets for a Managed Connector.
+
+
+    Related guide: [Manage Connector Offsets](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Offsets (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-offsets-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-opt-ins-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Opt Ins (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Stream sharing opt in options
+
+
+    ## The Opt Ins Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.OptIn" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Opt Ins (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-opt-ins-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-org-compute-pool-configs-fcpm-v2-api
+  name: Confluent | the Data Streaming Platform Org Compute Pool Configs (fcpm/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `OrgComputePoolConfig` manages compute pool configuration settings for an organization.
+
+    The API allows you to read and update organization-wide settings such as whether default pools are
+    enabled
+
+    and their maximum CFU limits.
+
+
+
+    ## The Org Compute Pool Configs Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.OrgComputePoolConfig" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Org Compute Pool Configs (fcpm/v2)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-org-compute-pool-configs-fcpm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-organizations-org-v2-api
+  name: Confluent | the Data Streaming Platform Organizations (org/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Organization` objects represent a customer organization. An organization contains all customer
+
+    resources (e.g., Environments, Kafka Clusters, Service Accounts, API Keys) and is tied to a billing
+
+    agreement (including any annual commitment or support plan).
+
+
+    The API allows you to list, view, and update your organizations.
+
+
+
+    Related guide: [Organizations for Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/hierarchy/organizations/cloud-organization.html).
+
+
+    ## The Organizations Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/org.v2.Organization" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `organizations_per_user` | Confluent Cloud organizations a user belongs to |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Organizations (org/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-organizations-org-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-organizations-partner-v2-api
+  name: Confluent | the Data Streaming Platform Organizations (partner/v2) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To Partner v2](https://img.shields.io/badge/-Request%20Access%20To%20Partner%20v2-%23bc8540)](mailto:ccloud-api-access+partner-v2-early-access@confluent.io?subject=Request%20to%20join%20partner/v2%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20partner/v2%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    `Organizations` objects represent an entire Confluent Cloud organization.
+
+    Partners are allowed to get an organization they have signed up or
+
+    list all organizations they have signed up.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Organizations (partner/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-organizations-partner-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-partition-v3-api
+  name: Confluent | the Data Streaming Platform Partition (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Partition (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-partition-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-peerings-networking-v1-api
+  name: Confluent | the Data Streaming Platform Peerings (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Add or remove VPC/VNet peering connections between your VPC/VNet and Confluent Cloud.
+
+
+    Related guides:
+
+    * [Use VPC peering connections with Confluent Cloud on AWS](https://docs.confluent.io/cloud/current/networking/peering/aws-peering.html).
+
+    * [Use VNet peering connections with Confluent Cloud on Azure](https://docs.confluent.io/cloud/current/networking/peering/azure-peering.html).
+
+    * [Use VPC peering connections with Confluent Cloud on Google Cloud](https://docs.confluent.io/cloud/current/networking/peering/gcp-peering.html).
+
+
+
+    ## The Peerings Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Peering" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `peerings_per_network` | Number of peerings per network |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Peerings (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-peerings-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-presigned-urls-artifact-v1-api
+  name: Confluent | the Data Streaming Platform Presigned Urls (artifact/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Request a presigned upload URL for new Flink Artifact. Note that
+
+    the URL policy expires in one hour. If the policy expires, you can request
+
+    a new presigned upload URL.
+
+
+
+    ## The Presigned Urls Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.PresignedUrl" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Presigned Urls (artifact/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-presigned-urls-artifact-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-presigned-urls-cam-v1-api
+  name: Confluent | the Data Streaming Platform Presigned Urls (cam/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Request a presigned upload URL for new Connect Artifact. Note that
+
+    the URL policy expires in one hour. If the policy expires, you can request
+
+    a new presigned upload URL.
+
+
+
+    ## The Presigned Urls Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cam.v1.PresignedUrl" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Presigned Urls (cam/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-presigned-urls-cam-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-presigned-urls-ccpm-v1-api
+  name: Confluent | the Data Streaming Platform Presigned Urls (ccpm/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Request a presigned upload URL for new Custom Connect Plugin. Note that
+
+    the URL policy expires in one hour. If the policy expires, you can request
+
+    a new presigned upload URL.
+
+
+    Related guide:
+
+    [Custom Connect Plugin API](https://docs.confluent.io/cloud/current/connectors/connect-api-section.html).
+
+
+
+    ## The Presigned Urls Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/ccpm.v1.PresignedUrl" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Presigned Urls (ccpm/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-presigned-urls-ccpm-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-presigned-urls-connect-v1-api
+  name: Confluent | the Data Streaming Platform Presigned Urls (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Request a presigned upload URL for new Custom Connector Plugin. Note that
+
+    the URL policy expires in one hour. If the policy expires, you can request
+
+    a new presigned upload URL.
+
+
+    Related guide:
+
+    [Custom Connector Plugin API](https://docs.confluent.io/cloud/current/connectors/connect-api-section.html).
+
+
+
+    ## The Presigned Urls Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/connect.v1.PresignedUrl" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Presigned Urls (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-presigned-urls-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-private-link-accesses-networking-v1-api
+  name: Confluent | the Data Streaming Platform Private Link Accesses (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Add or remove access to PrivateLink endpoints by AWS account, Azure subscription and GCP project ID.
+
+
+    Related guides:
+
+    * [Use Google Cloud Private Service Connect with Confluent Cloud](https://docs.confluent.io/cloud/current/networking/private-links/gcp-private-service-connect.html).
+
+    * [Use Azure Private Link with Confluent Cloud](https://docs.confluent.io/cloud/current/networking/private-links/azure-privatelink.html).
+
+    * [Use AWS PrivateLink with Confluent Cloud](https://docs.confluent.io/cloud/current/networking/private-links/aws-privatelink.html).
+
+
+
+    ## The Private Link Accesses Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.PrivateLinkAccess" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `private_link_accounts_per_network` | Number of AWS accounts per network |
+
+    | `private_link_subscriptions_per_network` | Number of Azure subscriptions per network |
+
+    | `private_service_connect_projects_per_network` | Number of GCP projects per network |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Private Link Accesses (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-private-link-accesses-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-private-link-attachment-connections-networking-v1-api
+  name: >-
+    Confluent | the Data Streaming Platform Private Link Attachment Connections (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    PrivateLink attachment connection objects represent connections established to a cloud region
+
+    in order to access resources that belong to a Confluent Cloud Environment.
+
+    The API allows you to list, create, read update and delete your PrivateLink attachment connections.
+
+
+
+    ## The Private Link Attachment Connections Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.PrivateLinkAttachmentConnection" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Private Link Attachment Connections (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-private-link-attachment-connections-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-private-link-attachments-networking-v1-api
+  name: Confluent | the Data Streaming Platform Private Link Attachments (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    PrivateLink attachment objects represent reservations to establish PrivateLink connections
+
+    to a cloud region in order to access resources that belong to a Confluent Cloud Environment.
+
+    The API allows you to list, create, read update and delete your PrivateLink attachments.
+
+
+
+    ## The Private Link Attachments Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.PrivateLinkAttachment" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `private_link_attachments_per_environment` | Number of PrivateLink Attachments per environment |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Private Link Attachments (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-private-link-attachments-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-provider-shared-resources-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Provider Shared Resources (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ProviderSharedResource` object contains details of the data stream
+
+    (topic, schema registry subjects, sharing metadata) that you have shared through Stream Sharing.
+
+
+
+    ## The Provider Shared Resources Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.ProviderSharedResource" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-provider-shared-resources-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-provider-shares-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Provider Shares (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ProviderShare` object respresents the share that you have created through Stream Sharing.
+
+
+
+    Related guide: [Provider Stream Shares in Confluent Cloud](https://docs.confluent.io/cloud/current/stream-sharing/produce-shared-data.html#stream-shares).
+
+
+    ## The Provider Shares Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.ProviderShare" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Provider Shares (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-provider-shares-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-records-v3-api
+  name: Confluent | the Data Streaming Platform Records (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Records (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-records-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-regions-fcpm-v2-api
+  name: Confluent | the Data Streaming Platform Regions (fcpm/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Region` objects represent cloud provider regions available when placing Flink compute pools.
+
+    The API allows you to list Flink regions.
+
+
+
+    ## The Regions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.Region" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Regions (fcpm/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-regions-fcpm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-regions-rtce-v1-api
+  name: Confluent | the Data Streaming Platform Regions (rtce/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Region` objects represent cloud provider regions where RtceTopics can be deployed.
+
+    This API allows you to list all supported RTCE regions.
+
+
+
+    ## The Regions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/rtce.v1.Region" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Regions (rtce/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-regions-rtce-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-regions-srcm-v2-api
+  name: Confluent | the Data Streaming Platform Regions (srcm/v2) API
+  description: >-
+    [![Deprecated](https://img.shields.io/badge/Lifecycle%20Stage-Deprecated-%23ff005c)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Region` objects represent cloud provider regions available when placing Schema Registry clusters.
+
+    The API allows you to list Schema Registry regions.
+
+
+
+    Related guides:
+
+    * [Confluent Cloud providers and region support](https://docs.confluent.io/cloud/current/stream-governance/packages.html#cloud-providers-and-region-support).
+
+    * [srcm/v3 Migration Guide](https://docs.confluent.io/cloud/current/stream-governance/packages.html#deprecation-of-srcm-v2-clusters-and-regions-apis-and-upgrade-guide).
+
+
+
+    ## The Regions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/srcm.v2.Region" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Regions (srcm/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-regions-srcm-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-regions-tableflow-v1-api
+  name: Confluent | the Data Streaming Platform Regions (tableflow/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Region` objects represent cloud provider regions where Tableflow can be enabled.
+
+    This API allows you to list all supported Tableflow regions.
+
+
+
+    ## The Regions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/tableflow.v1.Region" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Regions (tableflow/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-regions-tableflow-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-resource-preferences-notifications-v1-api
+  name: Confluent | the Data Streaming Platform Resource Preferences (notifications/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ResourcePreference` objects represent the intent of the customers to enable or disable all notifications
+
+    at the resource level. A ResourcePreference is created for a specific Confluent Cloud Resource
+
+    (e.g., a connector) and determines whether the user will receive notifications for that resource.
+
+
+    This API allows you to create, retrieve, update and delete resourcePreferences.
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The Resource Preferences Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.ResourcePreference" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Resource Preferences (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-resource-preferences-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-resource-subscriptions-notifications-v1-api
+  name: Confluent | the Data Streaming Platform Resource Subscriptions (notifications/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ResourceSubscription` objects represent the intent of the customers to get notifications of particular
+    types
+
+    at the resource level. A ResourceSubscription is created for a specific Confluent Cloud Resource
+
+    (e.g., a connector) and determines whether the user will receive notifications for that resource.
+
+
+    This API allows you to create, retrieve, update, delete and list ResourceSubscription.
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The Resource Subscriptions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.ResourceSubscription" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Resource Subscriptions (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-resource-subscriptions-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-role-bindings-iam-v2-api
+  name: Confluent | the Data Streaming Platform Role Bindings (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A role binding grants a Principal a role on resources that match a pattern.
+
+
+    The API allows you to perform create, delete, and list operations on role bindings.
+
+
+
+    Related guide: [Role-Based Access Control (RBAC)](https://docs.confluent.io/cloud/current/access-management/access-control/cloud-rbac.html).
+
+
+    ## The Role Bindings Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.RoleBinding" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Role Bindings (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-role-bindings-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-rtce-topics-rtce-v1-api
+  name: Confluent | the Data Streaming Platform Rtce Topics (rtce/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    An RtceTopic represents a customer's Kafka topic enabled for real-time context engine capabilities,
+
+    providing low-latency data access and lookups.
+
+
+
+    ## The Rtce Topics Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/rtce.v1.RtceTopic" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Rtce Topics (rtce/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-rtce-topics-rtce-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-schemas-v1-api
+  name: Confluent | the Data Streaming Platform Schemas (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete schemas.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Schemas (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-schemas-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-scopes-service-quota-v1-api
+  name: Confluent | the Data Streaming Platform Scopes (service-quota/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Gets a list of all available scopes for applied quotas.
+
+
+
+    Related guide: [Quota Scopes](https://docs.confluent.io/cloud/current/quotas/quotas.html#query-for-scopes).
+
+
+    ## The Scopes Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/service-quota.v1.Scope" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Scopes (service-quota/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-scopes-service-quota-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-search-v1-api
+  name: Confluent | the Data Streaming Platform Search (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to search for entities.
+
+
+    Related guide: [Catalog API Documentation](https://docs.confluent.io/cloud/current/stream-governance/stream-catalog.html#catalog-api-documentation).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Search (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-search-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-service-accounts-iam-v2-api
+  name: Confluent | the Data Streaming Platform Service Accounts (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `ServiceAccount` objects are typically used to represent applications and other non-human principals
+
+    that may access your Confluent resources.
+
+
+    The API allows you to create, retrieve, update, and delete individual service accounts, as well as
+
+    list all your service accounts.
+
+
+
+    Related guide: [Service Accounts in Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/service-account.html).
+
+
+    ## The Service Accounts Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.ServiceAccount" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `service_accounts_per_org` | Service Accounts in one Confluent Cloud organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Service Accounts (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-service-accounts-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-share-group-v3-api
+  name: Confluent | the Data Streaming Platform Share Group (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Share Group (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-share-group-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-shared-tokens-cdx-v1-api
+  name: Confluent | the Data Streaming Platform Shared Tokens (cdx/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    Encrypted Token shared with consumer
+
+
+
+    ## The Shared Tokens Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/cdx.v1.SharedToken" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Shared Tokens (cdx/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-shared-tokens-cdx-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-signup-partner-v2-api
+  name: Confluent | the Data Streaming Platform Signup (partner/v2) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To Partner v2](https://img.shields.io/badge/-Request%20Access%20To%20Partner%20v2-%23bc8540)](mailto:ccloud-api-access+partner-v2-early-access@confluent.io?subject=Request%20to%20join%20partner/v2%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20partner/v2%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    `Signup` APIs can only be performed by partners.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Signup (partner/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-signup-partner-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-statement-exceptions-sql-v1-api
+  name: Confluent | the Data Streaming Platform Statement Exceptions (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `StatementException` represents an exception of a `Statement` resource.
+
+    The API allows you to read your statement's exceptions.
+
+    ## The Statement Exceptions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.StatementException" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Statement Exceptions (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-statement-exceptions-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-statement-results-sql-v1-api
+  name: Confluent | the Data Streaming Platform Statement Results (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `StatementResult` represents a result of a `Statement` resource.
+
+    The API allows you to read your statement's results.
+
+    ## The Statement Results Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.StatementResult" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Statement Results (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-statement-results-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-statements-query-v1alpha1-api
+  name: Confluent | the Data Streaming Platform Statements (query/v1alpha1) API
+  description: >-
+    Execute SQL statements against queryable topics and read their results. A statement
+
+    that resolves quickly returns its results inline; a long-running one is assigned a
+
+    background job that can be polled for status.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Statements (query/v1alpha1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-statements-query-v1alpha1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-statements-sql-v1-api
+  name: Confluent | the Data Streaming Platform Statements (sql/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Statement` represents a core resource used to model SQL statements for execution.
+
+    A statement generalizes DDL, DML, DQL, etc., but doesn’t attempt to handle session
+
+    management or any higher-level functionality.
+
+    The API allows you to list, create, read, and delete your statements.
+
+    ## The Statements Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.Statement" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Statements (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-statements-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-status-connect-v1-api
+  name: Confluent | the Data Streaming Platform Status (connect/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for requesting the status or the tasks for a Managed Connector or Custom Connector in Confluent
+    Cloud.
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Status (connect/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-status-connect-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-streams-group-v3-api
+  name: Confluent | the Data Streaming Platform Streams Group (v3) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Streams Group (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-streams-group-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-subjects-v1-api
+  name: Confluent | the Data Streaming Platform Subjects (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete schema subjects and versions.
+
+
+    Related guide: [Manage Schemas in Confluent Cloud](https://docs.confluent.io/cloud/current/sr/schemas-manage.html#manage-schemas-in-ccloud).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Subjects (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-subjects-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-subscriptions-notifications-v1-api
+  name: Confluent | the Data Streaming Platform Subscriptions (notifications/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Subscription` objects represent the intent of the customers to get notifications of particular types.
+
+    A subscription is created for a particular `NotificationType` and the user will get notifications
+    on the
+
+    `Integrations` that are provided while creating the subscription.
+
+
+    This API allows you to create, retrieve, and update subscriptions,
+
+    as well as to view the list of all your subscriptions. You can also delete subscriptions
+
+    with RECOMMENDED or OPTIONAL notification types. Subscriptions with REQUIRED notification types cannot
+    be deleted.
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The Subscriptions Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.Subscription" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Subscriptions (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-subscriptions-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-tableflow-topics-tableflow-v1-api
+  name: Confluent | the Data Streaming Platform Tableflow Topics (tableflow/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    A Tableflow Topic represents configuration related to a Tableflow enabled kafka topic
+
+
+
+    ## The Tableflow Topics Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/tableflow.v1.TableflowTopic" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Tableflow Topics (tableflow/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-tableflow-topics-tableflow-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-tools-sql-v1-api
+  name: Confluent | the Data Streaming Platform Tools (sql/v1) API
+  description: >-
+    [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `Tool` models a reusable tool resource backed by a connection that can be referenced
+
+    by agents to perform actions.
+
+    The API allows you to create your tools.
+
+    ## The Tools Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/sql.v1.Tool" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Tools (sql/v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-tools-sql-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-topic-v3-api
+  name: Confluent | the Data Streaming Platform Topic (v3) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Topic (v3)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-topic-v3-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-transit-gateway-attachments-networking-v1-api
+  name: Confluent | the Data Streaming Platform Transit Gateway Attachments (networking/v1) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    AWS Transit Gateway Attachments
+
+
+    Related guide: [APIs to manage AWS Transit Gateway Attachments](https://docs.confluent.io/cloud/current/networking/aws-transit-gateway.html).
+
+
+    ## The Transit Gateway Attachments Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/networking.v1.TransitGatewayAttachment" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `tgw_attachments_per_network` | Number of TGW attachments per network |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Transit Gateway Attachments (networking/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-transit-gateway-attachments-networking-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-types-v1-api
+  name: Confluent | the Data Streaming Platform Types (v1) API
+  description: >-
+    [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete catalog types such as tag definitions.
+
+
+    Related guide: [Catalog API Documentation](https://docs.confluent.io/cloud/current/stream-governance/stream-catalog.html#catalog-api-documentation).
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Types (v1)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-types-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-user-notifications-notifications-v1-api
+  name: Confluent | the Data Streaming Platform User Notifications (notifications/v1) API
+  description: >-
+    [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+    [![Request Access To User Notifications API v1](https://img.shields.io/badge/-Request%20Access%20To%20User%20Notifications%20API%20v1-%23bc8540)](mailto:ccloud-api-access+notifications-v1-early-access@confluent.io?subject=Request%20to%20join%20notifications/v1%20API%20Early%20Access&body=I%E2%80%99d%20like%20to%20join%20the%20Confluent%20Cloud%20API%20Early%20Access%20for%20notifications/v1%20to%20provide%20early%20feedback%21%20My%20Cloud%20Organization%20ID%20is%20%3Cretrieve%20from%20https%3A//confluent.cloud/settings/billing/payment%3E.)
+
+
+    `UserNotification` objects represent in-app notifications scoped to a specific
+
+    Confluent Cloud user. Each notification carries a severity, references the
+
+    Confluent Cloud resource it relates to, and tracks whether the user has read it.
+
+
+    This API lets you list and retrieve your notifications, mark notifications as
+
+    read or unread, and fetch an unread-count summary.
+
+
+    `read` is the only mutable field on this resource; `PATCH` requests with values
+
+    for other fields will have those values silently ignored.
+
+
+    Two `PATCH` shapes are supported:
+
+    - `PATCH /user-notifications/{id}` — update a single notification by id.
+
+    - `PATCH /user-notifications` — update the read state of every notification
+      matching the supplied filter query parameters. The body is a narrow
+      payload (`{ "read": true | false }`) and the same filters accepted by
+      the list endpoint scope which notifications are updated (with the
+      exception of `include`, which is a list-only partial-response selector).
+
+    The heavier `integrations` and `recommended_actions` fields are populated on
+
+    single-resource reads (`GET /user-notifications/{id}`) and omitted from list
+
+    responses by default to keep collection payloads slim. Use the `include`
+
+    query parameter on the list endpoint to opt in to populating these fields
+
+    (`?include=integrations,recommended_actions`).
+
+
+
+    Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+    ## The User Notifications Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.UserNotification" />
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - User Notifications (notifications/v1)
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/confluent-the-data-streaming-platform-user-notifications-notifications-v1-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
+- aid: >-
+    confluent-the-data-streaming-platform:confluent-the-data-streaming-platform-users-iam-v2-api
+  name: Confluent | the Data Streaming Platform Users (iam/v2) API
+  description: >-
+    [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+
+
+    `User` objects represent individuals who may access your Confluent resources.
+
+
+    The API allows you to retrieve, update, and delete individual users, as well as list of all your
+
+    users. This API cannot be used to create new user accounts.
+
+
+
+    Related guide: [Users in Confluent Cloud](https://docs.confluent.io/cloud/current/access-management/user-account.html).
+
+
+    ## The Users Model
+
+    <SchemaDefinition schemaRef="#/components/schemas/iam.v2.User" />
+
+
+    ## Quotas and Limits
+
+    This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+    | Quota | Description |
+
+    | --- | --- |
+
+    | `users_per_org` | Users in one Confluent Cloud organization |
+  humanURL: https://docs.confluent.io/cloud/current/api.html
+  baseURL: https://api.confluent.cloud
+  tags:
+  - Users (iam/v2)
+  properties:
+  - type: OpenAPI
+    url: openapi/confluent-the-data-streaming-platform-users-iam-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: APIReference
+    url: https://docs.confluent.io/cloud/current/api.html
+  - type: ToolCrosswalk
+    url: mcp/confluent-the-data-streaming-platform-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/confluent-the-data-streaming-platform-data-model.yml
 common:
+  - type: Overlay
+    url: overlays/confluent-the-data-streaming-platform-cloud-apis-overlay.yaml
   - type: OAuthScopes
     url: scopes/confluent-the-data-streaming-platform-scopes.yml
   - type: AgenticAccess
