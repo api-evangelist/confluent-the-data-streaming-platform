@@ -1496,6 +1496,8 @@ apis:
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
   tags:
+  - Entity (V1)
+  tags_raw:
   - Entity (v1)
   properties:
   - type: OpenAPI
@@ -3606,6 +3608,8 @@ apis:
   humanURL: https://docs.confluent.io/cloud/current/api.html
   baseURL: https://api.confluent.cloud
   tags:
+  - search V1
+  tags_raw:
   - Search (v1)
   properties:
   - type: OpenAPI
