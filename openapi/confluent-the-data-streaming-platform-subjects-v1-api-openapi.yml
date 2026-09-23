@@ -1,0 +1,1434 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Subjects (v1) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Subjects (v1)
+  description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete schema subjects and versions.
+
+
+    Related guide: Manage Schemas in Confluent Cloud.'
+paths:
+  /subjects/{subject}/versions/{version}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: Get schema by version
+      description: Retrieves a specific version of the schema registered under this subject.
+      operationId: getSchemaByVersion
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: Version of the schema to be returned. Valid values for versionId are between [1,2^31-1] or the string "latest". "latest" returns the last registered schema under the specified subject. Note that there may be a new latest schema that gets registered right after this request is served.
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: 'Desired output format, dependent on schema type. For AVRO schemas, valid values are: " " (default) or "resolved". For PROTOBUF schemas, valid values are: " " (default), "ignore_extensions", or "serialized" (The parameter does not apply to JSON schemas.)'
+        schema:
+          type: string
+          default: ''
+      - name: deleted
+        in: query
+        description: Whether to include deleted schema
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The schema.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/Schema'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found. Error code 40402 indicates version not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Unprocessable Entity. Error code 42202 indicates an invalid version.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    delete:
+      tags:
+      - Subjects (v1)
+      summary: Delete schema version
+      description: Deletes a specific version of the schema registered under this subject. This only deletes the version and the schema ID remains intact making it still possible to decode data using the schema ID. This API is recommended to be used only in development environments or under extreme circumstances where-in, its required to delete a previously registered schema for compatibility purposes or re-register previously registered schema.
+      operationId: deleteSchemaVersion
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: Version of the schema to be returned. Valid values for versionId are between [1,2^31-1] or the string "latest". "latest" returns the last registered schema under the specified subject. Note that there may be a new latest schema that gets registered right after this request is served.
+        required: true
+        schema:
+          type: string
+      - name: permanent
+        in: query
+        description: Whether to perform a permanent delete
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Operation succeeded. Returns the schema version.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: integer
+                format: int32
+                example: 1
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: integer
+                format: int32
+                example: 1
+            application/json; qs=0.5:
+              schema:
+                type: integer
+                format: int32
+                example: 1
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found. Error code 40402 indicates version not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Unprocessable Entity. Error code 42202 indicates an invalid version.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects/{subject}/versions/{version}/referencedby:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: List schemas referencing a schema
+      description: Retrieves the IDs of schemas that reference the specified schema.
+      operationId: getReferencedBy
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: Version of the schema to be returned. Valid values for versionId are between [1,2^31-1] or the string "latest". "latest" returns the last registered schema under the specified subject. Note that there may be a new latest schema that gets registered right after this request is served.
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: Pagination offset for results
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Pagination size for results. Ignored if negative
+        schema:
+          type: integer
+          format: int32
+          default: -1
+      responses:
+        '200':
+          description: List of IDs for schemas that reference the specified schema.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 100001
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 100001
+            application/json; qs=0.5:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 100001
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found. Error code 40402 indicates version not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Unprocessable Entity. Error code 42202 indicates an invalid version.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects/{subject}/versions/{version}/schema:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: Get schema string by version
+      description: Retrieves the schema for the specified version of this subject. Only the unescaped schema string is returned.
+      operationId: getSchemaOnly_1
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: Version of the schema to be returned. Valid values for versionId are between [1,2^31-1] or the string "latest". "latest" returns the last registered schema under the specified subject. Note that there may be a new latest schema that gets registered right after this request is served.
+        required: true
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: Whether to include deleted schema
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The schema string.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: string
+                example: '{"schema": "{"type": "string"}"}'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: string
+                example: '{"schema": "{"type": "string"}"}'
+            application/json; qs=0.5:
+              schema:
+                type: string
+                example: '{"schema": "{"type": "string"}"}'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found. Error code 40402 indicates version not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Unprocessable Entity. Error code 42202 indicates an invalid version.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects/{subject}/versions:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: List versions under subject
+      description: Retrieves a list of versions registered under the specified subject.
+      operationId: listVersions
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: Whether to include deleted schemas
+        schema:
+          type: boolean
+      - name: deletedOnly
+        in: query
+        description: Whether to return deleted schemas only
+        schema:
+          type: boolean
+      - name: offset
+        in: query
+        description: Pagination offset for results
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Pagination size for results. Ignored if negative
+        schema:
+          type: integer
+          format: int32
+          default: -1
+      responses:
+        '200':
+          description: List of version numbers matching the specified parameters.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+            application/json; qs=0.5:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+        '404':
+          description: 'Not Found. Error code 40401 indicates subject not found. '
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    post:
+      tags:
+      - Subjects (v1)
+      summary: Register schema under a subject
+      description: 'Register a new schema under the specified subject. If successfully registered, this returns the unique identifier of this schema in the registry. The returned identifier should be used to retrieve this schema from the schemas resource and is different from the schema''s version which is associated with the subject. If the same schema is registered under a different subject, the same identifier will be returned. However, the version of the schema may be different under different subjects.
+
+        A schema should be compatible with the previously registered schema or schemas (if there are any) as per the configured compatibility level. The configured compatibility level can be obtained by issuing a GET http:get:: /config/(string: subject). If that returns null, then GET http:get:: /config
+
+        When there are multiple instances of Schema Registry running in the same cluster, the schema registration request will be forwarded to one of the instances designated as the primary. If the primary is not available, the client will get an error code indicating that the forwarding has failed.'
+      operationId: register
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: normalize
+        in: query
+        description: Whether to register the normalized schema
+        schema:
+          type: boolean
+      - name: format
+        in: query
+        description: 'Desired output format, dependent on schema type. For AVRO schemas, valid values are: " " (default) or "resolved". For PROTOBUF schemas, valid values are: " " (default), "ignore_extensions", or "serialized" (The parameter does not apply to JSON schemas.)'
+        schema:
+          type: string
+          default: ''
+      requestBody:
+        description: Schema
+        content:
+          application/vnd.schemaregistry.v1+json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/vnd.schemaregistry+json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+        required: true
+      responses:
+        '200':
+          description: Schema successfully registered.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/RegisterSchemaResponse'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/RegisterSchemaResponse'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/RegisterSchemaResponse'
+        '409':
+          description: Conflict. Incompatible schema.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: 'Unprocessable entity. Error code 42201 indicates an invalid schema or schema type. '
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store. Error code 50002 indicates operation timed out. Error code 50003 indicates a failure forwarding the request to the primary.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects/{subject}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    post:
+      tags:
+      - Subjects (v1)
+      summary: Lookup schema under subject
+      description: Check if a schema has already been registered under the specified subject. If so, this returns the schema string along with its globally unique identifier, its version under this subject and the subject name.
+      operationId: lookUpSchemaUnderSubject
+      parameters:
+      - name: subject
+        in: path
+        description: Subject under which the schema will be registered
+        required: true
+        schema:
+          type: string
+      - name: normalize
+        in: query
+        description: Whether to lookup the normalized schema
+        schema:
+          type: boolean
+      - name: format
+        in: query
+        description: 'Desired output format, dependent on schema type. For AVRO schemas, valid values are: " " (default) or "resolved". For PROTOBUF schemas, valid values are: " " (default), "ignore_extensions", or "serialized" (The parameter does not apply to JSON schemas.)'
+        schema:
+          type: string
+          default: ''
+      - name: deleted
+        in: query
+        description: Whether to lookup deleted schemas
+        schema:
+          type: boolean
+      requestBody:
+        description: Schema
+        content:
+          application/vnd.schemaregistry.v1+json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/vnd.schemaregistry+json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/RegisterSchemaRequest'
+        required: true
+      responses:
+        '200':
+          description: The schema.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/Schema'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found. Error code 40403 indicates schema not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    delete:
+      tags:
+      - Subjects (v1)
+      summary: Delete subject
+      description: Deletes the specified subject and its associated compatibility level if registered. It is recommended to use this API only when a topic needs to be recycled or in development environment.
+      operationId: deleteSubject
+      parameters:
+      - name: subject
+        in: path
+        description: Name of the subject
+        required: true
+        schema:
+          type: string
+      - name: permanent
+        in: query
+        description: Whether to perform a permanent delete
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Operation succeeded. Returns list of schema versions deleted
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+            application/json; qs=0.5:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                  example: 1
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: List subjects
+      description: Retrieves a list of registered subjects matching specified parameters.
+      operationId: list
+      parameters:
+      - name: subjectPrefix
+        in: query
+        description: Subject name prefix
+        schema:
+          type: string
+          default: ':*:'
+      - name: deleted
+        in: query
+        description: Whether to look up deleted subjects
+        schema:
+          type: boolean
+      - name: deletedOnly
+        in: query
+        description: Whether to return deleted subjects only
+        schema:
+          type: boolean
+      - name: offset
+        in: query
+        description: Pagination offset for results
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Pagination size for results. Ignored if negative
+        schema:
+          type: integer
+          format: int32
+          default: -1
+      responses:
+        '200':
+          description: List of subjects matching the specified parameters.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: User
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: User
+            application/json; qs=0.5:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: User
+        '500':
+          description: Internal Server Error. Error code 50001 indicates a failure in the backend data store.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /subjects/{subject}/metadata:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Subjects (v1)
+      summary: Retrieve the latest version with the given metadata
+      description: Retrieve the latest version with the given metadata.
+      operationId: getLatestWithMetadata
+      parameters:
+      - name: subject
+        in: path
+        description: Subject under which the schema will be registered
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: query
+        description: The metadata key. Add "?key=key" at the end of the request to match a metadata key. This query parameter can appear multiple times. Each instance is matched with a corresponding value query parameter, in order.
+        schema:
+          type: string
+      - name: value
+        in: query
+        description: The metadata value. Add "?value=value" at the end of the request to match a metadata value. This query parameter can appear multiple times. Each instance is matched with a corresponding key query parameter, in order.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: 'Desired output format, dependent on schema type. For AVRO schemas, valid values are: " " (default) or "resolved". For PROTOBUF schemas, valid values are: " " (default), "ignore_extensions", or "serialized" (The parameter does not apply to JSON schemas.)'
+        schema:
+          type: string
+          default: ''
+      - name: deleted
+        in: query
+        description: Whether to lookup deleted schemas
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The schema.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/Schema'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/Schema'
+        '404':
+          description: 'Error code 40401 -- Subject not found
+
+            Error code 40403 -- Schema not found'
+        '500':
+          description: Internal Server Error.
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+components:
+  schemas:
+    SchemaEntity:
+      type: object
+      properties:
+        entityPath:
+          type: string
+        entityType:
+          type: string
+          enum:
+          - sr_record
+          - sr_field
+    RegisterSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+      description: Schema register response
+    SchemaTags:
+      type: object
+      properties:
+        schemaEntity:
+          $ref: '#/components/schemas/SchemaEntity'
+        tags:
+          type: array
+          items:
+            type: string
+    Metadata:
+      description: User-defined metadata
+      properties:
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          type: object
+        properties:
+          additionalProperties:
+            type: string
+          type: object
+        sensitive:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type:
+      - object
+      - 'null'
+    RuleSet:
+      description: Schema rule set
+      properties:
+        migrationRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        domainRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+      type:
+      - object
+      - 'null'
+    Schema:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: Name of the subject
+          example: User
+        version:
+          type: integer
+          description: Version number
+          format: int32
+          example: 1
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+        schemaType:
+          type: string
+          description: Schema type
+          example: AVRO
+        references:
+          type: array
+          description: References to other schemas
+          items:
+            $ref: '#/components/schemas/SchemaReference'
+        schema:
+          type: string
+          description: Schema definition string
+          example: '{"schema": "{"type": "string"}"}'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        ruleSet:
+          $ref: '#/components/schemas/RuleSet'
+        schemaTags:
+          type: array
+          description: Schema tags
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+      description: Schema
+    RegisterSchemaRequest:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Version number
+          format: int32
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+        schemaType:
+          type: string
+          description: Schema type
+        references:
+          type: array
+          description: References to other schemas
+          items:
+            $ref: '#/components/schemas/SchemaReference'
+        schema:
+          type: string
+          description: Schema definition string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        ruleSet:
+          $ref: '#/components/schemas/RuleSet'
+        schemaTagsToAdd:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        schemaTagsToRemove:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        propagateSchemaTags:
+          type: boolean
+      description: Schema register request
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    Rule:
+      description: Rule
+      properties:
+        name:
+          description: Rule name
+          type: string
+        doc:
+          description: Rule doc
+          type: string
+        kind:
+          description: Rule kind
+          enum:
+          - TRANSFORM
+          - CONDITION
+          type: string
+        mode:
+          description: Rule mode
+          enum:
+          - UPGRADE
+          - DOWNGRADE
+          - UPDOWN
+          - WRITE
+          - READ
+          - WRITEREAD
+          type: string
+        type:
+          description: Rule type
+          type: string
+        tags:
+          description: The tags to which this rule applies
+          items:
+            description: The tags to which this rule applies
+            type: string
+          type: array
+          uniqueItems: true
+        params:
+          additionalProperties:
+            description: Optional params for the rule
+            type: string
+          description: Optional params for the rule
+          type: object
+        expr:
+          description: Rule expression
+          type: string
+        onSuccess:
+          description: Rule action on success
+          type: string
+        onFailure:
+          description: Rule action on failure
+          type: string
+        disabled:
+          description: Whether the rule is disabled
+          type: boolean
+      type: object
+    SchemaReference:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Reference name
+          example: io.confluent.kafka.example.User
+        subject:
+          type: string
+          description: Name of the referenced subject
+          example: User
+        version:
+          type: integer
+          description: Version number of the referenced subject
+          format: int32
+          example: 1
+      description: Schema reference
+  responses:
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
+    schemaregistry.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 400
+            message: Bad Request
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

@@ -1,0 +1,1267 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Streams Group (v3) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Streams Group (v3)
+  description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)'
+paths:
+  /kafka/v3/clusters/{cluster_id}/streams-groups:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    get:
+      summary: List Streams Groups
+      operationId: listKafkaStreamsGroups
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the list of streams groups that belong to the specified Kafka cluster'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListStreamsGroupsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    get:
+      summary: Get Streams Group
+      operationId: getKafkaStreamsGroup
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the streams group specified by the ``group_id``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/subtopologies:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    get:
+      summary: List Streams Group Subtopologies
+      operationId: listKafkaStreamsGroupSubtopologies
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return a list of subtopologies that belong to the specified streams group.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListStreamsGroupSubtopologiesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/subtopologies/{subtopology_id}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/SubtopologyId'
+    get:
+      summary: Get Streams Group Subtopology
+      operationId: getKafkaStreamsGroupSubtopology
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the subtopology specified by the ``subtopology_id``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsGroupSubtopologyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    get:
+      summary: List Streams Group Members
+      operationId: listKafkaStreamsGroupMembers
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return a list of members that belong to the specified streams group.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListStreamsGroupMembersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    get:
+      summary: Get Streams Group Member
+      operationId: getKafkaStreamsGroupMember
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the members specified by the ``member_id``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsGroupMemberResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/assignments:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    get:
+      summary: Get Streams Group Member Assignments
+      operationId: getKafkaStreamsGroupMemberAssignments
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the assignments of the member specified by the ``member_id``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsGroupMemberAssignmentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/target-assignments:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    get:
+      summary: Get Streams Group Member Target Assignments
+      operationId: getKafkaStreamsGroupMemberTargetAssignments
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the target assignments of the member specified by the ``member_id``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsGroupMemberAssignmentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/assignments/{assignments_type}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    - $ref: '#/components/parameters/AssignmentsType'
+    get:
+      summary: List Streams Group Assignments of a Specific Type
+      operationId: listKafkaStreamsGroupMemberAssignmentTasks
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the tasks of the member specified by the ``member_id``, and the type ``assignments_type``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListStreamsTasksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/target-assignments/{assignments_type}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    - $ref: '#/components/parameters/AssignmentsType'
+    get:
+      summary: List Streams Group Target Assignments of a Specific Type
+      operationId: listKafkaStreamsGroupMemberTargetAssignmentTasks
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the target tasks of the member specified by the ``member_id``, and the type ``assignments_type``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListStreamsTasksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  ? /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/assignments/{assignments_type}/subtopologies/{subtopology_id}
+  : servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    - $ref: '#/components/parameters/AssignmentsType'
+    - $ref: '#/components/parameters/SubtopologyId'
+    get:
+      summary: List Streams Group Assignments Task Partitions of a Specific Type and…
+      operationId: getKafkaStreamsGroupMemberAssignmentTaskPartitions
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the tasks of the member specified by the ``member_id``, and the type ``assignments_type``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsTaskResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  ? /kafka/v3/clusters/{cluster_id}/streams-groups/{group_id}/members/{member_id}/target-assignments/{assignments_type}/subtopologies/{subtopology_id}
+  : servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/MemberId'
+    - $ref: '#/components/parameters/AssignmentsType'
+    - $ref: '#/components/parameters/SubtopologyId'
+    get:
+      summary: List Streams Group Target Assignments Task Partitions of a Specific Type and…
+      operationId: getKafkaStreamsGroupMemberTargetAssignmentTaskPartitions
+      description: '![Early Access](#section/Versioning/API-Lifecycle-Policy)
+
+        Return the tasks of the member specified by the ``member_id``, and the type ``assignments_type``.'
+      tags:
+      - Streams Group (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStreamsTaskResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+components:
+  schemas:
+    AssignmentsType:
+      description: The type of the Streams task assignments.
+      type: string
+      x-extensible-enum:
+      - ACTIVE
+      - STANDBY
+      - WARMUP
+    ResourceMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        resource_name:
+          type:
+          - string
+          - 'null'
+    StreamsGroupSubtopologyDataList:
+      description: The list of Streams group subtopologies.
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            description: The array of Streams group subtopology details.
+            items:
+              $ref: '#/components/schemas/StreamsGroupSubtopologyData'
+    StreamsGroupMemberDataList:
+      description: The list of Streams group members.
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            description: The array of Streams group member details.
+            items:
+              $ref: '#/components/schemas/StreamsGroupMemberData'
+    StreamsTaskDataList:
+      description: The list of Streams tasks.
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            description: The array of Streams task details.
+            items:
+              $ref: '#/components/schemas/StreamsTaskData'
+    StreamsGroupMemberData:
+      description: The details of a Streams group member.
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - group_id
+        - member_id
+        - process_id
+        - client_id
+        - instance_id
+        - member_epoch
+        - topology_epoch
+        - is_classic
+        - assignments
+        - target_assignment
+        properties:
+          cluster_id:
+            type: string
+            description: The unique identifier of the Kafka cluster.
+          group_id:
+            type: string
+            description: The unique identifier of the Streams group.
+          member_id:
+            type: string
+            description: The unique identifier of the Streams group member.
+          process_id:
+            type: string
+            description: The process identifier of the Streams group member.
+          client_id:
+            type: string
+            description: The client identifier of the Streams group member.
+          instance_id:
+            type: string
+            description: The instance identifier of the Streams group member.
+          member_epoch:
+            type: integer
+            description: The epoch of the Streams group member.
+          topology_epoch:
+            type: integer
+            description: The epoch of the Streams topology for the member.
+          is_classic:
+            type: boolean
+            description: The flag indicating if the member is a classic consumer.
+          assignments:
+            $ref: '#/components/schemas/Relationship'
+          target_assignment:
+            $ref: '#/components/schemas/Relationship'
+    StreamsTaskData:
+      description: The details of a Streams task.
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - subtopology_id
+        - partition_ids
+        properties:
+          subtopology_id:
+            type: string
+            description: The unique identifier of the Streams subtopology.
+          partition_ids:
+            type: array
+            description: The list of partition IDs assigned to the Streams task.
+            items:
+              type: integer
+              description: The partition ID.
+    StreamsGroupSubtopologyData:
+      description: The details of a Streams group subtopology.
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - group_id
+        - subtopology_id
+        - source_topics
+        properties:
+          cluster_id:
+            type: string
+            description: The unique identifier of the Kafka cluster.
+          group_id:
+            type: string
+            description: The unique identifier of the Streams group.
+          subtopology_id:
+            type: string
+            description: The unique identifier of the Streams subtopology.
+          source_topics:
+            type: array
+            description: The list of source topics for the subtopology.
+            items:
+              type: string
+              description: The name of a source topic.
+    ResourceCollection:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    StreamsGroupDataList:
+      description: The list of Streams groups.
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            description: The array of Streams group details.
+            items:
+              $ref: '#/components/schemas/StreamsGroupData'
+    StreamsGroupMemberAssignmentData:
+      description: The assignment details of a Streams group member.
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - group_id
+        - member_id
+        - active_tasks
+        - standby_tasks
+        - warmup_tasks
+        properties:
+          cluster_id:
+            type: string
+            description: The unique identifier of the Kafka cluster.
+          group_id:
+            type: string
+            description: The unique identifier of the Streams group.
+          member_id:
+            type: string
+            description: The unique identifier of the Streams group member.
+          active_tasks:
+            $ref: '#/components/schemas/Relationship'
+          standby_tasks:
+            $ref: '#/components/schemas/Relationship'
+          warmup_tasks:
+            $ref: '#/components/schemas/Relationship'
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Relationship:
+      type: object
+      required:
+      - related
+      properties:
+        related:
+          type: string
+    ResourceCollectionMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        next:
+          type:
+          - string
+          - 'null'
+    StreamsGroupData:
+      description: The details of a Streams group.
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - group_id
+        - state
+        - member_count
+        - subtopology_count
+        - group_epoch
+        - topology_epoch
+        - target_assignment_epoch
+        - members
+        - subtopologies
+        properties:
+          cluster_id:
+            type: string
+            description: The unique identifier of the Kafka cluster.
+          group_id:
+            type: string
+            description: The unique identifier of the Streams group.
+          state:
+            $ref: '#/components/schemas/StreamsGroupState'
+          member_count:
+            type: integer
+            description: The number of members in the Streams group.
+          subtopology_count:
+            type: integer
+            description: The number of subtopologies in the Streams group.
+          group_epoch:
+            type: integer
+            description: The epoch of the Streams group.
+          topology_epoch:
+            type: integer
+            description: The epoch of the Streams topology.
+          target_assignment_epoch:
+            type: integer
+            description: The epoch of the target assignment.
+          members:
+            $ref: '#/components/schemas/Relationship'
+          subtopologies:
+            $ref: '#/components/schemas/Relationship'
+    Resource:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+    StreamsGroupState:
+      description: The state of the Streams group.
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - PREPARING_REBALANCE
+      - COMPLETING_REBALANCE
+      - STABLE
+      - DEAD
+      - EMPTY
+      - ASSIGNING
+      - RECONCILING
+      - NOT_READY
+  responses:
+    ListStreamsGroupSubtopologiesResponse:
+      description: The list of subtoplogies of the streams group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupSubtopologyDataList'
+          example:
+            kind: KafkaStreamsGroupSubtopologyList
+            metadata:
+              self: http://localhost:8082/v3/clusters/cluster-1/streams-groups/streams-group-1/subtopologies
+            data:
+            - kind: KafkaStreamsSubtopology
+              metadata:
+                self: http://localhost:8082/v3/clusters/cluster-1/streams-groups/streams-group-1/subtopologies/subtopology-1
+                resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/subtopology=subtopology-1
+              cluster_id: cluster-1
+              group_id: streams-group-1
+              subtopology_id: subtopology-1
+              source_topics:
+              - topic-1
+              - topic-2
+    ListStreamsGroupMembersResponse:
+      description: The list of members of the streams group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupMemberDataList'
+          example:
+            kind: KafkaStreamsGroupMemberList
+            metadata:
+              self: http://localhost:8082/v3/clusters/cluster-1/streams-groups/streams-group-1/members
+            data:
+            - kind: KafkaStreamsMember
+              metadata:
+                self: http://localhost:8082/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1
+                resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1
+              cluster_id: cluster-1
+              group_id: streams-group-1
+              member_id: member-1
+              process_id: process-1
+              client_id: client-1
+              instance_id: instance-1
+              member_epoch: 2
+              topology_epoch: 1
+              is_classic: false
+              assignments:
+                related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments
+              target_assignment:
+                related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/target-assignment
+    ListStreamsTasksResponse:
+      description: The streams group member assignments of specific type.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsTaskDataList'
+          example:
+            kind: KafkaStreamsGroupMemberAssignments
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments/active/subtopologies/subtopology-1
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1/assignments=active/subtopology=subtopology-1
+            data:
+            - kind: GetStreamsTaskResponse
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments/active/subtopologies/subtopology-1
+                resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1/assignments=active/subtopology=subtopology-1
+              subtopology_id: subtopology-1
+              partition_ids:
+              - 0
+              - 1
+              - 2
+    GetStreamsGroupMemberResponse:
+      description: The streams group member.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupMemberData'
+          example:
+            kind: KafkaStreamsGroupMember
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1
+            cluster_id: cluster-1
+            group_id: streams-group-1
+            member_id: member-1
+            process_id: process-1
+            client_id: client-1
+            instance_id: instance-1
+            member_epoch: 2
+            topology_epoch: 1
+            is_classic: false
+            assignments:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments
+            target_assignment:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/target-assignment
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
+    GetStreamsGroupResponse:
+      description: The streams group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupData'
+          example:
+            kind: KafkaStreamsGroup
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1
+            cluster_id: cluster-1
+            group_id: streams-group-1
+            group_epoch: 1
+            target_assignment_epoch: 1
+            topology_epoch: 1
+            state: STABLE
+            member_count: 2
+            subtopology_count: 1
+            members:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members
+            subtopologies:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/subtopologies
+    TooManyRequestsErrorResponse:
+      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
+      content:
+        text/html:
+          schema:
+            type: string
+          example:
+            description: A sample response from Jetty's DoSFilter.
+            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
+    ForbiddenErrorResponse:
+      description: Indicates a client authorization error. Kafka authorization failures will contain error code 40301 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authorization_failed:
+              description: Thrown when the caller is not authorized to perform the underlying operation.
+              value:
+                error_code: 40301
+                message: Request is not authorized
+    GetStreamsGroupSubtopologyResponse:
+      description: The streams group subtopology.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupSubtopologyData'
+          example:
+            kind: KafkaStreamsGroupSubtopology
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/subtopologies/subtopology-1
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/subtopology=subtopology-1
+            cluster_id: cluster-1
+            group_id: streams-group-1
+            subtopology_id: subtopology-1
+            source_topics:
+            - topic-1
+            - topic-2
+    UnauthorizedErrorResponse:
+      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authentication_failed:
+              description: Thrown when using Basic authentication with wrong Kafka credentials.
+              value:
+                error_code: 40101
+                message: Authentication failed
+    ListStreamsGroupsResponse:
+      description: The list of streams groups.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupDataList'
+          example:
+            kind: KafkaStreamsGroupList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups
+              next: null
+            data:
+            - kind: KafkaStreamsGroup
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1
+                resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1
+              cluster_id: cluster-1
+              group_id: streams-group-1
+              group_epoch: 1
+              target_assignment_epoch: 1
+              topology_epoch: 1
+              state: STABLE
+              member_count: 2
+              subtopology_count: 1
+              members:
+                related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members
+              subtopologies:
+                related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/subtopologies
+    BadRequestErrorResponse:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            bad_request_cannot_deserialize:
+              description: Thrown when trying to deserialize an integer from non-integer data.
+              value:
+                error_code: 400
+                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
+            unsupported_version_exception:
+              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
+              value:
+                error_code: 40035
+                message: The version of this API is not supported in the underlying Kafka cluster.
+    GetStreamsGroupMemberAssignmentsResponse:
+      description: The streams group member assignments.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsGroupMemberAssignmentData'
+          example:
+            kind: KafkaStreamsGroupMemberAssignments
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1/assignments
+            cluster_id: cluster-1
+            group_id: streams-group-1
+            member_id: member-1
+            active_tasks:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments/active
+            standby_tasks:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignment/standby
+            warmup_tasks:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignment/warmup
+    GetStreamsTaskResponse:
+      description: The partitions of a streams member task.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StreamsTaskData'
+          example:
+            kind: KafkaStreamsGroupMemberAssignments
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/streams-groups/streams-group-1/members/member-1/assignments/active/subtopologies/subtopology-1
+              resource_name: crn:///kafka=cluster-1/streams-group=streams-group-1/member=member-1/assignments=active/subtopology=subtopology-1
+            subtopology_id: subtopology-1
+            partition_ids:
+            - 0
+            - 1
+            - 2
+  parameters:
+    AssignmentsType:
+      name: assignments_type
+      description: The streams member Assignment type.
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AssignmentsType'
+      example: active
+    MemberId:
+      name: member_id
+      description: The streams member ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: member-1
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    SubtopologyId:
+      name: subtopology_id
+      description: The streams subtopology ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: subtopology-1
+    GroupId:
+      name: group_id
+      description: The group ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: group-1
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

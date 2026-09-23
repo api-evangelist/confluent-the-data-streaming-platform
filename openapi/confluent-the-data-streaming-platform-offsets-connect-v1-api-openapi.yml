@@ -1,0 +1,760 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Offsets (connect/v1) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Offsets (connect/v1)
+  description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+    API for managing the offsets for a Managed Connector.
+
+
+    Related guide: Manage Connector Offsets'
+paths:
+  /connect/v1/environments/{environment_id}/clusters/{kafka_cluster_id}/connectors/{connector_name}/offsets:
+    x-lifecycle-stage: General Availability
+    parameters:
+    - name: connector_name
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique name of the connector.
+    - name: environment_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier of the environment this resource belongs to.
+    - name: kafka_cluster_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier for the Kafka cluster.
+    get:
+      x-lifecycle-stage: General Availability
+      operationId: getConnectv1ConnectorOffsets
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Get the current offsets for the connector. The offsets provide information on the point in the source system,
+
+        from which the connector is pulling in data. The offsets of a connector are continuously observed periodically and are queryable via this API.'
+      summary: Get a Connector Offsets
+      tags:
+      - Offsets (connect/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '200':
+          description: Connector Offsets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.v1.ConnectorOffsets'
+              examples:
+                sink:
+                  value:
+                    id: lcc-as341
+                    name: MysqlSinkConnector
+                    offsets:
+                    - partition:
+                        kafka_partition: 0
+                        kafka_topic: topic_A
+                      offset:
+                        kafka_offset: 20032323
+                    - partition:
+                        kafka_partition: 1
+                        kafka_topic: topic_B
+                      offset:
+                        kafka_offset: 20032322
+                    metadata:
+                      observed_at: 2024-02-20 15:14:19+00:00
+                source:
+                  value:
+                    id: lcc-21sdda
+                    name: MysqlSourceConnector
+                    offsets:
+                    - partition:
+                        protocol: 1
+                        table: sourcedb.sourcetable
+                      offset:
+                        timestamp_nanos: 0
+                        incrementing: 3
+                        timestamp: 1699142400000
+                    metadata:
+                      observed_at: 2024-02-20 15:14:19+00:00
+        '400':
+          $ref: '#/components/responses/connect.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/connect.v1.UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/connect.v1.ForbiddenError'
+        '404':
+          $ref: '#/components/responses/connect.v1.ResourceNotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/connect.v1.DefaultSystemError'
+  /connect/v1/environments/{environment_id}/clusters/{kafka_cluster_id}/connectors/{connector_name}/offsets/request:
+    x-lifecycle-stage: General Availability
+    parameters:
+    - name: connector_name
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique name of the connector.
+    - name: environment_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier of the environment this resource belongs to.
+    - name: kafka_cluster_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier for the Kafka cluster.
+    post:
+      x-lifecycle-stage: General Availability
+      operationId: alterConnectv1ConnectorOffsetsRequest
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Request to alter the offsets of a connector. This supports the ability to PATCH/DELETE the offsets of a connector.
+
+        Note, you will see momentary downtime as this will internally stop the connector, while the offsets are being altered.
+
+        You can only make one alter offsets request at a time for a connector.'
+      summary: Request to Alter the Connector Offsets
+      tags:
+      - Offsets (connect/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.v1.AlterOffsetRequestInfo'
+              examples:
+                patch:
+                  value:
+                    id: lcc-sa32er
+                    name: MySinkConnector
+                    offsets:
+                    - partition:
+                        kafka_partition: 0
+                        kafka_topic: topic_A
+                      offset:
+                        kafka_offset: 1000
+                    requested_at: 2024-02-20 15:14:19+00:00
+                    type: PATCH
+                delete:
+                  value:
+                    id: lcc-234ds
+                    name: MySourceConnector
+                    offsets: []
+                    requested_at: 2024-02-20 15:14:19+00:00
+                    type: DELETE
+        '400':
+          $ref: '#/components/responses/connect.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/connect.v1.UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/connect.v1.ForbiddenError'
+        '404':
+          $ref: '#/components/responses/connect.v1.ResourceNotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/connect.v1.DefaultSystemError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connect.v1.AlterOffsetRequest'
+            examples:
+              patch sink:
+                value:
+                  type: PATCH
+                  offsets:
+                  - partition:
+                      kafka_partition: 0
+                      kafka_topic: topic_A
+                    offset:
+                      kafka_offset: 1000
+              patch source:
+                value:
+                  type: PATCH
+                  offsets:
+                  - partition:
+                      protocol: 1
+                      table: sourcedb.sourcetable
+                    offset:
+                      timestamp_nanos: 0
+                      incrementing: 3
+                      timestamp: 1699000000000
+              delete:
+                value:
+                  type: DELETE
+  /connect/v1/environments/{environment_id}/clusters/{kafka_cluster_id}/connectors/{connector_name}/offsets/request/status:
+    x-lifecycle-stage: General Availability
+    parameters:
+    - name: connector_name
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique name of the connector.
+    - name: environment_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier of the environment this resource belongs to.
+    - name: kafka_cluster_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The unique identifier for the Kafka cluster.
+    get:
+      x-lifecycle-stage: General Availability
+      operationId: getConnectv1ConnectorOffsetsRequestStatus
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Get the status of the previous alter offset request.'
+      summary: Get the Status of Alter Offset Request
+      tags:
+      - Offsets (connect/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '200':
+          description: Connector Offsets Request Status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.v1.AlterOffsetStatus'
+              examples:
+                sink - pending patch operation:
+                  value:
+                    request:
+                      id: lcc-sa32er
+                      name: MySinkConnector
+                      offsets:
+                      - partition:
+                          kafka_partition: 0
+                          kafka_topic: topic_A
+                        offset:
+                          kafka_offset: 1000
+                      requested_at: 2024-02-20 15:14:19+00:00
+                      type: PATCH
+                    status:
+                      phase: PENDING
+                    applied_at: null
+                source - applied patch operation:
+                  value:
+                    request:
+                      id: lcc-x1sdfs
+                      name: MySourceConnector
+                      offsets:
+                      - partition:
+                          protocol: 1
+                          table: sourcedb.sourcetable
+                        offset:
+                          timestamp_nanos: 0
+                          incrementing: 3
+                          timestamp: 1699000000000
+                      requested_at: 2024-02-20 15:14:19+00:00
+                      type: PATCH
+                    status:
+                      phase: APPLIED
+                      message: The Connect framework-managed offsets for this connector have been altered successfully. However, if this connector manages offsets externally, they will need to be altered manually in the system that the connector uses.
+                    previous_offsets:
+                    - partition:
+                        protocol: 1
+                        table: sourcedb.sourcetable
+                      offset:
+                        timestamp_nanos: 0
+                        incrementing: 2
+                        timestamp: 1698329479943
+                    applied_at: 2024-02-20T15:14:20+0000
+                delete:
+                  value:
+                    request:
+                      id: lcc-234ds
+                      name: MySourceConnector
+                      offsets: []
+                      requested_at: 2024-02-20 15:14:19+00:00
+                      type: DELETE
+                    status:
+                      phase: APPLIED
+                      message: The Connect framework-managed offsets for this connector have been reset successfully. However, if this connector manages offsets externally, they will need to be reset manually in the system that the connector uses.
+                    previous_offsets:
+                    - partition:
+                        protocol: 1
+                        table: sourcedb.sourcetable
+                      offset:
+                        timestamp_nanos: 0
+                        incrementing: 2
+                        timestamp: 1698329479943
+                    applied_at: 2024-02-20 15:14:20+00:00
+        '400':
+          $ref: '#/components/responses/connect.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/connect.v1.UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/connect.v1.ForbiddenError'
+        '404':
+          $ref: '#/components/responses/connect.v1.ResourceNotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/connect.v1.DefaultSystemError'
+components:
+  schemas:
+    connect.v1.AlterOffsetRequestType:
+      type: string
+      enum:
+      - PATCH
+      - DELETE
+      description: "The type of alter operation. PATCH will update the offset to the provided values.\nThe update will only happen for the partitions provided in the request. \nDELETE will delete the offset for the provided partitions and reset them back to the\nbase state. It is as if, a fresh new connector was created.\n\nFor sink connectors PATCH/DELETE will move the offsets to the provided point in the \ntopic partition. If the offset provided is not present in the topic partition it will\nby default reset to the earliest offset in the topic partition.\n\nFor source connectors, post PATCH/DELETE the connector will attempt to read from the \nposition defined in the altered offsets."
+    connect.v1.ConnectorError:
+      type: object
+      properties:
+        error:
+          type: object
+          description: Connector Error with error code and message.
+          properties:
+            code:
+              type: integer
+              description: Error code for the type of error
+            message:
+              type: string
+              description: Human readable error message
+    connect.v1.Offsets:
+      type: array
+      description: Array of offsets which are categorised into partitions.
+      items:
+        type: object
+        properties:
+          partition:
+            type: object
+            additionalProperties: true
+            description: "The partition information. For sink connectors this is the kafka topic and \npartition. For source connectors this is depends on the partitions defined by the \nsource connector. For example, the table which this task is pulling data from in a\nJDBC based MySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
+          offset:
+            type: object
+            additionalProperties: true
+            description: "The offset of the partition. For sink connectors this is the kafka offset. For \nsource connectors this is depends on the offset defined by the source connector. \nFor example, the timestamp and incrementing column info in a table, for a JDBC based \nMySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
+    connect.v1.AlterOffsetRequest:
+      type: object
+      description: Request to alter the offset of a connector. The offsets parameter is options for DELETE type.
+      properties:
+        type:
+          $ref: '#/components/schemas/connect.v1.AlterOffsetRequestType'
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+      required:
+      - type
+    connect.v1.ConnectorOffsets:
+      type: object
+      description: Offsets for a connector
+      properties:
+        name:
+          type: string
+          description: The name of the connector.
+        id:
+          type: string
+          description: The ID of the connector.
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+        metadata:
+          type: object
+          description: Metadata of the connector offset.
+          properties:
+            observed_at:
+              type: string
+              format: date-time
+              example: 2024-02-20 15:14:19+00:00
+              readOnly: true
+              description: The time at which the offsets were observed. The time is in UTC, ISO 8601 format.
+    connect.v1.AlterOffsetRequestInfo:
+      type: object
+      description: The request made to alter offsets.
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        name:
+          type: string
+          description: The name of the connector.
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: 2024-02-20 15:14:19+00:00
+          description: The time at which the request was made. The time is in UTC, ISO 8601 format.
+        type:
+          $ref: '#/components/schemas/connect.v1.AlterOffsetRequestType'
+      required:
+      - id
+      - name
+      - type
+      - requested_at
+    connect.v1.AlterOffsetStatus:
+      type: object
+      description: "Status of the alter offset operation. The previous offsets in the response \nis the offsets that the connector last processed, before the offsets were altered,\nvia a patch or delete operation."
+      properties:
+        request:
+          $ref: '#/components/schemas/connect.v1.AlterOffsetRequestInfo'
+        status:
+          type: object
+          description: The response of the alter offsets operation.
+          properties:
+            phase:
+              type: string
+              x-extensible-enum:
+              - PENDING
+              - PENDING_VALIDATION
+              - APPLIED
+              - FAILED
+              description: "The phase of the alter offset operation. \n\nPENDING: The offset alter operation is in progress.\n\nAPPLIED: The offset alter operation has been applied to the connector.\n\nFAILED:  The offset alter operation has failed to be applied to the connector."
+            message:
+              type: string
+              description: An info message from the alter offset operation.
+          required:
+          - phase
+        previous_offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+        applied_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: 2024-02-20 15:14:19+00:00
+          readOnly: true
+          description: The time at which the offsets were applied. The time is in UTC, ISO 8601 format.
+      required:
+      - request
+      - status
+  responses:
+    connect.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 400
+              message: Bad Request
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    connect.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 500
+              message: Oops, something went wrong
+    connect.v1.ResourceNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: resource not found
+    connect.v1.UnauthenticatedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
+    connect.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 403
+              message: Forbidden
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

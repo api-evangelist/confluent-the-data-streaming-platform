@@ -1,0 +1,970 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Exporters (v1) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Exporters (v1)
+  description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete exporters.
+
+
+    Related guide: Manage Schemas in Confluent Cloud.'
+paths:
+  /exporters:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Exporters (v1)
+      summary: Gets all schema exporters
+      description: Retrieves a list of schema exporters that have been created.
+      operationId: listExporters
+      responses:
+        '200':
+          description: Name of the exporter
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: '["exporter1", "exporter2"]'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    post:
+      tags:
+      - Exporters (v1)
+      summary: Creates a new schema exporter
+      description: Creates a new schema exporter. All attributes in request body are optional except config.
+      operationId: registerExporter
+      requestBody:
+        description: Schema
+        content:
+          application/vnd.schemaregistry.v1+json:
+            schema:
+              $ref: '#/components/schemas/ExporterReference'
+          application/vnd.schemaregistry+json:
+            schema:
+              $ref: '#/components/schemas/ExporterReference'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExporterReference'
+        required: true
+      responses:
+        '200':
+          description: Schema successfully registered.
+          content:
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '409':
+          description: Conflict. Error code 40950 – Missing or invalid exporter name \ Error code 40951 – Missing or invalid exporter config \ Error code 40952 – Invalid exporter subjects \ Error code 40960 – Exporter already exists \ Error code 40964 – Too many exporters
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/vnd.schemaregistry+json; qs=0.9:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+            application/json; qs=0.5:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Exporters (v1)
+      summary: Gets schema exporter by name
+      description: Retrieves the information of the schema exporter.
+      operationId: getExporterInfoByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterReference'
+        '404':
+          description: Not Found. Error code 40450 – Exporter not found
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    put:
+      tags:
+      - Exporters (v1)
+      summary: Update schema exporter by name
+      description: Updates the information or configurations of the schema exporter. All attributes in request body are optional.
+      operationId: updateExporterInfo
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Exporter Update Request
+        content:
+          application/vnd.schemaregistry.v1+json:
+            schema:
+              $ref: '#/components/schemas/ExporterUpdateRequest'
+          application/vnd.schemaregistry+json:
+            schema:
+              $ref: '#/components/schemas/ExporterUpdateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExporterUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Invalid. Error code 40952 – Invalid exporter subjects. Error code 40963 – Exporter not paused.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    delete:
+      tags:
+      - Exporters (v1)
+      summary: Delete schema exporter by name
+      description: Deletes the schema exporter.
+      operationId: deleteExporter
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content.
+        '404':
+          $ref: '#/components/responses/schemaregistry.v1.AccountNotFoundError'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}/status:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Exporters (v1)
+      summary: Gets schema exporter status by name
+      description: Retrieves the status of the schema exporter.
+      operationId: getExporterStatusByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterStatusResponse'
+        '404':
+          description: Not Found. Error code 40450 – Exporter not found
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}/config:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    get:
+      tags:
+      - Exporters (v1)
+      summary: Gets schema exporter config by name
+      description: Retrieves the config of the schema exporter.
+      operationId: getExporterConfigByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterConfigResponse'
+        '404':
+          description: Not Found. Error code 40450 – Exporter not found
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+    put:
+      tags:
+      - Exporters (v1)
+      summary: Update schema exporter config by name
+      description: Updates the configuration of the schema exporter.
+      operationId: updateExporterConfigByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Exporter Update Request
+        content:
+          application/vnd.schemaregistry.v1+json:
+            schema:
+              $ref: '#/components/schemas/ExporterConfigResponse'
+          application/vnd.schemaregistry+json:
+            schema:
+              $ref: '#/components/schemas/ExporterConfigResponse'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExporterConfigResponse'
+        required: true
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Invalid. Error code 40952 – Invalid exporter subjects. Error code 40963 – Exporter not paused.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}/pause:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    put:
+      tags:
+      - Exporters (v1)
+      summary: Pause schema exporter by name
+      description: Pauses the state of the schema exporter.
+      operationId: pauseExporterByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '404':
+          description: Not Found. Error code 40401 indicates subject not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Invalid. Error code 40952 – Invalid exporter subjects. Error code 40963 – Exporter not paused.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}/reset:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    put:
+      tags:
+      - Exporters (v1)
+      summary: Reset schema exporter by name
+      description: Reset the state of the schema exporter.
+      operationId: resetExporterByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '404':
+          description: Not Found. Error code 40450 – Exporter not found
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Invalid. Error code 40963 – Exporter not paused.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+  /exporters/{name}/resume:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint.
+    put:
+      tags:
+      - Exporters (v1)
+      summary: Resume schema exporter by name
+      description: Resume running of the schema exporter.
+      operationId: resumeExporterByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the exporter
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The original request.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ExporterResponse'
+        '404':
+          description: Not Found. Error code 40450 indicates subject not found.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Invalid. Error code 40961 – Exporter already running.
+          content:
+            application/vnd.schemaregistry.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '400':
+          $ref: '#/components/responses/schemaregistry.v1.BadRequestError'
+        '401':
+          $ref: '#/components/responses/schemaregistry.v1.UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/schemaregistry.v1.ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/schemaregistry.v1.DefaultSystemError'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+components:
+  responses:
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    schemaregistry.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 500
+            message: Oops, something went wrong
+    schemaregistry.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 400
+            message: Bad Request
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
+    schemaregistry.v1.AccountNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 404
+            message: account not found
+  schemas:
+    ExporterConfigResponse:
+      type: object
+      properties:
+        schema.registry.url:
+          description: Config SR URL
+          type: string
+          example: <Physical SR Endpoint>
+        basic.auth.credentials.source:
+          description: Config SR Auth
+          type: string
+          example: USER_INFO
+        basic.auth.user.info:
+          description: Config SR User Info
+          type: string
+      description: The map containing exporter's configurations
+    ExporterReference:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the exporter
+          example: test-exporter
+        contextType:
+          description: Context type of the exporter. One of CUSTOM, NONE or AUTO (default)
+          type: string
+          example: CUSTOM
+          x-extensible-enum:
+          - CUSTOM
+          - AUTO
+          - NONE
+        context:
+          type: string
+          description: Customized context of the exporter if contextType equals CUSTOM.
+          example: User
+        subjects:
+          type: array
+          description: Name of each exporter subject
+          items:
+            type: string
+        kekRenameFormat:
+          type: string
+          description: Format string for the KEK name in the destination cluster, which may contain ${kek} as a placeholder for the originating KEK name. For example, dc_${kek} for the KEK aws_key will map to the destination KEK name dc_aws_key.
+        subjectRenameFormat:
+          type: string
+          description: Format string for the subject name in the destination cluster, which may contain ${subject} as a placeholder for the originating subject name. For example, dc_${subject} for the subject orders will map to the destination subject name dc_orders.
+        config:
+          type: object
+          description: The map containing exporter's configurations
+          additionalProperties:
+            type: string
+      description: The format for a typical exporter object
+    ExporterUpdateRequest:
+      type: object
+      properties:
+        contextType:
+          description: Context type of the exporter. One of CUSTOM, NONE or AUTO (default)
+          type: string
+          example: CUSTOM
+          x-extensible-enum:
+          - CUSTOM
+          - AUTO
+          - NONE
+        context:
+          type: string
+          description: Customized context of the exporter if contextType equals CUSTOM.
+          example: User
+        subjects:
+          type: array
+          description: Name of each exporter subject
+          items:
+            type: string
+        kekRenameFormat:
+          type: string
+          description: 'Format string for the KEK name in the destination cluster, which may
+
+            contain ${kek} as a placeholder for the originating KEK name. For
+
+            example, dc_${kek} for the KEK aws_key will map to the destination
+
+            KEK name dc_aws_key.'
+        subjectRenameFormat:
+          type: string
+          description: 'Format string for the subject name in the destination cluster, which
+
+            may contain ${subject} as a placeholder for the originating subject
+
+            name. For example, dc_${subject} for the subject orders will map to
+
+            the destination subject name dc_orders.'
+        config:
+          type: object
+          description: The map containing exporter's configurations
+          additionalProperties:
+            type: string
+      description: Exporter update request
+    ExporterResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the exporter
+          example: test-exporter
+      description: Exporter register response
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    ExporterStatusResponse:
+      type: object
+      properties:
+        name:
+          description: Name of exporter.
+          type: string
+          example: test-exporter
+        state:
+          type: string
+          description: State of the exporter. Could be STARTING, RUNNING or PAUSED
+          example: RUNNING
+          x-extensible-enum:
+          - STARTING
+          - RUNNING
+          - PAUSED
+        offset:
+          type: integer
+          description: Offset of the exporter
+          format: int64
+          example: 100
+        ts:
+          type: integer
+          description: Timestamp of the exporter
+          format: int64
+          example: 1631206325
+        trace:
+          description: Error trace of the exporter
+          type: string
+          example: ''
+      description: Exporter status get request
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

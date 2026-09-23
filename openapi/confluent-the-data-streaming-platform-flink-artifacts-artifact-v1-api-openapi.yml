@@ -1,0 +1,1547 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Flink Artifacts (artifact/v1) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Flink Artifacts (artifact/v1)
+  description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+    FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
+
+
+    ## The Flink Artifacts Model'
+paths:
+  /artifact/v1/flink-artifacts:
+    x-lifecycle-stage: General Availability
+    x-self-access: true
+    get:
+      x-lifecycle-stage: General Availability
+      x-self-access: true
+      operationId: listArtifactV1FlinkArtifacts
+      summary: List of Flink Artifacts
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Retrieve a sorted, filtered, paginated list of all flink artifacts.'
+      parameters:
+      - name: cloud
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: AWS
+        description: Filter the results by exact match for cloud.
+      - name: region
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: us-east-1
+        description: Filter the results by exact match for region.
+      - name: environment
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: env-00000
+        description: Filter the results by exact match for environment.
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+          x-max-page-items: 500
+        description: A pagination size for collection requests.
+      - name: page_token
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 255
+        description: An opaque pagination token for collection requests.
+      tags:
+      - Flink Artifacts (artifact/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '200':
+          description: Flink Artifact.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/artifact.v1.FlinkArtifactList'
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+              description: The unique identifier for the API request.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: The maximum number of requests you're permitted to make per time period.
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining in the current rate limit window.
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+              description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/UnauthorizedError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/DefaultSystemError'
+    post:
+      summary: Create a new Flink Artifact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cloud:
+                  type: string
+                  description: Cloud provider where the Flink Artifact archive is uploaded.
+                  example: AWS
+                  maxLength: 60
+                  x-extensible-enum:
+                  - AWS
+                  - GCP
+                  - AZURE
+                region:
+                  type: string
+                  description: The Cloud provider region the Flink Artifact archive is uploaded.
+                  example: us-east-1
+                  maxLength: 60
+                environment:
+                  type: string
+                  description: Environment the Flink Artifact belongs to.
+                  example: env-00000
+                  maxLength: 255
+                display_name:
+                  type: string
+                  description: Unique name of the Flink Artifact per cloud, region, environment scope.
+                  maxLength: 60
+                class:
+                  type: string
+                  description: Java class or alias for the artifact as provided by developer. Deprecated
+                  maxLength: 150
+                  pattern: ^(([a-zA-Z][a-zA-Z_$0-9]*(\.[a-zA-Z][a-zA-Z_$0-9]*)*)\.)?([a-zA-Z][a-zA-Z_$0-9]*)$
+                  example: io.confluent.example.SumScalarFunction
+                  deprecated: true
+                content_format:
+                  type: string
+                  description: Archive format of the Flink Artifact.
+                  example: JAR
+                  x-extensible-enum:
+                  - ZIP
+                  - JAR
+                description:
+                  type: string
+                  description: Description of the Flink Artifact.
+                  maxLength: 256
+                documentation_link:
+                  type: string
+                  description: Documentation link of the Flink Artifact.
+                  maxLength: 512
+                  pattern: ^$|^(http://|https://).+
+                runtime_language:
+                  type: string
+                  description: Runtime language of the Flink Artifact.
+                  example: JAVA
+                  default: JAVA
+                  x-extensible-enum:
+                  - JAVA
+                  - PYTHON
+                upload_source:
+                  type: object
+                  description: Upload source of the Flink Artifact source.
+                  oneOf:
+                  - $ref: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+                  discriminator:
+                    propertyName: location
+                    mapping:
+                      PRESIGNED_URL_LOCATION: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+              required:
+              - cloud
+              - region
+              - environment
+              - display_name
+              - upload_source
+      x-lifecycle-stage: General Availability
+      x-self-access: true
+      operationId: createArtifactV1FlinkArtifact
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Make a request to create a flink artifact.'
+      parameters:
+      - name: cloud
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: AWS
+        description: Scope the operation to the given cloud.
+      - name: region
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: us-east-1
+        description: Scope the operation to the given region.
+      tags:
+      - Flink Artifacts (artifact/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '201':
+          description: A Flink Artifact was created.
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+              description: The unique identifier for the API request.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: The maximum number of requests you're permitted to make per time period.
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining in the current rate limit window.
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+              description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts/{id}
+              description: FlinkArtifact resource uri
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+                - type: object
+                  required:
+                  - cloud
+                  - region
+                  - environment
+                  - display_name
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/DefaultSystemError'
+  /artifact/v1/flink-artifacts/{id}:
+    x-lifecycle-stage: General Availability
+    x-self-access: true
+    get:
+      x-lifecycle-stage: General Availability
+      x-self-access: true
+      operationId: getArtifactV1FlinkArtifact
+      summary: Read a Flink Artifact
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Make a request to read a flink artifact.'
+      parameters:
+      - name: cloud
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: AWS
+        description: Scope the operation to the given cloud.
+      - name: region
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: us-east-1
+        description: Scope the operation to the given region.
+      - name: environment
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: env-00000
+        description: Scope the operation to the given environment.
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the flink artifact.
+      tags:
+      - Flink Artifacts (artifact/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '200':
+          description: Flink Artifact.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+                - type: object
+                  required:
+                  - api_version
+                  - kind
+                  - id
+                  - cloud
+                  - region
+                  - environment
+                  - display_name
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+              description: The unique identifier for the API request.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: The maximum number of requests you're permitted to make per time period.
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining in the current rate limit window.
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+              description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/DefaultSystemError'
+    patch:
+      x-lifecycle-stage: General Availability
+      x-self-access: true
+      operationId: updateArtifactV1FlinkArtifact
+      summary: Update a Flink Artifact
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Make a request to update a flink artifact.'
+      parameters:
+      - name: cloud
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: AWS
+        description: Scope the operation to the given cloud.
+      - name: region
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: us-east-1
+        description: Scope the operation to the given region.
+      - name: environment
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: env-00000
+        description: Scope the operation to the given environment.
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the flink artifact.
+      tags:
+      - Flink Artifacts (artifact/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+      responses:
+        '200':
+          description: Flink Artifact.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+                - type: object
+                  required:
+                  - api_version
+                  - kind
+                  - id
+                  - cloud
+                  - region
+                  - environment
+                  - display_name
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+              description: The unique identifier for the API request.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: The maximum number of requests you're permitted to make per time period.
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining in the current rate limit window.
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+              description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/DefaultSystemError'
+    delete:
+      x-lifecycle-stage: General Availability
+      x-self-access: true
+      operationId: deleteArtifactV1FlinkArtifact
+      summary: Delete a Flink Artifact
+      description: '![General Availability](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Make a request to delete a flink artifact.'
+      parameters:
+      - name: cloud
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: AWS
+        description: Scope the operation to the given cloud.
+      - name: region
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: us-east-1
+        description: Scope the operation to the given region.
+      - name: environment
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/SearchFilter'
+        example: env-00000
+        description: Scope the operation to the given environment.
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the flink artifact.
+      tags:
+      - Flink Artifacts (artifact/v1)
+      security:
+      - cloud-api-key: []
+      - confluent-sts-access-token: []
+      responses:
+        '204':
+          description: A Flink Artifact is being deleted.
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+              description: The unique identifier for the API request.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: The maximum number of requests you're permitted to make per time period.
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining in the current rate limit window.
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+              description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/DefaultSystemError'
+components:
+  responses:
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    ConflictError:
+      x-summary: Conflict
+      description: The request is in conflict with the current server state
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        Location:
+          schema:
+            type: string
+            format: uri
+            example: https://api.confluent.cloud/{object}/{id}
+          description: Resource URI of conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '409'
+              code: resource_already_exists
+              title: Resource Already exists
+              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    ValidationError:
+      description: Validation Failed
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+            - status: '422'
+              code: invalid_configuration
+              id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              title: Validation Failed
+              detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
+              source:
+                pointer: /cluster/storage_size
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+  schemas:
+    artifact.v1.UploadSource.PresignedUrl:
+      type: object
+      description: 'Request a presigned upload URL for new Flink Artifact. Note that
+
+        the URL policy expires in one hour. If the policy expires, you can request
+
+        a new presigned upload URL.
+
+
+
+        ## The Presigned Urls Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.PresignedUrl" />'
+      properties:
+        api_version:
+          type: string
+          enum:
+          - artifact.v1/UploadSource
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - PresignedUrl
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/artifact.v1/UploadSource/presigned-urls/pu-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/presigned-url=pu-12345
+        location:
+          type: string
+          description: 'Location of the Flink Artifact source.
+
+            '
+          x-extensible-enum:
+          - PRESIGNED_URL_LOCATION
+          example: PRESIGNED_URL_LOCATION
+        upload_id:
+          type: string
+          example: e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66
+          description: Upload ID returned by the `/presigned-upload-url` API. This field returns an empty string in all responses.
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    artifact.v1.FlinkArtifactList:
+      type: object
+      description: 'FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
+
+
+
+        ## The Flink Artifacts Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.FlinkArtifact" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - artifact/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - FlinkArtifactList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts
+              last:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+            - type: object
+              required:
+              - id
+              - metadata
+              - cloud
+              - region
+              - environment
+              - display_name
+          uniqueItems: true
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
+    artifact.v1.FlinkArtifactVersion:
+      type: object
+      description: 'Version of the Flink Artifact
+
+        '
+      properties:
+        version:
+          type: string
+          description: Version id of the Flink Artifact.
+          example: cfa-ver-001
+          maxLength: 60
+        release_notes:
+          type: string
+          description: Release Notes of the Flink Artifact version.
+          maxLength: 256
+        is_beta:
+          type: boolean
+          description: Flag to specify stability of the version
+        artifact_id:
+          type: object
+          description: The Flink Artifact this version belongs to.
+          allOf:
+          - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+        upload_source:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+          description: Upload source of the Flink Artifact Version.
+          discriminator:
+            propertyName: location
+            mapping:
+              PRESIGNED_URL_LOCATION: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+      required:
+      - version
+      - artifact_id
+      - upload_source
+    artifact.v1.FlinkArtifact:
+      type: object
+      description: 'FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
+
+
+
+        ## The Flink Artifacts Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.FlinkArtifact" />'
+      properties:
+        api_version:
+          type: string
+          enum:
+          - artifact/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - FlinkArtifact
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts/fa-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/flink-artifact=fa-12345
+        cloud:
+          type: string
+          description: Cloud provider where the Flink Artifact archive is uploaded.
+          example: AWS
+          maxLength: 60
+          x-extensible-enum:
+          - AWS
+          - GCP
+          - AZURE
+        region:
+          type: string
+          description: The Cloud provider region the Flink Artifact archive is uploaded.
+          example: us-east-1
+          maxLength: 60
+        environment:
+          type: string
+          description: Environment the Flink Artifact belongs to.
+          example: env-00000
+          maxLength: 255
+        display_name:
+          type: string
+          description: Unique name of the Flink Artifact per cloud, region, environment scope.
+          maxLength: 60
+        class:
+          type: string
+          description: Java class or alias for the artifact as provided by developer. Deprecated
+          maxLength: 150
+          pattern: ^(([a-zA-Z][a-zA-Z_$0-9]*(\.[a-zA-Z][a-zA-Z_$0-9]*)*)\.)?([a-zA-Z][a-zA-Z_$0-9]*)$
+          example: io.confluent.example.SumScalarFunction
+          deprecated: true
+          x-immutable: true
+        content_format:
+          type: string
+          description: Archive format of the Flink Artifact.
+          example: JAR
+          x-extensible-enum:
+          - ZIP
+          - JAR
+        description:
+          type: string
+          description: Description of the Flink Artifact.
+          maxLength: 256
+        documentation_link:
+          type: string
+          description: Documentation link of the Flink Artifact.
+          maxLength: 512
+          pattern: ^$|^(http://|https://).+
+        runtime_language:
+          type: string
+          description: Runtime language of the Flink Artifact.
+          example: JAVA
+          default: JAVA
+          x-extensible-enum:
+          - JAVA
+          - PYTHON
+        versions:
+          type: array
+          description: Versions associated with this Flink Artifact.
+          items:
+            $ref: '#/components/schemas/artifact.v1.FlinkArtifactVersion'
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

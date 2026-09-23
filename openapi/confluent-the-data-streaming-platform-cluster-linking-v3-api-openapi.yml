@@ -1,0 +1,1940 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Cluster Linking (v3) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Cluster Linking (v3)
+  description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+paths:
+  /kafka/v3/clusters/{cluster_id}/links:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    get:
+      summary: List all cluster links in the dest cluster
+      operationId: listKafkaLinks
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        ``link_id`` in ``ListLinksResponseData`` is deprecated and may be removed in a future release. Use the new ``cluster_link_id`` instead.'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListLinksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    post:
+      summary: Create a cluster link
+      operationId: createKafkaLink
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Cluster link creation requires source cluster security configurations in
+
+        the configs JSON section of the data request payload.'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/QueryParamLinkName'
+      - $ref: '#/components/parameters/ValidateOnly'
+      - $ref: '#/components/parameters/ValidateLink'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateLinkRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    get:
+      summary: Describe the cluster link
+      operationId: getKafkaLink
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        ``link_id`` in ``ListLinksResponseData`` is deprecated and may be removed in a future release. Use the new ``cluster_link_id`` instead.'
+      tags:
+      - Cluster Linking (v3)
+      parameters:
+      - $ref: '#/components/parameters/IncludeTasks'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetLinkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    delete:
+      summary: Delete the cluster link
+      operationId: deleteKafkaLink
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/Force'
+      - $ref: '#/components/parameters/ValidateOnly'
+      responses:
+        '200':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    get:
+      summary: List all configs of the cluster link
+      operationId: listKafkaLinkConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListLinkConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/configs/{config_name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/LinkConfigName'
+    get:
+      summary: Describe the config under the cluster link
+      operationId: getKafkaLinkConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetLinkConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    put:
+      summary: Alter the config under the cluster link
+      operationId: updateKafkaLinkConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateLinkConfigRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    delete:
+      summary: Reset the given config to default value
+      operationId: deleteKafkaLinkConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/configs:alter:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    put:
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Batch Alter Cluster Link Configs'
+      operationId: updateKafkaLinkConfigBatch
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/ValidateOnly'
+      requestBody:
+        $ref: '#/components/requestBodies/AlterLinkConfigBatchRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+      summary: Batch Alter Cluster Link Configs
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    post:
+      summary: Create a mirror topic
+      operationId: createKafkaMirrorTopic
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Create a topic in the destination cluster mirroring a topic in
+
+        the source cluster'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateMirrorTopicRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    get:
+      summary: List mirror topics
+      operationId: listKafkaMirrorTopicsUnderLink
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        List all mirror topics under the link'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/MirrorTopicStatus'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListMirrorTopicsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/-/mirrors:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    get:
+      summary: List mirror topics
+      operationId: listKafkaMirrorTopics
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        List all mirror topics in the cluster'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/MirrorTopicStatus'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListMirrorTopicsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors/{mirror_topic_name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/MirrorTopicName'
+    get:
+      summary: Describe the mirror topic
+      operationId: readKafkaMirrorTopic
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      parameters:
+      - $ref: '#/components/parameters/IncludeStateTransitionErrors'
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/DescribeMirrorTopicResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:promote:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Promote the mirror topics
+      operationId: updateKafkaMirrorTopicsPromote
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:failover:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Failover the mirror topics
+      operationId: updateKafkaMirrorTopicsFailover
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:pause:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Pause the mirror topics
+      operationId: updateKafkaMirrorTopicsPause
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:resume:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Resume the mirror topics
+      operationId: updateKafkaMirrorTopicsResume
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:reverse-and-start-mirror:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Reverse the local mirror topic and start the remote mirror topic
+      operationId: updateKafkaMirrorTopicsReverseAndStartMirror
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:reverse-and-pause-mirror:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Reverse the local mirror topic and Pause the remote mirror topic
+      operationId: updateKafkaMirrorTopicsReverseAndPauseMirror
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/links/{link_name}/mirrors:truncate-and-restore:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/LinkName'
+    - $ref: '#/components/parameters/IncludePartitionLevelTruncationData'
+    - $ref: '#/components/parameters/ValidateOnly'
+    post:
+      summary: Truncates the local topic to the remote stopped mirror log end offsets and…
+      operationId: updateKafkaMirrorTopicsTruncateAndRestoreMirror
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+      tags:
+      - Cluster Linking (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterMirrorsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlterMirrorStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+components:
+  schemas:
+    AlterMirrorsRequestData:
+      properties:
+        mirror_topic_names:
+          description: The mirror topics specified as a list of topic names.
+          type: array
+          items:
+            type: string
+        mirror_topic_name_pattern:
+          description: The mirror topics specified as a pattern.
+          type: string
+      type: object
+    LinkTask:
+      type: object
+      required:
+      - task_name
+      - state
+      - errors
+      properties:
+        task_name:
+          type: string
+        state:
+          $ref: '#/components/schemas/LinkTaskState'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkTaskError'
+    LinkCategory:
+      type: object
+      required:
+      - state_category
+      - count
+      properties:
+        state_category:
+          $ref: '#/components/schemas/StateCategory'
+        count:
+          type: integer
+          format: int32
+          example: 123
+    PartitionLevelTruncationData:
+      type: object
+      required:
+      - partition_id
+      - offset_truncated_to
+      - messages_truncated
+      properties:
+        partition_id:
+          type: integer
+        offset_truncated_to:
+          type: integer
+          format: int64
+        messages_truncated:
+          type: integer
+          format: int64
+    MirrorLag:
+      type: object
+      required:
+      - partition
+      - lag
+      - last_source_fetch_offset
+      properties:
+        partition:
+          type: integer
+        lag:
+          type: integer
+          format: int64
+        last_source_fetch_offset:
+          type: integer
+          format: int64
+    MirrorLags:
+      type: array
+      items:
+        $ref: '#/components/schemas/MirrorLag'
+    ListLinkConfigsResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListLinkConfigsResponseData'
+    AlterMirrorStatusResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AlterMirrorStatusResponseData'
+    ConfigData:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          type: string
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+      - value
+    StateCategory:
+      type: string
+      x-extensible-enum:
+      - PAUSED
+      - IN_ERROR
+      - PENDING
+      - ACTIVE
+      - NOT_APPLICABLE
+    ListMirrorTopicsResponseData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - link_name
+        - mirror_topic_name
+        - source_topic_name
+        - num_partitions
+        - mirror_lags
+        - mirror_status
+        - state_time_ms
+        properties:
+          link_name:
+            type: string
+          mirror_topic_name:
+            type: string
+          source_topic_name:
+            type: string
+          num_partitions:
+            type: integer
+          mirror_lags:
+            $ref: '#/components/schemas/MirrorLags'
+          mirror_status:
+            $ref: '#/components/schemas/MirrorTopicStatus'
+          mirror_topic_error:
+            $ref: '#/components/schemas/MirrorTopicError'
+          state_time_ms:
+            type: integer
+            format: int64
+          mirror_state_transition_errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/LinkTaskError'
+    ResourceCollection:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    CreateLinkRequestData:
+      properties:
+        source_cluster_id:
+          type: string
+        destination_cluster_id:
+          type: string
+        remote_cluster_id:
+          description: The expected remote cluster ID.
+          type: string
+        cluster_link_id:
+          description: The expected cluster link ID. Can be provided when creating the second side of a bidirectional link for validating the link ID is as expected. If it's not provided, it's inferred from the remote cluster.
+          type: string
+        configs:
+          items:
+            $ref: '#/components/schemas/ConfigData'
+          type: array
+      type: object
+    Resource:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+    ListLinksResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListLinksResponseData'
+    MirrorTopicStatus:
+      enum:
+      - ACTIVE
+      - FAILED
+      - LINK_FAILED
+      - LINK_PAUSED
+      - PAUSED
+      - PENDING_STOPPED
+      - SOURCE_UNAVAILABLE
+      - STOPPED
+      - PENDING_MIRROR
+      - PENDING_SYNCHRONIZE
+      - PENDING_SETUP_FOR_RESTORE
+      - PENDING_RESTORE
+      type: string
+    ListMirrorTopicsResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListMirrorTopicsResponseData'
+    AlterConfigBatchRequestData:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+              value:
+                type:
+                - string
+                - 'null'
+              operation:
+                type:
+                - string
+                - 'null'
+                x-extensible-enum:
+                - SET
+                - DELETE
+        validate_only:
+          type: boolean
+    LinkTaskState:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - ACTIVE
+      - IN_ERROR
+      - NOT_CONFIGURED
+      - LINK_FAILED
+      - LINK_UNAVAILABLE
+      - LINK_PAUSED
+    LinkError:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - NO_ERROR
+      - AUTHENTICATION_ERROR
+      - UNRESOLVABLE_BOOTSTRAP_ERROR
+      - INVALID_BOOTSTRAP_INTERNAL_ENDPOINT_ERROR
+      - BOOTSTRAP_TCP_CONNECTION_FAILED_ERROR
+      - TIMEOUT_ERROR
+    MirrorTopicError:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - NOT_SET
+      - NO_ERROR
+      - SOURCE_TOPIC_MAY_BE_DELETED
+      - SOURCE_TOPIC_ID_CHANGED
+      - SOURCE_PARTITIONS_DECREASED
+      - NON_MONOTONIC_LOG_APPEND_EPOCH
+      - UNEXPECTED_TRUNCATION
+      - UNSUPPORTED_MESSAGE_FORMAT
+      - NON_MONOTONIC_SOURCE_EPOCH
+      - ILLEGAL_STATE
+      - UNSUPPORTED_MIRROR_STATE
+    CreateMirrorTopicRequestData:
+      properties:
+        source_topic_name:
+          type: string
+        mirror_topic_name:
+          type: string
+        replication_factor:
+          type: integer
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigData'
+      required:
+      - source_topic_name
+      type: object
+    LinkTaskError:
+      type: object
+      required:
+      - error_code
+      - error_message
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+    ListLinksResponseData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - link_name
+        - cluster_link_id
+        - topic_names
+        properties:
+          source_cluster_id:
+            type:
+            - string
+            - 'null'
+          destination_cluster_id:
+            type:
+            - string
+            - 'null'
+          remote_cluster_id:
+            type:
+            - string
+            - 'null'
+          link_name:
+            type: string
+          link_id:
+            type: string
+            deprecated: true
+          cluster_link_id:
+            type: string
+          topic_names:
+            type: array
+            items:
+              type: string
+          link_error:
+            $ref: '#/components/schemas/LinkError'
+          link_error_message:
+            type:
+            - string
+            - 'null'
+          link_state:
+            $ref: '#/components/schemas/LinkState'
+          tasks:
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/LinkTask'
+          category_counts:
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/LinkCategory'
+    UpdateLinkConfigRequestData:
+      properties:
+        value:
+          type: string
+      required:
+      - value
+      type: object
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    LinkState:
+      type: string
+      x-extensible-enum:
+      - ACTIVE
+      - FAILED
+      - UNAVAILABLE
+      - PAUSED
+      - UNKNOWN
+    AlterMirrorStatusResponseData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - mirror_topic_name
+        - error_message
+        - error_code
+        - mirror_lags
+        - messages_truncated
+        - partition_level_truncation_data
+        properties:
+          mirror_topic_name:
+            type: string
+          error_message:
+            type:
+            - string
+            - 'null'
+          error_code:
+            type:
+            - integer
+            - 'null'
+          mirror_lags:
+            $ref: '#/components/schemas/MirrorLags'
+          messages_truncated:
+            type:
+            - integer
+            - 'null'
+            format: int64
+          partition_level_truncation_data:
+            $ref: '#/components/schemas/PartitionLevelTruncationDataList'
+    PartitionLevelTruncationDataList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PartitionLevelTruncationData'
+    ListLinkConfigsResponseData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - name
+        - value
+        - is_default
+        - is_read_only
+        - is_sensitive
+        - source
+        - synonyms
+        - link_name
+        properties:
+          cluster_id:
+            type: string
+          name:
+            type: string
+          value:
+            type: string
+          is_default:
+            type: boolean
+          is_read_only:
+            type: boolean
+          is_sensitive:
+            type: boolean
+          source:
+            type: string
+            x-extensible-enum:
+            - DYNAMIC_CLUSTER_LINK_CONFIG
+          synonyms:
+            type: array
+            items:
+              type: string
+          link_name:
+            type: string
+    ResourceCollectionMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        next:
+          type:
+          - string
+          - 'null'
+    ResourceMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        resource_name:
+          type:
+          - string
+          - 'null'
+  requestBodies:
+    CreateLinkRequest:
+      description: Create a cluster link
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateLinkRequestData'
+          examples:
+            destination_initiated_link:
+              description: Create a destination initiated cluster link
+              value:
+                source_cluster_id: cluster-1
+                configs:
+                - name: bootstrap.servers
+                  value: cluster-1-bootstrap-server
+                - name: acl.sync.enable
+                  value: 'false'
+                - name: consumer.offset.sync.ms
+                  value: '30000'
+                - name: sasl.mechanism
+                  value: PLAIN
+                - name: security.protocol
+                  value: SASL_SSL
+                - name: sasl.jaas.config
+                  value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Kafka API Key>' password='<Kafka API Secret>';
+            source_initiated_link_at_source_cluster:
+              description: Create a source initiated cluster link at source cluster
+              value:
+                destination_cluster_id: cluster-2
+                configs:
+                - name: bootstrap.servers
+                  value: cluster-2-bootstrap-server
+                - name: link.mode
+                  value: SOURCE
+                - name: sasl.mechanism
+                  value: PLAIN
+                - name: security.protocol
+                  value: SASL_SSL
+                - name: sasl.jaas.config
+                  value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Remote Kafka API Key>' password='<Remote Kafka API Secret>';
+                - name: local.sasl.mechanism
+                  value: PLAIN
+                - name: local.security.protocol
+                  value: SASL_SSL
+                - name: local.sasl.jaas.config
+                  value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Local Kafka API Key>' password='<Local Kafka API Secret>';
+            source_initiated_link_at_destination_cluster:
+              description: Create a source initiated cluster link at destination cluster
+              value:
+                destination_cluster_id: cluster-1
+                configs:
+                - name: link.mode
+                  value: DESTINATION
+                - name: connection.mode
+                  value: INBOUND
+                - name: acl.sync.enable
+                  value: 'false'
+            bidirectional_link_east:
+              description: Create a bidirectional cluster link in east
+              value:
+                remote_cluster_id: cluster-west
+                configs:
+                - name: bootstrap.servers
+                  value: cluster-west-bootstrap-server
+                - name: link.mode
+                  value: BIDIRECTIONAL
+                - name: cluster.link.prefix
+                  value: west.
+                - name: sasl.mechanism
+                  value: PLAIN
+                - name: security.protocol
+                  value: SASL_SSL
+                - name: sasl.jaas.config
+                  value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Kafka API Key>' password='<Kafka API Secret>';
+            bidirectional_link_west:
+              description: Create a bidirectional cluster link in west
+              value:
+                remote_cluster_id: cluster-east
+                cluster_link_id: eEBkTffYSESld6EO898x3w
+                configs:
+                - name: bootstrap.servers
+                  value: cluster-east-bootstrap-server
+                - name: link.mode
+                  value: BIDIRECTIONAL
+                - name: cluster.link.prefix
+                  value: east.
+                - name: sasl.mechanism
+                  value: PLAIN
+                - name: security.protocol
+                  value: SASL_SSL
+                - name: sasl.jaas.config
+                  value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Kafka API Key>' password='<Kafka API Secret>';
+    UpdateLinkConfigRequest:
+      content:
+        application/json:
+          example:
+            value: '300000'
+          schema:
+            $ref: '#/components/schemas/UpdateLinkConfigRequestData'
+      description: Link config value to update
+    CreateMirrorTopicRequest:
+      description: Name and configs of the topics mirroring from and mirroring to. Note that Confluent Cloud allows only specific replication factor values. Because of that the replication factor field should either be omitted or it should use one of the allowed values (see https://docs.confluent.io/cloud/current/client-apps/optimizing/durability.html).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateMirrorTopicRequestData'
+          examples:
+            generic_example:
+              description: Generic example of creating a mirror topic
+              value:
+                source_topic_name: topic-1
+                configs:
+                - name: unclean.leader.election.enable
+                  value: 'true'
+                replication_factor: 1
+            example_with_mirror_topic_name:
+              description: Example using optional mirror_topic_name flag
+              value:
+                source_topic_name: topic-1
+                mirror_topic_name: link1_topic-1
+                configs:
+                - name: unclean.leader.election.enable
+                  value: 'true'
+                replication_factor: 3
+    AlterLinkConfigBatchRequest:
+      content:
+        application/json:
+          example:
+            data:
+            - name: cleanup.policy
+              operation: DELETE
+            - name: compression.type
+              value: gzip
+          schema:
+            $ref: '#/components/schemas/AlterConfigBatchRequestData'
+    AlterMirrorsRequest:
+      description: Mirror topics to be altered.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AlterMirrorsRequestData'
+          examples:
+            mirror_topic_names:
+              description: Example using mirror topic names
+              value:
+                mirror_topic_names:
+                - topic-1
+                - topic-2
+            mirror_topic_name_pattern:
+              description: Example using mirror topic name pattern
+              value:
+                mirror_topic_name_pattern: .*
+  parameters:
+    QueryParamLinkName:
+      name: link_name
+      description: The link name
+      in: query
+      required: true
+      schema:
+        type: string
+      example: link-sb1
+    MirrorTopicStatus:
+      name: mirror_status
+      description: The status of the mirror topic. If not specified, all mirror topics will be returned.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MirrorTopicStatus'
+      example: ACTIVE
+    ValidateOnly:
+      name: validate_only
+      description: 'To validate the action can be performed successfully or not. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    LinkName:
+      name: link_name
+      description: The link name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: link-sb1
+    IncludePartitionLevelTruncationData:
+      name: include_partition_level_truncation_data
+      description: 'Whether to include partition level truncation information when truncating and restoring a topic in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    ValidateLink:
+      name: validate_link
+      description: 'To synchronously validate that the source cluster ID is expected and the dest cluster has the permission to read topics in the source cluster. Default: true'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    IncludeTasks:
+      name: include_tasks
+      description: 'Whether to include cluster linking tasks in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    MirrorTopicName:
+      name: mirror_topic_name
+      description: Cluster Linking mirror topic name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: topic-1
+    Force:
+      name: force
+      description: 'Force the action. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    LinkConfigName:
+      name: config_name
+      description: The link config name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: consumer.offset.sync.enable
+    IncludeStateTransitionErrors:
+      name: include_state_transition_errors
+      description: 'Whether to include mirror state transition errors in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+  responses:
+    AlterMirrorStatusResponse:
+      description: Mirror status alternation result
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AlterMirrorStatusResponseDataList'
+          example:
+            kind: KafkaPromoteMirror
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/links/link-1/mirrors
+              resource_name: crn:///kafka=cluster-1
+            data:
+            - kind: AlterMirrorsData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/links/my-new-link-1/mirrors/topic-1
+                resource: crn:///kafka=cluster-1
+              mirror_topic_name: topic-sb
+              error_code: null
+              error_message: null
+              mirror_lags:
+              - partition: 0
+                lag: 0
+                last_source_fetch_offset: 0
+              - partition: 1
+                lag: 10000
+                last_source_fetch_offset: 1000
+              - partition: 2
+                lag: 40000
+                last_source_fetch_offset: 12030
+              messages_truncated: null
+              partition_level_truncation_data:
+              - partition_id: 0
+                offset_truncated_to: 10000
+                messages_truncated: 10000
+              - partition_id: 1
+                offset_truncated_to: 40000
+                messages_truncated: 12030
+              - partition_id: 2
+                offset_truncated_to: 20000
+                messages_truncated: 20000
+            - kind: AlterMirrorsData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/links/my-new-link-1/mirrors/topic-2
+                resource: crn:///kafka=cluster-1
+              mirror_topic_name: topic-2
+              error_code: 400
+              error_message: Topic 'topic-2' has already stopped its mirror from 'my-new-link-1'
+              mirror_lags:
+              - partition: 0
+                lag: 0
+                last_source_fetch_offset: 0
+              - partition: 1
+                lag: 10000
+                last_source_fetch_offset: 1000
+              - partition: 2
+                lag: 40000
+                last_source_fetch_offset: 12030
+              messages_truncated: null
+              partition_level_truncation_data:
+              - partition_id: 0
+                offset_truncated_to: 10000
+                messages_truncated: 10000
+              - partition_id: 1
+                offset_truncated_to: 40000
+                messages_truncated: 12030
+              - partition_id: 2
+                offset_truncated_to: 20000
+                messages_truncated: 20000
+    TooManyRequestsErrorResponse:
+      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
+      content:
+        text/html:
+          schema:
+            type: string
+          example:
+            description: A sample response from Jetty's DoSFilter.
+            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
+    DescribeMirrorTopicResponse:
+      description: Metadata of the mirror topic
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListMirrorTopicsResponseData'
+          example:
+            kind: KafkaMirrorData
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/link/link-1/mirrors/topic-1
+              resource_name: crn:///kafka=cluster-1
+            link_name: link-sb-1
+            mirror_topic_name: topic-1
+            source_topic_name: topic-1
+            num_partitions: 3
+            mirror_lags:
+            - partition: 0
+              lag: 0
+              last_source_fetch_offset: 0
+            - partition: 1
+              lag: 10000
+              last_source_fetch_offset: 1000
+            - partition: 2
+              lag: 40000
+              last_source_fetch_offset: 12030
+            mirror_status: ACTIVE
+            state_time_ms: 1612550939300
+    UnauthorizedErrorResponse:
+      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authentication_failed:
+              description: Thrown when using Basic authentication with wrong Kafka credentials.
+              value:
+                error_code: 40101
+                message: Authentication failed
+    GetLinkResponse:
+      description: Single link name and properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListLinksResponseData'
+          examples:
+            link_at_destination_cluster:
+              description: Link at destination cluster
+              value:
+                kind: KafkaLinkData
+                metadata:
+                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
+                resource_name: null
+                source_cluster_id: src-cluster-id
+                link_name: my-new-link-1
+                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
+                cluster_link_id: eEBkTffYSESld6EO898x3w
+                topic_names:
+                - topic-db-1
+                - topic-db-2
+            link_at_source_cluster:
+              description: Link at source cluster
+              value:
+                kind: KafkaLinkData
+                metadata:
+                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
+                resource_name: null
+                destination_cluster_id: dst-cluster-id
+                link_name: my-new-link-1
+                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
+                cluster_link_id: eEBkTffYSESld6EO898x3w
+                topic_names: []
+    ListMirrorTopicsResponse:
+      description: Metadata of mirror topics
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListMirrorTopicsResponseDataList'
+          example:
+            kind: KafkaMirrorDataList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/link/link-1/mirrors
+              resource_name: crn:///kafka=cluster-1
+              next: null
+            data:
+            - kind: KafkaMirrorData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/link-1/mirrors/topic-1
+                resource_name: crn:///kafka=cluster-1
+              link_name: link-sb-1
+              resource_name: crn:///kafka=cluster-1
+              mirror_topic_name: topic-1
+              source_topic_name: topic-1
+              num_partitions: 3
+              mirror_lags:
+              - partition: 0
+                lag: 0
+                last_source_fetch_offset: 0
+              - partition: 1
+                lag: 10000
+                last_source_fetch_offset: 1000
+              - partition: 2
+                lag: 40000
+                last_source_fetch_offset: 12030
+              mirror_status: ACTIVE
+              state_time_ms: 1612550939300
+            - kind: KafkaMirrorData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/link-1/mirrors/topic-2
+                resource_name: crn:///kafka=cluster-1
+              link_name: link-sb-2
+              resource_name: crn:///kafka=cluster-1
+              mirror_topic_name: topic-2
+              source_topic_name: topic-2
+              num_partitions: 3
+              mirror_lags:
+              - partition: 0
+                lag: 0
+                last_source_fetch_offset: 0
+              - partition: 1
+                lag: 10000
+                last_source_fetch_offset: 1000
+              - partition: 2
+                lag: 40000
+                last_source_fetch_offset: 12030
+              mirror_status: STOPPED
+              state_time_ms: 1612551353640
+    BadRequestErrorResponse:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            bad_request_cannot_deserialize:
+              description: Thrown when trying to deserialize an integer from non-integer data.
+              value:
+                error_code: 400
+                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
+            unsupported_version_exception:
+              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
+              value:
+                error_code: 40035
+                message: The version of this API is not supported in the underlying Kafka cluster.
+    NoContentResponse:
+      description: Operation succeeded, no content in the response
+    ListLinksResponse:
+      description: A list of link names and properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListLinksResponseDataList'
+          example:
+            kind: KafkaLinkDataList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links
+              next: null
+            data:
+            - kind: KafkaLinkData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/CIL-69l7S1CwoVNAhoQLug/links/my-new-link-1
+                resource_name: null
+              source_cluster_id: src-cluster-id
+              link_name: my-new-link-1
+              link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
+              cluster_link_id: eEBkTffYSESld6EO898x3w
+              topic_names:
+              - topic-sb-1
+              - topic-sb-2
+              link_state: ACTIVE
+            - kind: KafkaLinkData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/CIL-69l7S1CwoVNAhoQLug/links/my-new-link-2
+                resource_name: null
+              remote_cluster_id: src-cluster-id
+              link_name: my-new-link-2
+              link_id: f749116e-f847-4bd2-b1f6-5c4e518a0678
+              cluster_link_id: 90kRbvhHS9Kx9lxOUYoGeA
+              topic_names:
+              - topic-db-1
+              - topic-db-2
+              link_state: UNAVAILABLE
+              link_error: AUTHENTICATION_ERROR
+              link_error_message: Please check your api key and secret
+            - kind: KafkaLinkData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/CIL-69l7S1CwoVNAhoQLug/links/my-new-link-3
+                resource_name: null
+              destination_cluster_id: dest-cluster-id
+              link_name: my-new-link-3
+              link_id: 9cd1711e-a4ef-4390-a35e-dfd758d97a82
+              cluster_link_id: nNFxHqTvQ5CjXt_XWNl6gg
+              topic_names: []
+              link_state: ACTIVE
+    GetLinkConfigsResponse:
+      description: Config name and value
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListLinkConfigsResponseData'
+          example:
+            kind: KafkaLinkConfigData
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+              resource_name: null
+            cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+            name: consumer.offset.sync.ms
+            value: '3825940'
+            is_default: false
+            is_read_only: false
+            is_sensitive: false
+            source: DYNAMIC_CLUSTER_LINK_CONFIG
+            synonyms:
+            - cosm
+            link_name: link-db-1
+    ListLinkConfigsResponse:
+      description: Config name and value
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListLinkConfigsResponseDataList'
+          example:
+            kind: KafkaLinkConfigDataList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/v-0Ce-CkTyKQol9v46LaCQ/links/link-nb-1/configs
+              next: null
+            data:
+            - kind: KafkaLinkConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+                resource_name: null
+              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+              name: consumer.offset.sync.ms
+              value: '3825940'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_CLUSTER_LINK_CONFIG
+              synonyms:
+              - cosm
+              link_name: link-db-1
+            - kind: KafkaLinkConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+                resource_name: null
+              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+              name: acl.sync.ms
+              value: '5000'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_CLUSTER_LINK_CONFIG
+              synonyms:
+              - asm
+              link_name: link-db-1
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

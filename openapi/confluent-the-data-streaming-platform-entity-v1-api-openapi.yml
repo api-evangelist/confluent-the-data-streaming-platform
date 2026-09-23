@@ -1,0 +1,1019 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Entity (v1) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Entity (v1)
+  description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+    The API allows you to create, retrieve, update, and delete catalog entities.
+
+
+    Related guide: Catalog API Documentation.'
+paths:
+  /catalog/v1/entity/businessmetadata:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    post:
+      summary: Bulk Create Business Metadata
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Bulk API to create multiple business metadata.'
+      operationId: createBusinessMetadata
+      tags:
+      - Entity (v1)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/BusinessMetadata'
+              type: array
+        description: The business metadata
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BusinessMetadataResponse'
+                type: array
+          description: The business metadata. Errored business metadata will have an additional error property.
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+    put:
+      summary: Bulk Update Business Metadata
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Bulk API to update multiple business metadata.'
+      operationId: updateBusinessMetadata
+      tags:
+      - Entity (v1)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/BusinessMetadata'
+              type: array
+        description: The business metadata
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BusinessMetadataResponse'
+                type: array
+          description: The business metadata. Errored business metadata will have an additional error property.
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/type/{typeName}/name/{qualifiedName}/businessmetadata:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    get:
+      summary: Read Business Metadata for an Entity
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Gets the list of business metadata for a given entity represented
+
+        by a qualified name.'
+      operationId: getBusinessMetadata
+      tags:
+      - Entity (v1)
+      parameters:
+      - description: The type of the entity
+        explode: false
+        in: path
+        name: typeName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The qualified name of the entity
+        explode: false
+        in: path
+        name: qualifiedName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BusinessMetadataResponse'
+                type: array
+          description: The business metadata
+        '400':
+          description: Bad Request
+        '404':
+          description: Entity not found
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/type/{typeName}/name/{qualifiedName}/businessmetadata/{bmName}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    delete:
+      summary: Delete a Business Metadata for an Entity
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Delete a business metadata on an entity.'
+      operationId: deleteBusinessMetadata
+      tags:
+      - Entity (v1)
+      parameters:
+      - description: The type of the entity
+        explode: false
+        in: path
+        name: typeName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The qualified name of the entity
+        explode: false
+        in: path
+        name: qualifiedName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the business metadata
+        explode: false
+        in: path
+        name: bmName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/tags:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    put:
+      summary: Bulk Update Tags
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Bulk API to update multiple tags.'
+      tags:
+      - Entity (v1)
+      operationId: updateTags
+      requestBody:
+        description: The tags
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+      responses:
+        '200':
+          description: The tags. Errored tags will have an additional error property.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagResponse'
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Bulk Create Tags
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Bulk API to create multiple tags.'
+      tags:
+      - Entity (v1)
+      operationId: createTags
+      requestBody:
+        description: The tags
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+      responses:
+        '200':
+          description: The tags. Errored tags will have an additional error property.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagResponse'
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/type/{typeName}/name/{qualifiedName}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    get:
+      summary: Read an Entity
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Fetch complete definition of an entity given its type and unique attribute.'
+      operationId: getByUniqueAttributes
+      parameters:
+      - name: typeName
+        in: path
+        description: The type of the entity
+        required: true
+        schema:
+          type: string
+      - name: qualifiedName
+        in: path
+        description: The qualified name of the entity
+        required: true
+        schema:
+          type: string
+      - name: minExtInfo
+        in: query
+        description: Whether to populate on header and schema attributes
+        schema:
+          type: boolean
+          default: false
+      - name: ignoreRelationships
+        in: query
+        description: Whether to ignore relationships
+        schema:
+          type: boolean
+          default: false
+      tags:
+      - Entity (v1)
+      responses:
+        '200':
+          description: The entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityWithExtInfo'
+        '400':
+          description: Bad Request
+        '404':
+          description: Entity not found
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/type/{typeName}/name/{qualifiedName}/tags:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    get:
+      summary: Read Tags for an Entity
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Gets the list of tags for a given entity represented by a qualified name.'
+      operationId: getTags
+      parameters:
+      - name: typeName
+        in: path
+        description: The type of the entity
+        required: true
+        schema:
+          type: string
+      - name: qualifiedName
+        in: path
+        description: The qualified name of the entity
+        required: true
+        schema:
+          type: string
+      tags:
+      - Entity (v1)
+      responses:
+        '200':
+          description: The tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: Entity not found
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    put:
+      summary: Update an Entity Attribute
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Partially update an entity attribute.'
+      operationId: partialEntityUpdate
+      requestBody:
+        description: The entity to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityWithExtInfo'
+      tags:
+      - Entity (v1)
+      responses:
+        '200':
+          description: The updated entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPartialUpdateResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: Entity not found
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+  /catalog/v1/entity/type/{typeName}/name/{qualifiedName}/tags/{tagName}:
+    servers:
+    - url: https://psrc-00000.region.provider.confluent.cloud
+      description: Confluent Cloud Schema Registry Endpoint. For example https://psrc-00000.region.provider.confluent.cloud
+    delete:
+      summary: Delete a Tag for an Entity
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Delete a tag for an entity.'
+      operationId: deleteTag
+      parameters:
+      - name: typeName
+        in: path
+        description: The type of the entity
+        required: true
+        schema:
+          type: string
+      - name: qualifiedName
+        in: path
+        description: The qualified name of the entity
+        required: true
+        schema:
+          type: string
+      - name: tagName
+        in: path
+        description: The name of the tag
+        required: true
+        schema:
+          type: string
+      tags:
+      - Entity (v1)
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '429':
+          description: Rate Limit Error
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    EntityWithExtInfo:
+      type: object
+      properties:
+        referredEntities:
+          type: object
+          description: The referred entities
+          additionalProperties:
+            $ref: '#/components/schemas/Entity'
+        entity:
+          $ref: '#/components/schemas/Entity'
+    TermAssignmentHeader:
+      type: object
+      properties:
+        termGuid:
+          type: string
+          description: The term guid
+        relationGuid:
+          type: string
+          description: The relation guid
+        description:
+          type: string
+          description: The description
+        displayText:
+          type: string
+          description: The display text
+        expression:
+          type: string
+          description: The expression
+        createdBy:
+          type: string
+          description: The creator
+        steward:
+          type: string
+          description: The steward
+        source:
+          type: string
+          description: The source
+        confidence:
+          type: integer
+          description: The confidence
+          format: int32
+        status:
+          type: string
+          description: The status
+          enum:
+          - DISCOVERED
+          - PROPOSED
+          - IMPORTED
+          - VALIDATED
+          - DEPRECATED
+          - OBSOLETE
+          - OTHER
+    BusinessMetadataResponse:
+      properties:
+        typeName:
+          type: string
+          description: The business metadata name
+        attributes:
+          type: object
+          description: The business metadata attributes
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+      type: object
+    TagResponse:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The tag name
+        attributes:
+          type: object
+          description: The tag attributes
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        validityPeriods:
+          type: array
+          description: The validity periods
+          items:
+            $ref: '#/components/schemas/TimeBoundary'
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+    TimeBoundary:
+      type: object
+      properties:
+        startTime:
+          type: string
+          description: The start time of format yyyy/MM/dd HH:mm:ss
+        endTime:
+          type: string
+          description: The end time of format yyyy/MM/dd HH:mm:ss
+        timeZone:
+          type: string
+          description: The time zone (see java.util.TimeZone)
+    PartialUpdateParams:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The type name
+        attributes:
+          type: object
+          description: The attributes
+        guid:
+          type: string
+          description: The internal guid
+        status:
+          type: string
+          description: The status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        classificationNames:
+          type: array
+          description: The classification (tag) names
+          items:
+            type: string
+        classifications:
+          type: array
+          description: The classifications (tags)
+          items:
+            $ref: '#/components/schemas/ClassificationHeader'
+        isIncomplete:
+          type: boolean
+          description: Whether is incomplete
+    Classification:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The tag name
+        attributes:
+          type: object
+          description: The tag attributes
+          additionalProperties:
+            type: object
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        validityPeriods:
+          type: array
+          description: The validity periods
+          items:
+            $ref: '#/components/schemas/TimeBoundary'
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+    EntityPartialUpdateResponse:
+      type: object
+      properties:
+        mutatedEntities:
+          $ref: '#/components/schemas/EntityPartialUpdate'
+      description: The type name
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    Tag:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The tag name
+        attributes:
+          type: object
+          description: The tag attributes
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        validityPeriods:
+          type: array
+          description: The validity periods
+          items:
+            $ref: '#/components/schemas/TimeBoundary'
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+    Entity:
+      type: object
+      description: The entity
+      properties:
+        typeName:
+          type: string
+          description: The type name
+        attributes:
+          type: object
+          description: The type attributes
+        guid:
+          type: string
+          description: The internal guid
+        homeId:
+          type: string
+          description: The home id
+        isProxy:
+          type: boolean
+          description: Whether is a proxy
+          writeOnly: true
+        isIncomplete:
+          type: boolean
+          description: Whether is incomplete
+        provenanceType:
+          type: integer
+          description: The provenance type
+          format: int32
+        status:
+          type: string
+          description: The status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          type: integer
+          description: The create time
+          format: int64
+        updateTime:
+          type: integer
+          description: The update time
+          format: int64
+        version:
+          type: integer
+          description: The version
+          format: int32
+        relationshipAttributes:
+          type: object
+          description: The relationship attributes
+        classifications:
+          type: array
+          description: The classifications (tags)
+          items:
+            $ref: '#/components/schemas/Classification'
+        meanings:
+          type: array
+          description: The meanings
+          items:
+            $ref: '#/components/schemas/TermAssignmentHeader'
+        customAttributes:
+          type: object
+          description: The custom attributes
+          additionalProperties:
+            type: string
+        businessAttributes:
+          type: object
+          description: The business attributes
+          additionalProperties:
+            type: object
+        labels:
+          uniqueItems: true
+          type: array
+          description: The labels
+          items:
+            type: string
+        proxy:
+          type: boolean
+          description: Whether is a proxy
+    ClassificationHeader:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The tag name
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+    BusinessMetadata:
+      properties:
+        typeName:
+          type: string
+          description: The business metadata name
+        attributes:
+          type: object
+          description: The business metadata attributes
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+      type: object
+    EntityPartialUpdate:
+      type: object
+      properties:
+        UPDATE:
+          type: array
+          description: The updated entities.
+          items:
+            $ref: '#/components/schemas/PartialUpdateParams'
+      description: The updated entities.
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)

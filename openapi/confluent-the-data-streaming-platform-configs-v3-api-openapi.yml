@@ -1,0 +1,1487 @@
+openapi: 3.2.0
+info:
+  title: Confluent Cloud Configs (v3) API
+  version: ''
+  x-api-id: 46234552-5833-42eb-ba0f-883ad3f70d2b
+  x-audience: external-public
+  x-logo:
+    url: https://assets.confluent.io/m/1661ef5e4ff82d3d/
+  description: '# Introduction
+
+
+    Note
+
+
+    This documents the collection of Confluent Cloud APIs.'
+servers:
+- url: https://api.confluent.cloud
+  description: Confluent Cloud API
+tags:
+- name: Configs (v3)
+  description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)'
+paths:
+  /kafka/v3/clusters/{cluster_id}/broker-configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    get:
+      summary: List Dynamic Broker Configs
+      operationId: listKafkaClusterConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Return a list of dynamic cluster-wide broker configuration parameters for the specified Kafka
+
+        cluster. Returns an empty list if there are no dynamic cluster-wide broker configuration parameters.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListClusterConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/broker-configs:alter:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    post:
+      summary: Batch Alter Dynamic Broker Configs
+      operationId: updateKafkaClusterConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Update or delete a set of dynamic cluster-wide broker configuration parameters.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterClusterConfigBatchRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/broker-configs/{name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/ConfigName'
+    get:
+      summary: Get Dynamic Broker Config
+      operationId: getKafkaClusterConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Return the dynamic cluster-wide broker configuration parameter specified by ``name``.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetClusterConfigResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    put:
+      summary: Update Dynamic Broker Config
+      operationId: updateKafkaClusterConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Update the dynamic cluster-wide broker configuration parameter specified by ``name``.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateClusterConfigRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    delete:
+      summary: Reset Dynamic Broker Config
+      operationId: deleteKafkaClusterConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Reset the configuration parameter specified by ``name`` to its
+
+        default value by deleting a dynamic cluster-wide configuration.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/topics/{topic_name}/configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/TopicName'
+    get:
+      summary: List Topic Configs
+      operationId: listKafkaTopicConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Return the list of configuration parameters that belong to the specified topic.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListTopicConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/topics/{topic_name}/configs:alter:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/TopicName'
+    post:
+      summary: Batch Alter Topic Configs
+      operationId: updateKafkaTopicConfigBatch
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Update or delete a set of topic configuration parameters.
+
+        Also supports a dry-run mode that only validates whether the operation would succeed if the
+
+        ``validate_only`` request property is explicitly specified and set to true.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/AlterTopicConfigBatchRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/topics/{topic_name}/configs/{name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/TopicName'
+    - $ref: '#/components/parameters/ConfigName'
+    get:
+      summary: Get Topic Config
+      operationId: getKafkaTopicConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Return the configuration parameter with the given `name`.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetTopicConfigResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    put:
+      summary: Update Topic Config
+      operationId: updateKafkaTopicConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Update the configuration parameter with given `name`. To update the
+
+        number of partitions, see
+
+        https://docs.confluent.io/cloud/current/api.html#tag/Topic-(v3)/operation/updatePartitionCountKafkaTopic.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTopicConfigRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    delete:
+      summary: Reset Topic Config
+      operationId: deleteKafkaTopicConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Reset the configuration parameter with given `name` to its default value.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/topics/-/configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    get:
+      summary: List All Topic Configs
+      operationId: listKafkaAllTopicConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Return the list of configuration parameters for all topics hosted by the specified
+
+        cluster.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListTopicConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/topics/{topic_name}/default-configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/TopicName'
+    get:
+      summary: List New Topic Default Configs
+      operationId: listKafkaDefaultTopicConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        List the default configuration parameters used if the topic were to be newly created.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListTopicConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/groups/{group_id}/configs:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    get:
+      summary: List all configs of the group
+      operationId: listKafkaGroupConfigs
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        List all configurations for the specified group. This API supports consumer groups, share groups, and streams groups.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ListGroupConfigsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/groups/{group_id}/configs/{name}:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    - $ref: '#/components/parameters/ConfigName'
+    get:
+      summary: Get group config
+      operationId: getKafkaGroupConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Get the configuration with the specified name for the specified group. This API supports consumer groups, share groups, and streams groups.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGroupConfigResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    put:
+      summary: Update group config
+      operationId: updateKafkaGroupConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Update the configuration with the specified name for the specified group. This API supports consumer groups, share groups, and streams groups.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateGroupConfigRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+    delete:
+      summary: Delete group config
+      operationId: deleteKafkaGroupConfig
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Delete the dynamic configuration override with the specified name for the specified group. After deletion, the default group configuration will be applied. This API supports consumer groups, share groups, and streams groups.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /kafka/v3/clusters/{cluster_id}/groups/{group_id}/configs:alter:
+    servers:
+    - url: https://pkc-00000.region.provider.confluent.cloud
+      x-audience: business-unit-internal
+      description: Confluent Cloud REST Endpoint. For example https://pkc-00000.region.provider.confluent.cloud
+    parameters:
+    - $ref: '#/components/parameters/ClusterId'
+    - $ref: '#/components/parameters/GroupId'
+    post:
+      summary: Batch Alter Group Configs
+      operationId: updateKafkaGroupConfigBatch
+      description: '![Generally Available](#section/Versioning/API-Lifecycle-Policy)
+
+
+        Batch alter configurations for the specified group. This API supports consumer groups, share groups, and streams groups.'
+      tags:
+      - Configs (v3)
+      security:
+      - resource-api-key: []
+      - external-access-token: []
+      parameters:
+      - $ref: '#/components/parameters/ValidateOnly'
+      requestBody:
+        $ref: '#/components/requestBodies/AlterGroupConfigBatchRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+components:
+  responses:
+    ListTopicConfigsResponse:
+      description: The list of cluster configs.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TopicConfigDataList'
+          example:
+            kind: KafkaTopicConfigList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/configs
+              next: null
+            data:
+            - kind: KafkaTopicConfig
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/configs/cleanup.policy
+                resource_name: crn:///kafka=cluster-1/topic=topic-1/config=cleanup.policy
+              cluster_id: cluster-1
+              topic_name: topic-1
+              name: cleanup.policy
+              value: compact
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_TOPIC_CONFIG
+              synonyms:
+              - name: cleanup.policy
+                value: compact
+                source: DYNAMIC_TOPIC_CONFIG
+              - name: cleanup.policy
+                value: delete
+                source: DEFAULT_CONFIG
+            - kind: KafkaTopicConfig
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/configs/compression.type
+                resource_name: crn:///kafka=cluster-1/topic=topic-1/config=compression.type
+              cluster_id: cluster-1
+              topic_name: topic-1
+              name: compression.type
+              value: gzip
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_TOPIC_CONFIG
+              synonyms:
+              - name: compression.type
+                value: gzip
+                source: DYNAMIC_TOPIC_CONFIG
+              - name: compression.type
+                value: producer
+                source: DEFAULT_CONFIG
+    ListClusterConfigsResponse:
+      description: The list of cluster configs.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClusterConfigDataList'
+          example:
+            kind: KafkaClusterConfigList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/broker-configs
+              next: null
+            data:
+            - kind: KafkaClusterConfig
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/broker-configs/max.connections
+                resource_name: crn:///kafka=cluster-1/broker-config=max.connections
+              cluster_id: cluster-1
+              config_type: BROKER
+              name: max.connections
+              value: '1000'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_DEFAULT_BROKER_CONFIG
+              synonyms:
+              - name: max.connections
+                value: '1000'
+                source: DYNAMIC_DEFAULT_BROKER_CONFIG
+              - name: max.connections
+                value: '2147483647'
+                source: DEFAULT_CONFIG
+            - kind: KafkaClusterConfig
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/broker-configs/compression.type
+                resource_name: crn:///kafka=cluster-1/broker-config=compression.type
+              cluster_id: cluster-1
+              config_type: BROKER
+              name: compression.type
+              value: gzip
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_DEFAULT_BROKER_CONFIG
+              synonyms:
+              - name: compression.type
+                value: gzip
+                source: DYNAMIC_DEFAULT_BROKER_CONFIG
+              - name: compression.type
+                value: producer
+                source: DEFAULT_CONFIG
+    ListGroupConfigsResponse:
+      description: Config name and value for group configurations.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupConfigDataList'
+          example:
+            kind: KafkaGroupConfigDataList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/groups/group-1/configs
+              next: null
+            data:
+            - kind: KafkaGroupConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/groups/group-1/configs/share.session.timeout.ms
+                resource_name: crn:///kafka=cluster-1/group=group-1/config=share.session.timeout.ms
+              cluster_id: cluster-1
+              group_id: group-1
+              name: share.session.timeout.ms
+              value: '45000'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_GROUP_CONFIG
+              synonyms:
+              - name: share.session.timeout.ms
+                value: '45000'
+                source: DYNAMIC_GROUP_CONFIG
+              - name: share.session.timeout.ms
+                value: '30000'
+                source: DEFAULT_CONFIG
+            - kind: KafkaGroupConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/groups/group-1/configs/share.heartbeat.interval.ms
+                resource_name: crn:///kafka=cluster-1/group=group-1/config=share.heartbeat.interval.ms
+              cluster_id: cluster-1
+              group_id: group-1
+              name: share.heartbeat.interval.ms
+              value: null
+              is_default: true
+              is_read_only: false
+              is_sensitive: false
+              source: DEFAULT_CONFIG
+              synonyms:
+              - name: share.heartbeat.interval.ms
+                value: '3000'
+                source: DEFAULT_CONFIG
+    GetClusterConfigResponse:
+      description: The cluster configuration parameter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClusterConfigData'
+          example:
+            kind: KafkaClusterConfig
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/broker-configs/compression.type
+              resource_name: crn:///kafka=cluster-1/broker-config=compression.type
+            cluster_id: cluster-1
+            config_type: BROKER
+            name: compression.type
+            value: gzip
+            is_default: false
+            is_read_only: false
+            is_sensitive: false
+            source: DYNAMIC_DEFAULT_BROKER_CONFIG
+            synonyms:
+            - name: compression.type
+              value: gzip
+              source: DYNAMIC_DEFAULT_BROKER_CONFIG
+            - name: compression.type
+              value: producer
+              source: DEFAULT_CONFIG
+    GetTopicConfigResponse:
+      description: The topic configuration parameter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TopicConfigData'
+          example:
+            kind: KafkaTopicConfig
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/compression.type
+              resource_name: crn:///kafka=cluster-1/topic=topic-1/config=compression.type
+            cluster_id: cluster-1
+            topic_name: topic-1
+            name: compression.type
+            value: gzip
+            is_default: false
+            is_read_only: false
+            is_sensitive: false
+            source: DYNAMIC_TOPIC_CONFIG
+            synonyms:
+            - name: compression.type
+              value: gzip
+              source: DYNAMIC_TOPIC_CONFIG
+            - name: compression.type
+              value: producer
+              source: DEFAULT_CONFIG
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
+    TooManyRequestsErrorResponse:
+      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
+      content:
+        text/html:
+          schema:
+            type: string
+          example:
+            description: A sample response from Jetty's DoSFilter.
+            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
+    ForbiddenErrorResponse:
+      description: Indicates a client authorization error. Kafka authorization failures will contain error code 40301 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authorization_failed:
+              description: Thrown when the caller is not authorized to perform the underlying operation.
+              value:
+                error_code: 40301
+                message: Request is not authorized
+    UnauthorizedErrorResponse:
+      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authentication_failed:
+              description: Thrown when using Basic authentication with wrong Kafka credentials.
+              value:
+                error_code: 40101
+                message: Authentication failed
+    NotFoundErrorResponse:
+      description: Indicates attempted access to an unreachable or non-existing resource like e.g. an unknown topic or partition. GET requests to endpoints not allowed in the accesslists will also result in this response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            endpoint_not_found:
+              description: Thrown for generic HTTP 404 errors.
+              value:
+                error_code: 404
+                message: HTTP 404 Not Found
+            cluster_not_found:
+              description: Thrown when using a non-existing cluster ID.
+              value:
+                error_code: 404
+                message: Cluster my-cluster cannot be found.
+            unknown_topic_or_partition:
+              description: Thrown when using a non-existing topic name or partition ID.
+              value:
+                error_code: 40403
+                message: This server does not host this topic-partition.
+    BadRequestErrorResponse:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            bad_request_cannot_deserialize:
+              description: Thrown when trying to deserialize an integer from non-integer data.
+              value:
+                error_code: 400
+                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
+            unsupported_version_exception:
+              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
+              value:
+                error_code: 40035
+                message: The version of this API is not supported in the underlying Kafka cluster.
+    NoContentResponse:
+      description: Operation succeeded, no content in the response
+    GetGroupConfigResponse:
+      description: Config name and value for group configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupConfigData'
+          example:
+            kind: KafkaGroupConfigData
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/groups/group-1/configs/share.session.timeout.ms
+              resource_name: crn:///kafka=cluster-1/group=group-1/config=share.session.timeout.ms
+            cluster_id: cluster-1
+            group_id: group-1
+            name: share.session.timeout.ms
+            value: '45000'
+            is_default: false
+            is_read_only: false
+            is_sensitive: false
+            source: DYNAMIC_GROUP_CONFIG
+            synonyms:
+            - name: share.session.timeout.ms
+              value: '45000'
+              source: DYNAMIC_GROUP_CONFIG
+            - name: share.session.timeout.ms
+              value: '30000'
+              source: DEFAULT_CONFIG
+  schemas:
+    ResourceMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        resource_name:
+          type:
+          - string
+          - 'null'
+    ClusterConfigDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClusterConfigData'
+    TopicConfigDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/TopicConfigData'
+    GroupConfigDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/GroupConfigData'
+    ResourceCollection:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    ClusterConfigType:
+      type: string
+      x-extensible-enum:
+      - BROKER
+    ConfigSource:
+      type: string
+      x-extensible-enum:
+      - DYNAMIC_CLUSTER_LINK_CONFIG
+      - DYNAMIC_TOPIC_CONFIG
+      - DYNAMIC_BROKER_LOGGER_CONFIG
+      - DYNAMIC_BROKER_CONFIG
+      - DYNAMIC_DEFAULT_BROKER_CONFIG
+      - STATIC_BROKER_CONFIG
+      - DEFAULT_CONFIG
+      - UNKNOWN
+    AlterConfigBatchRequestData:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+              value:
+                type:
+                - string
+                - 'null'
+              operation:
+                type:
+                - string
+                - 'null'
+                x-extensible-enum:
+                - SET
+                - DELETE
+        validate_only:
+          type: boolean
+    ConfigSynonymData:
+      type: object
+      required:
+      - name
+      - source
+      properties:
+        name:
+          type: string
+        value:
+          type:
+          - string
+          - 'null'
+        source:
+          $ref: '#/components/schemas/ConfigSource'
+    UpdateConfigRequestData:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+    AbstractConfigData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - name
+        - is_default
+        - is_read_only
+        - is_sensitive
+        - source
+        - synonyms
+        properties:
+          cluster_id:
+            type: string
+          name:
+            type: string
+          value:
+            type:
+            - string
+            - 'null'
+          is_default:
+            type: boolean
+          is_read_only:
+            type: boolean
+          is_sensitive:
+            type: boolean
+          source:
+            $ref: '#/components/schemas/ConfigSource'
+          synonyms:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConfigSynonymData'
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UpdateGroupConfigRequestData:
+      properties:
+        value:
+          type: string
+      required:
+      - value
+      type: object
+    ClusterConfigData:
+      allOf:
+      - $ref: '#/components/schemas/AbstractConfigData'
+      - type: object
+        required:
+        - config_type
+        properties:
+          config_type:
+            $ref: '#/components/schemas/ClusterConfigType'
+    TopicConfigData:
+      allOf:
+      - $ref: '#/components/schemas/AbstractConfigData'
+      - type: object
+        required:
+        - topic_name
+        properties:
+          topic_name:
+            type: string
+    ResourceCollectionMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        next:
+          type:
+          - string
+          - 'null'
+    GroupConfigData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - group_id
+        - name
+        - is_default
+        - is_read_only
+        - is_sensitive
+        - source
+        - synonyms
+        properties:
+          cluster_id:
+            type: string
+          group_id:
+            type: string
+          name:
+            type: string
+          value:
+            type:
+            - string
+            - 'null'
+          is_default:
+            type: boolean
+          is_read_only:
+            type: boolean
+          is_sensitive:
+            type: boolean
+          source:
+            $ref: '#/components/schemas/ConfigSource'
+          synonyms:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConfigSynonymData'
+    Resource:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+  parameters:
+    TopicName:
+      name: topic_name
+      description: The topic name.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: topic-1
+    ConfigName:
+      name: name
+      description: The configuration parameter name.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: compression.type
+    ValidateOnly:
+      name: validate_only
+      description: 'To validate the action can be performed successfully or not. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    GroupId:
+      name: group_id
+      description: The group ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: group-1
+  requestBodies:
+    UpdateTopicConfigRequest:
+      description: The topic configuration parameter update request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigRequestData'
+          example:
+            value: gzip
+    AlterTopicConfigBatchRequest:
+      description: The alter topic configuration parameter batch request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AlterConfigBatchRequestData'
+          examples:
+            batch_alter_topic_configs:
+              value:
+                data:
+                - name: cleanup.policy
+                  operation: DELETE
+                - name: compression.type
+                  value: gzip
+            validate_only_batch_alter_topic_configs:
+              value:
+                data:
+                - name: cleanup.policy
+                  operation: DELETE
+                - name: compression.type
+                  value: gzip
+                validate_only: true
+    AlterGroupConfigBatchRequest:
+      content:
+        application/json:
+          example:
+            data:
+            - name: share.session.timeout.ms
+              operation: DELETE
+            - name: share.heartbeat.interval.ms
+              value: '5000'
+          schema:
+            $ref: '#/components/schemas/AlterConfigBatchRequestData'
+    UpdateGroupConfigRequest:
+      content:
+        application/json:
+          example:
+            value: '45000'
+          schema:
+            $ref: '#/components/schemas/UpdateGroupConfigRequestData'
+      description: Group config value to update
+    UpdateClusterConfigRequest:
+      description: The cluster configuration parameter update request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigRequestData'
+          example:
+            value: gzip
+    AlterClusterConfigBatchRequest:
+      description: The alter cluster configuration parameter batch request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AlterConfigBatchRequestData'
+          example:
+            data:
+            - name: max.connections
+              operation: DELETE
+            - name: compression.type
+              value: gzip
+  securitySchemes:
+    cloud-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Cloud API Keys using HTTP Basic Auth. Treat the Cloud API Key ID as the username and Cloud API Key Secret as the password.
+    confluent-sts-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    global-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with Global API Keys using HTTP Basic Auth. Treat the Global API Key ID as the username and Global API Key Secret as the password.
+    resource-api-key:
+      type: http
+      scheme: basic
+      description: Authenticate with resource-specific API Keys using HTTP Basic Auth. Treat the resource-specific API Key ID as the username and resource-specific API Key Secret as the password.
+    external-access-token:
+      type: oauth2
+      description: Authenticate with Confluent API using this credentials (JSON Web Tokens) following OAuth 2.0.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.confluent.cloud/sts/v1/oauth2/token
+          scopes: {}
+    oauth:
+      type: oauth2
+      description: Authenticate with OAuth 2.0. Currently this is only supported for partner APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            partner:alter: enables partners to alter entitlements
+            partner:create: enables partners to create entitlements and signup on behalf of customers
+            partner:delete: enables partners to delete entitlements and organizations
+            partner:describe: enables partners to read and list entitlements and organizations
+x-tagGroups:
+- name: Identity Access Management (v2)
+  tags:
+  - API Keys (iam/v2)
+  - Users (iam/v2)
+  - Service Accounts (iam/v2)
+  - Invitations (iam/v2)
+  - IP Groups (iam/v2)
+  - IP Filters (iam/v2)
+  - IP Filter Summaries (iam/v2)
+  - Role Bindings (iam/v2)
+  - Identity Providers (iam/v2)
+  - Jwks (iam/v2)
+  - Identity Pools (iam/v2)
+  - Group Mappings (iam/v2/sso)
+  - Certificate Authorities (iam/v2)
+  - Certificate Identity Pools (iam/v2)
+- name: Org API (v2)
+  tags:
+  - Environments (org/v2)
+  - Organizations (org/v2)
+- name: Notifications API (v1)
+  tags:
+  - Subscriptions (notifications/v1)
+  - Integrations (notifications/v1)
+  - Notification Types (notifications/v1)
+  - Resource Preferences (notifications/v1)
+  - Resource Subscriptions (notifications/v1)
+  - User Notifications (notifications/v1)
+- name: Cluster Mgmt for Kafka (v2)
+  tags:
+  - Clusters (cmk/v2)
+- name: Cluster Mgmt for ksqlDB (v2)
+  tags:
+  - Clusters (ksqldbcm/v2)
+- name: Connect API (v1)
+  tags:
+  - Connectors (connect/v1)
+  - Lifecycle (connect/v1)
+  - Status (connect/v1)
+  - Managed Connector Plugins (connect/v1)
+  - Offsets (connect/v1)
+  - Custom Connector Plugins (connect/v1)
+  - Presigned Urls (connect/v1)
+  - Custom Connector Runtimes (connect/v1)
+- name: Connect Artifact Management (v1)
+  tags:
+  - Connect Artifacts (cam/v1)
+  - Presigned Urls (cam/v1)
+- name: Kafka API (v3)
+  tags:
+  - Cluster (v3)
+  - Configs (v3)
+  - ACL (v3)
+  - Consumer Group (v3)
+  - Partition (v3)
+  - Topic (v3)
+  - Records (v3)
+  - Cluster Linking (v3)
+  - Share Group (v3)
+  - Streams Group (v3)
+- name: Service Quota API (v1)
+  tags:
+  - Applied Quotas (service-quota/v1)
+  - Scopes (service-quota/v1)
+- name: Partner API (v2)
+  tags:
+  - Entitlements (partner/v2)
+  - Organizations (partner/v2)
+  - Signup (partner/v2)
+- name: Cluster Mgmt for Schema Registry (v2)
+  tags:
+  - Regions (srcm/v2)
+  - Clusters (srcm/v2)
+- name: Cluster Mgmt for Schema Registry (v3)
+  tags:
+  - Clusters (srcm/v3)
+- name: Schema Registry API (v1)
+  tags:
+  - Compatibility (v1)
+  - Config (v1)
+  - Contexts (v1)
+  - Exporters (v1)
+  - Modes (v1)
+  - Schemas (v1)
+  - Subjects (v1)
+  - Key Encryption Keys (v1)
+  - Data Encryption Keys (v1)
+- name: Catalog API (v1)
+  tags:
+  - Entity (v1)
+  - Search (v1)
+  - Types (v1)
+- name: Stream Sharing API (v1)
+  tags:
+  - Provider Shared Resources (cdx/v1)
+  - Provider Shares (cdx/v1)
+  - Consumer Shared Resources (cdx/v1)
+  - Consumer Shares (cdx/v1)
+  - Shared Tokens (cdx/v1)
+  - Opt Ins (cdx/v1)
+- name: Networking (v1)
+  tags:
+  - Networks (networking/v1)
+  - Peerings (networking/v1)
+  - Transit Gateway Attachments (networking/v1)
+  - Private Link Accesses (networking/v1)
+  - Network Link Services (networking/v1)
+  - Network Link Endpoints (networking/v1)
+  - Network Link Service Associations (networking/v1)
+  - IP Addresses (networking/v1)
+  - Private Link Attachments (networking/v1)
+  - Private Link Attachment Connections (networking/v1)
+  - DNS Forwarders (networking/v1)
+  - Access Points (networking/v1)
+  - DNS Records (networking/v1)
+  - Gateways (networking/v1)
+- name: Security Token Service (v1)
+  tags:
+  - OAuth Tokens (sts/v1)
+- name: Kafka Quota (v1)
+  tags:
+  - Client Quotas (kafka-quotas/v1)
+- name: Bring Your Own Key (BYOK) Management (v1)
+  tags:
+  - Keys (byok/v1)
+- name: Billing API (v1)
+  tags:
+  - Costs (billing/v1)
+- name: Compute Pool Mgmt for Flink (v2)
+  tags:
+  - Compute Pools (fcpm/v2)
+  - Regions (fcpm/v2)
+  - Org Compute Pool Configs (fcpm/v2)
+- name: SQL API (v1)
+  tags:
+  - Statements (sql/v1)
+  - Statement Results (sql/v1)
+  - Statement Exceptions (sql/v1)
+  - Connections (sql/v1)
+  - Agents (sql/v1)
+  - Tools (sql/v1)
+  - Materialized Tables (sql/v1)
+  - Materialized Table Versions (sql/v1)
+- name: Provider Integration Management (v1)
+  tags:
+  - Integrations (pim/v1)
+- name: Provider Integration Management (v2)
+  tags:
+  - Integrations (pim/v2)
+- name: Artifact API (v1)
+  tags:
+  - Flink Artifacts (artifact/v1)
+  - Presigned Urls (artifact/v1)
+  - Flink Artifact Versions (artifact/v1)
+- name: Custom Code Logging API (v1)
+  tags:
+  - Custom Code Loggings (ccl/v1)
+- name: Tableflow (v1)
+  tags:
+  - Regions (tableflow/v1)
+  - Tableflow Topics (tableflow/v1)
+  - Catalog Integrations (tableflow/v1)
+- name: Custom Connect Plugin Management (v1)
+  tags:
+  - Custom Connect Plugins (ccpm/v1)
+  - Presigned Urls (ccpm/v1)
+  - Custom Connect Plugin Versions (ccpm/v1)
+- name: Unified Stream Manager (v1)
+  tags:
+  - Kafka Clusters (usm/v1)
+  - Connect Clusters (usm/v1)
+- name: Endpoint (v1)
+  tags:
+  - Endpoints (endpoint/v1)
+- name: Real Time Context Engine (v1)
+  tags:
+  - Rtce Topics (rtce/v1)
+  - Regions (rtce/v1)
+- name: Analytics (v1alpha1)
+  tags:
+  - Statements (query/v1alpha1)
