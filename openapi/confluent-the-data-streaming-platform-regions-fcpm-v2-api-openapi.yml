@@ -113,6 +113,62 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
+    fcpm.v2.RegionList:
+      type: object
+      description: '`Region` objects represent cloud provider regions available when placing Flink compute pools.
+
+        The API allows you to list Flink regions.
+
+
+
+        ## The Regions Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.Region" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - fcpm/v2
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - RegionList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/fcpm/v2/regions
+              last:
+                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/fcpm.v2.Region'
+            - type: object
+              required:
+              - id
+              - metadata
+              - display_name
+              - cloud
+              - region_name
+              - http_endpoint
+          uniqueItems: true
     ListMeta:
       type: object
       description: ListMeta describes metadata that resource collections may have
@@ -151,18 +207,78 @@ components:
           format: int32
           minimum: 0
           example: 123
-    Failure:
+    fcpm.v2.Region:
       type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
+      description: '`Region` objects represent cloud provider regions available when placing Flink compute pools.
+
+        The API allows you to list Flink regions.
+
+
+
+        ## The Regions Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.Region" />'
       properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
+        api_version:
+          type: string
+          enum:
+          - fcpm/v2
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - Region
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/fcpm/v2/regions/r-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/region=r-12345
+        display_name:
+          type: string
+          description: The display name.
+          example: Ohio (us-east-2)
+          x-immutable: true
+          readOnly: true
+        cloud:
+          type: string
+          description: The cloud service provider that hosts the region.
+          x-extensible-enum:
+          - AWS
+          - GCP
+          - AZURE
+          example: AWS
+          x-immutable: true
+          readOnly: true
+        region_name:
+          type: string
+          description: The region name.
+          example: us-east-2
+          x-immutable: true
+          readOnly: true
+        http_endpoint:
+          type: string
+          description: The regional API endpoint for Flink compute pools.
+          format: uri
+          x-immutable: true
+          readOnly: true
+        private_http_endpoint:
+          type: string
+          description: The private regional API endpoint for Flink compute pools.
+          format: uri
+          x-immutable: true
+          readOnly: true
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -237,138 +353,46 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    fcpm.v2.RegionList:
-      type: object
-      description: '`Region` objects represent cloud provider regions available when placing Flink compute pools.
-
-        The API allows you to list Flink regions.
-
-
-
-        ## The Regions Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.Region" />'
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - fcpm/v2
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - RegionList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/fcpm/v2/regions
-              last:
-                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/fcpm/v2/regions?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/fcpm.v2.Region'
-            - type: object
-              required:
-              - id
-              - metadata
-              - display_name
-              - cloud
-              - region_name
-              - http_endpoint
-          uniqueItems: true
     SearchFilter:
       description: Filter a collection by a string search
       type: string
-    fcpm.v2.Region:
+    Failure:
       type: object
-      description: '`Region` objects represent cloud provider regions available when placing Flink compute pools.
-
-        The API allows you to list Flink regions.
-
-
-
-        ## The Regions Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.Region" />'
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
       properties:
-        api_version:
-          type: string
-          enum:
-          - fcpm/v2
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - Region
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/fcpm/v2/regions/r-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/region=r-12345
-        display_name:
-          type: string
-          description: The display name.
-          example: Ohio (us-east-2)
-          x-immutable: true
-          readOnly: true
-        cloud:
-          type: string
-          description: The cloud service provider that hosts the region.
-          x-extensible-enum:
-          - AWS
-          - GCP
-          - AZURE
-          example: AWS
-          x-immutable: true
-          readOnly: true
-        region_name:
-          type: string
-          description: The region name.
-          example: us-east-2
-          x-immutable: true
-          readOnly: true
-        http_endpoint:
-          type: string
-          description: The regional API endpoint for Flink compute pools.
-          format: uri
-          x-immutable: true
-          readOnly: true
-        private_http_endpoint:
-          type: string
-          description: The private regional API endpoint for Flink compute pools.
-          format: uri
-          x-immutable: true
-          readOnly: true
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
   responses:
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -387,29 +411,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
     UnauthorizedError:
       x-summary: Forbidden
       description: The access credentials were considered insufficient to grant access
@@ -449,30 +450,29 @@ components:
               detail: The 'delorean' resource can't be filtered by 'num_doors'
               source:
                 parameter: num_doors
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
+    RateLimitError:
+      description: Rate Limit Exceeded
       headers:
         X-Request-Id:
           schema:
             type: string
           description: The unique identifier for the API request.
-        WWW-Authenticate:
+        X-RateLimit-Limit:
           schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
           schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

@@ -172,17 +172,97 @@ components:
           format: int32
           minimum: 0
           example: 123
-    Failure:
+    Error:
       type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
+      description: Describes a particular error encountered while performing an operation.
       properties:
-        errors:
-          description: List of errors which caused this operation to fail
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
+    networking.v1.IpAddressList:
+      type: object
+      description: 'IP Addresses
+
+
+        Related guide: [Use Public Egress IP Addresses on Confluent Cloud](https://docs.confluent.io/cloud/current/networking/static-egress-ip-addresses.html)
+
+
+        ## The IP Addresses Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.IpAddress" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - networking/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - IpAddressList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/networking/v1/ip-addresses
+              last:
+                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
           type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
           items:
-            $ref: '#/components/schemas/Error'
+            allOf:
+            - $ref: '#/components/schemas/networking.v1.IpAddress'
+            - type: object
           uniqueItems: true
     networking.v1.IpAddress:
       type: object
@@ -246,99 +326,43 @@ components:
           - INGRESS
           - EGRESS
           example: EGRESS
-    Error:
+    Failure:
       type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    networking.v1.IpAddressList:
-      type: object
-      description: 'IP Addresses
-
-
-        Related guide: [Use Public Egress IP Addresses on Confluent Cloud](https://docs.confluent.io/cloud/current/networking/static-egress-ip-addresses.html)
-
-
-        ## The IP Addresses Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.IpAddress" />'
+      description: Provides information about problems encountered while performing an operation.
       required:
-      - api_version
-      - kind
-      - metadata
-      - data
+      - errors
       properties:
-        api_version:
-          type: string
-          enum:
-          - networking/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - IpAddressList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/networking/v1/ip-addresses
-              last:
-                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/networking/v1/ip-addresses?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
+        errors:
+          description: List of errors which caused this operation to fail
           type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
           items:
-            allOf:
-            - $ref: '#/components/schemas/networking.v1.IpAddress'
-            - type: object
+            $ref: '#/components/schemas/Error'
           uniqueItems: true
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
   responses:
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -357,29 +381,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
     UnauthorizedError:
       x-summary: Forbidden
       description: The access credentials were considered insufficient to grant access
@@ -419,30 +420,29 @@ components:
               detail: The 'delorean' resource can't be filtered by 'num_doors'
               source:
                 parameter: num_doors
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
+    RateLimitError:
+      description: Rate Limit Exceeded
       headers:
         X-Request-Id:
           schema:
             type: string
           description: The unique identifier for the API request.
-        WWW-Authenticate:
+        X-RateLimit-Limit:
           schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
           schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

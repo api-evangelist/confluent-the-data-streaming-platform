@@ -614,17 +614,6 @@ paths:
           $ref: '#/components/responses/ServerErrorResponse'
 components:
   schemas:
-    AlterMirrorsRequestData:
-      properties:
-        mirror_topic_names:
-          description: The mirror topics specified as a list of topic names.
-          type: array
-          items:
-            type: string
-        mirror_topic_name_pattern:
-          description: The mirror topics specified as a pattern.
-          type: string
-      type: object
     LinkTask:
       type: object
       required:
@@ -640,74 +629,76 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LinkTaskError'
-    LinkCategory:
+    Error:
       type: object
-      required:
-      - state_category
-      - count
+      description: Describes a particular error encountered while performing an operation.
       properties:
-        state_category:
-          $ref: '#/components/schemas/StateCategory'
-        count:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
           type: integer
           format: int32
-          example: 123
-    PartitionLevelTruncationData:
-      type: object
-      required:
-      - partition_id
-      - offset_truncated_to
-      - messages_truncated
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CreateLinkRequestData:
       properties:
-        partition_id:
-          type: integer
-        offset_truncated_to:
-          type: integer
-          format: int64
-        messages_truncated:
-          type: integer
-          format: int64
-    MirrorLag:
+        source_cluster_id:
+          type: string
+        destination_cluster_id:
+          type: string
+        remote_cluster_id:
+          description: The expected remote cluster ID.
+          type: string
+        cluster_link_id:
+          description: The expected cluster link ID. Can be provided when creating the second side of a bidirectional link for validating the link ID is as expected. If it's not provided, it's inferred from the remote cluster.
+          type: string
+        configs:
+          items:
+            $ref: '#/components/schemas/ConfigData'
+          type: array
       type: object
-      required:
-      - partition
-      - lag
-      - last_source_fetch_offset
-      properties:
-        partition:
-          type: integer
-        lag:
-          type: integer
-          format: int64
-        last_source_fetch_offset:
-          type: integer
-          format: int64
-    MirrorLags:
-      type: array
-      items:
-        $ref: '#/components/schemas/MirrorLag'
-    ListLinkConfigsResponseDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ListLinkConfigsResponseData'
-    AlterMirrorStatusResponseDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AlterMirrorStatusResponseData'
+    MirrorTopicError:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - NOT_SET
+      - NO_ERROR
+      - SOURCE_TOPIC_MAY_BE_DELETED
+      - SOURCE_TOPIC_ID_CHANGED
+      - SOURCE_PARTITIONS_DECREASED
+      - NON_MONOTONIC_LOG_APPEND_EPOCH
+      - UNEXPECTED_TRUNCATION
+      - UNSUPPORTED_MESSAGE_FORMAT
+      - NON_MONOTONIC_SOURCE_EPOCH
+      - ILLEGAL_STATE
+      - UNSUPPORTED_MIRROR_STATE
     ConfigData:
       example:
         name: name
@@ -730,201 +721,36 @@ components:
       - PENDING
       - ACTIVE
       - NOT_APPLICABLE
-    ListMirrorTopicsResponseData:
-      allOf:
-      - $ref: '#/components/schemas/Resource'
-      - type: object
-        required:
-        - link_name
-        - mirror_topic_name
-        - source_topic_name
-        - num_partitions
-        - mirror_lags
-        - mirror_status
-        - state_time_ms
-        properties:
-          link_name:
-            type: string
-          mirror_topic_name:
-            type: string
-          source_topic_name:
-            type: string
-          num_partitions:
-            type: integer
-          mirror_lags:
-            $ref: '#/components/schemas/MirrorLags'
-          mirror_status:
-            $ref: '#/components/schemas/MirrorTopicStatus'
-          mirror_topic_error:
-            $ref: '#/components/schemas/MirrorTopicError'
-          state_time_ms:
-            type: integer
-            format: int64
-          mirror_state_transition_errors:
-            type: array
-            items:
-              $ref: '#/components/schemas/LinkTaskError'
-    ResourceCollection:
+    MirrorLag:
       type: object
       required:
-      - kind
-      - metadata
+      - partition
+      - lag
+      - last_source_fetch_offset
       properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceCollectionMetadata'
-    CreateLinkRequestData:
-      properties:
-        source_cluster_id:
-          type: string
-        destination_cluster_id:
-          type: string
-        remote_cluster_id:
-          description: The expected remote cluster ID.
-          type: string
-        cluster_link_id:
-          description: The expected cluster link ID. Can be provided when creating the second side of a bidirectional link for validating the link ID is as expected. If it's not provided, it's inferred from the remote cluster.
-          type: string
-        configs:
-          items:
-            $ref: '#/components/schemas/ConfigData'
-          type: array
-      type: object
-    Resource:
-      type: object
-      required:
-      - kind
-      - metadata
-      properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceMetadata'
-    ListLinksResponseDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ListLinksResponseData'
-    MirrorTopicStatus:
-      enum:
-      - ACTIVE
-      - FAILED
-      - LINK_FAILED
-      - LINK_PAUSED
-      - PAUSED
-      - PENDING_STOPPED
-      - SOURCE_UNAVAILABLE
-      - STOPPED
-      - PENDING_MIRROR
-      - PENDING_SYNCHRONIZE
-      - PENDING_SETUP_FOR_RESTORE
-      - PENDING_RESTORE
-      type: string
-    ListMirrorTopicsResponseDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ListMirrorTopicsResponseData'
-    AlterConfigBatchRequestData:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-            - name
-            properties:
-              name:
-                type: string
-              value:
-                type:
-                - string
-                - 'null'
-              operation:
-                type:
-                - string
-                - 'null'
-                x-extensible-enum:
-                - SET
-                - DELETE
-        validate_only:
-          type: boolean
-    LinkTaskState:
-      type: string
-      x-extensible-enum:
-      - UNKNOWN
-      - ACTIVE
-      - IN_ERROR
-      - NOT_CONFIGURED
-      - LINK_FAILED
-      - LINK_UNAVAILABLE
-      - LINK_PAUSED
-    LinkError:
-      type: string
-      x-extensible-enum:
-      - UNKNOWN
-      - NO_ERROR
-      - AUTHENTICATION_ERROR
-      - UNRESOLVABLE_BOOTSTRAP_ERROR
-      - INVALID_BOOTSTRAP_INTERNAL_ENDPOINT_ERROR
-      - BOOTSTRAP_TCP_CONNECTION_FAILED_ERROR
-      - TIMEOUT_ERROR
-    MirrorTopicError:
-      type: string
-      x-extensible-enum:
-      - UNKNOWN
-      - NOT_SET
-      - NO_ERROR
-      - SOURCE_TOPIC_MAY_BE_DELETED
-      - SOURCE_TOPIC_ID_CHANGED
-      - SOURCE_PARTITIONS_DECREASED
-      - NON_MONOTONIC_LOG_APPEND_EPOCH
-      - UNEXPECTED_TRUNCATION
-      - UNSUPPORTED_MESSAGE_FORMAT
-      - NON_MONOTONIC_SOURCE_EPOCH
-      - ILLEGAL_STATE
-      - UNSUPPORTED_MIRROR_STATE
-    CreateMirrorTopicRequestData:
-      properties:
-        source_topic_name:
-          type: string
-        mirror_topic_name:
-          type: string
-        replication_factor:
+        partition:
           type: integer
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigData'
-      required:
-      - source_topic_name
+        lag:
+          type: integer
+          format: int64
+        last_source_fetch_offset:
+          type: integer
+          format: int64
+    PartitionLevelTruncationData:
       type: object
-    LinkTaskError:
-      type: object
       required:
-      - error_code
-      - error_message
+      - partition_id
+      - offset_truncated_to
+      - messages_truncated
       properties:
-        error_code:
-          type: string
-        error_message:
-          type: string
+        partition_id:
+          type: integer
+        offset_truncated_to:
+          type: integer
+          format: int64
+        messages_truncated:
+          type: integer
+          format: int64
     ListLinksResponseData:
       allOf:
       - $ref: '#/components/schemas/Resource'
@@ -977,51 +803,6 @@ components:
             - 'null'
             items:
               $ref: '#/components/schemas/LinkCategory'
-    UpdateLinkConfigRequestData:
-      properties:
-        value:
-          type: string
-      required:
-      - value
-      type: object
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     LinkState:
       type: string
       x-extensible-enum:
@@ -1061,10 +842,16 @@ components:
             format: int64
           partition_level_truncation_data:
             $ref: '#/components/schemas/PartitionLevelTruncationDataList'
-    PartitionLevelTruncationDataList:
-      type: array
-      items:
-        $ref: '#/components/schemas/PartitionLevelTruncationData'
+    LinkError:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - NO_ERROR
+      - AUTHENTICATION_ERROR
+      - UNRESOLVABLE_BOOTSTRAP_ERROR
+      - INVALID_BOOTSTRAP_INTERNAL_ENDPOINT_ERROR
+      - BOOTSTRAP_TCP_CONNECTION_FAILED_ERROR
+      - TIMEOUT_ERROR
     ListLinkConfigsResponseData:
       allOf:
       - $ref: '#/components/schemas/Resource'
@@ -1113,6 +900,219 @@ components:
           type:
           - string
           - 'null'
+    MirrorLags:
+      type: array
+      items:
+        $ref: '#/components/schemas/MirrorLag'
+    Resource:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+    AlterMirrorsRequestData:
+      properties:
+        mirror_topic_names:
+          description: The mirror topics specified as a list of topic names.
+          type: array
+          items:
+            type: string
+        mirror_topic_name_pattern:
+          description: The mirror topics specified as a pattern.
+          type: string
+      type: object
+    AlterConfigBatchRequestData:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+              value:
+                type:
+                - string
+                - 'null'
+              operation:
+                type:
+                - string
+                - 'null'
+                x-extensible-enum:
+                - SET
+                - DELETE
+        validate_only:
+          type: boolean
+    LinkTaskState:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - ACTIVE
+      - IN_ERROR
+      - NOT_CONFIGURED
+      - LINK_FAILED
+      - LINK_UNAVAILABLE
+      - LINK_PAUSED
+    ListMirrorTopicsResponseData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - link_name
+        - mirror_topic_name
+        - source_topic_name
+        - num_partitions
+        - mirror_lags
+        - mirror_status
+        - state_time_ms
+        properties:
+          link_name:
+            type: string
+          mirror_topic_name:
+            type: string
+          source_topic_name:
+            type: string
+          num_partitions:
+            type: integer
+          mirror_lags:
+            $ref: '#/components/schemas/MirrorLags'
+          mirror_status:
+            $ref: '#/components/schemas/MirrorTopicStatus'
+          mirror_topic_error:
+            $ref: '#/components/schemas/MirrorTopicError'
+          state_time_ms:
+            type: integer
+            format: int64
+          mirror_state_transition_errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/LinkTaskError'
+    LinkCategory:
+      type: object
+      required:
+      - state_category
+      - count
+      properties:
+        state_category:
+          $ref: '#/components/schemas/StateCategory'
+        count:
+          type: integer
+          format: int32
+          example: 123
+    ListLinksResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListLinksResponseData'
+    MirrorTopicStatus:
+      enum:
+      - ACTIVE
+      - FAILED
+      - LINK_FAILED
+      - LINK_PAUSED
+      - PAUSED
+      - PENDING_STOPPED
+      - SOURCE_UNAVAILABLE
+      - STOPPED
+      - PENDING_MIRROR
+      - PENDING_SYNCHRONIZE
+      - PENDING_SETUP_FOR_RESTORE
+      - PENDING_RESTORE
+      type: string
+    PartitionLevelTruncationDataList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PartitionLevelTruncationData'
+    CreateMirrorTopicRequestData:
+      properties:
+        source_topic_name:
+          type: string
+        mirror_topic_name:
+          type: string
+        replication_factor:
+          type: integer
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigData'
+      required:
+      - source_topic_name
+      type: object
+    ListLinkConfigsResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListLinkConfigsResponseData'
+    ResourceCollection:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    LinkTaskError:
+      type: object
+      required:
+      - error_code
+      - error_message
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+    ListMirrorTopicsResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListMirrorTopicsResponseData'
+    UpdateLinkConfigRequestData:
+      properties:
+        value:
+          type: string
+      required:
+      - value
+      type: object
+    AlterMirrorStatusResponseDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AlterMirrorStatusResponseData'
     ResourceMetadata:
       type: object
       required:
@@ -1124,7 +1124,147 @@ components:
           type:
           - string
           - 'null'
+  parameters:
+    MirrorTopicName:
+      name: mirror_topic_name
+      description: Cluster Linking mirror topic name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: topic-1
+    IncludePartitionLevelTruncationData:
+      name: include_partition_level_truncation_data
+      description: 'Whether to include partition level truncation information when truncating and restoring a topic in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    MirrorTopicStatus:
+      name: mirror_status
+      description: The status of the mirror topic. If not specified, all mirror topics will be returned.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MirrorTopicStatus'
+      example: ACTIVE
+    IncludeTasks:
+      name: include_tasks
+      description: 'Whether to include cluster linking tasks in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    ValidateLink:
+      name: validate_link
+      description: 'To synchronously validate that the source cluster ID is expected and the dest cluster has the permission to read topics in the source cluster. Default: true'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    ValidateOnly:
+      name: validate_only
+      description: 'To validate the action can be performed successfully or not. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    LinkName:
+      name: link_name
+      description: The link name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: link-sb1
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    LinkConfigName:
+      name: config_name
+      description: The link config name
+      in: path
+      required: true
+      schema:
+        type: string
+      example: consumer.offset.sync.enable
+    QueryParamLinkName:
+      name: link_name
+      description: The link name
+      in: query
+      required: true
+      schema:
+        type: string
+      example: link-sb1
+    IncludeStateTransitionErrors:
+      name: include_state_transition_errors
+      description: 'Whether to include mirror state transition errors in the response. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
+    Force:
+      name: force
+      description: 'Force the action. Default: false'
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: false
   requestBodies:
+    CreateMirrorTopicRequest:
+      description: Name and configs of the topics mirroring from and mirroring to. Note that Confluent Cloud allows only specific replication factor values. Because of that the replication factor field should either be omitted or it should use one of the allowed values (see https://docs.confluent.io/cloud/current/client-apps/optimizing/durability.html).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateMirrorTopicRequestData'
+          examples:
+            generic_example:
+              description: Generic example of creating a mirror topic
+              value:
+                source_topic_name: topic-1
+                configs:
+                - name: unclean.leader.election.enable
+                  value: 'true'
+                replication_factor: 1
+            example_with_mirror_topic_name:
+              description: Example using optional mirror_topic_name flag
+              value:
+                source_topic_name: topic-1
+                mirror_topic_name: link1_topic-1
+                configs:
+                - name: unclean.leader.election.enable
+                  value: 'true'
+                replication_factor: 3
+    UpdateLinkConfigRequest:
+      content:
+        application/json:
+          example:
+            value: '300000'
+          schema:
+            $ref: '#/components/schemas/UpdateLinkConfigRequestData'
+      description: Link config value to update
+    AlterLinkConfigBatchRequest:
+      content:
+        application/json:
+          example:
+            data:
+            - name: cleanup.policy
+              operation: DELETE
+            - name: compression.type
+              value: gzip
+          schema:
+            $ref: '#/components/schemas/AlterConfigBatchRequestData'
     CreateLinkRequest:
       description: Create a cluster link
       content:
@@ -1216,49 +1356,6 @@ components:
                   value: SASL_SSL
                 - name: sasl.jaas.config
                   value: sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='<Kafka API Key>' password='<Kafka API Secret>';
-    UpdateLinkConfigRequest:
-      content:
-        application/json:
-          example:
-            value: '300000'
-          schema:
-            $ref: '#/components/schemas/UpdateLinkConfigRequestData'
-      description: Link config value to update
-    CreateMirrorTopicRequest:
-      description: Name and configs of the topics mirroring from and mirroring to. Note that Confluent Cloud allows only specific replication factor values. Because of that the replication factor field should either be omitted or it should use one of the allowed values (see https://docs.confluent.io/cloud/current/client-apps/optimizing/durability.html).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateMirrorTopicRequestData'
-          examples:
-            generic_example:
-              description: Generic example of creating a mirror topic
-              value:
-                source_topic_name: topic-1
-                configs:
-                - name: unclean.leader.election.enable
-                  value: 'true'
-                replication_factor: 1
-            example_with_mirror_topic_name:
-              description: Example using optional mirror_topic_name flag
-              value:
-                source_topic_name: topic-1
-                mirror_topic_name: link1_topic-1
-                configs:
-                - name: unclean.leader.election.enable
-                  value: 'true'
-                replication_factor: 3
-    AlterLinkConfigBatchRequest:
-      content:
-        application/json:
-          example:
-            data:
-            - name: cleanup.policy
-              operation: DELETE
-            - name: compression.type
-              value: gzip
-          schema:
-            $ref: '#/components/schemas/AlterConfigBatchRequestData'
     AlterMirrorsRequest:
       description: Mirror topics to be altered.
       content:
@@ -1276,103 +1373,6 @@ components:
               description: Example using mirror topic name pattern
               value:
                 mirror_topic_name_pattern: .*
-  parameters:
-    QueryParamLinkName:
-      name: link_name
-      description: The link name
-      in: query
-      required: true
-      schema:
-        type: string
-      example: link-sb1
-    MirrorTopicStatus:
-      name: mirror_status
-      description: The status of the mirror topic. If not specified, all mirror topics will be returned.
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/MirrorTopicStatus'
-      example: ACTIVE
-    ValidateOnly:
-      name: validate_only
-      description: 'To validate the action can be performed successfully or not. Default: false'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
-    LinkName:
-      name: link_name
-      description: The link name
-      in: path
-      required: true
-      schema:
-        type: string
-      example: link-sb1
-    IncludePartitionLevelTruncationData:
-      name: include_partition_level_truncation_data
-      description: 'Whether to include partition level truncation information when truncating and restoring a topic in the response. Default: false'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
-    ValidateLink:
-      name: validate_link
-      description: 'To synchronously validate that the source cluster ID is expected and the dest cluster has the permission to read topics in the source cluster. Default: true'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
-    ClusterId:
-      name: cluster_id
-      description: The Kafka cluster ID.
-      in: path
-      required: true
-      schema:
-        type: string
-      example: cluster-1
-    IncludeTasks:
-      name: include_tasks
-      description: 'Whether to include cluster linking tasks in the response. Default: false'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
-    MirrorTopicName:
-      name: mirror_topic_name
-      description: Cluster Linking mirror topic name
-      in: path
-      required: true
-      schema:
-        type: string
-      example: topic-1
-    Force:
-      name: force
-      description: 'Force the action. Default: false'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
-    LinkConfigName:
-      name: config_name
-      description: The link config name
-      in: path
-      required: true
-      schema:
-        type: string
-      example: consumer.offset.sync.enable
-    IncludeStateTransitionErrors:
-      name: include_state_transition_errors
-      description: 'Whether to include mirror state transition errors in the response. Default: false'
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: false
   responses:
     AlterMirrorStatusResponse:
       description: Mirror status alternation result
@@ -1442,54 +1442,23 @@ components:
               - partition_id: 2
                 offset_truncated_to: 20000
                 messages_truncated: 20000
-    TooManyRequestsErrorResponse:
-      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
-      content:
-        text/html:
-          schema:
-            type: string
-          example:
-            description: A sample response from Jetty's DoSFilter.
-            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
-    ServerErrorResponse:
-      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+    BadRequestErrorResponse:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            generic_internal_server_error:
-              description: Thrown for generic HTTP 500 errors.
+            bad_request_cannot_deserialize:
+              description: Thrown when trying to deserialize an integer from non-integer data.
               value:
-                error_code: 500
-                message: Internal Server Error
-    DescribeMirrorTopicResponse:
-      description: Metadata of the mirror topic
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListMirrorTopicsResponseData'
-          example:
-            kind: KafkaMirrorData
-            metadata:
-              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/link/link-1/mirrors/topic-1
-              resource_name: crn:///kafka=cluster-1
-            link_name: link-sb-1
-            mirror_topic_name: topic-1
-            source_topic_name: topic-1
-            num_partitions: 3
-            mirror_lags:
-            - partition: 0
-              lag: 0
-              last_source_fetch_offset: 0
-            - partition: 1
-              lag: 10000
-              last_source_fetch_offset: 1000
-            - partition: 2
-              lag: 40000
-              last_source_fetch_offset: 12030
-            mirror_status: ACTIVE
-            state_time_ms: 1612550939300
+                error_code: 400
+                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
+            unsupported_version_exception:
+              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
+              value:
+                error_code: 40035
+                message: The version of this API is not supported in the underlying Kafka cluster.
     UnauthorizedErrorResponse:
       description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
       content:
@@ -1502,39 +1471,27 @@ components:
               value:
                 error_code: 40101
                 message: Authentication failed
-    GetLinkResponse:
-      description: Single link name and properties
+    GetLinkConfigsResponse:
+      description: Config name and value
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ListLinksResponseData'
-          examples:
-            link_at_destination_cluster:
-              description: Link at destination cluster
-              value:
-                kind: KafkaLinkData
-                metadata:
-                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
-                resource_name: null
-                source_cluster_id: src-cluster-id
-                link_name: my-new-link-1
-                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
-                cluster_link_id: eEBkTffYSESld6EO898x3w
-                topic_names:
-                - topic-db-1
-                - topic-db-2
-            link_at_source_cluster:
-              description: Link at source cluster
-              value:
-                kind: KafkaLinkData
-                metadata:
-                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
-                resource_name: null
-                destination_cluster_id: dst-cluster-id
-                link_name: my-new-link-1
-                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
-                cluster_link_id: eEBkTffYSESld6EO898x3w
-                topic_names: []
+            $ref: '#/components/schemas/ListLinkConfigsResponseData'
+          example:
+            kind: KafkaLinkConfigData
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+              resource_name: null
+            cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+            name: consumer.offset.sync.ms
+            value: '3825940'
+            is_default: false
+            is_read_only: false
+            is_sensitive: false
+            source: DYNAMIC_CLUSTER_LINK_CONFIG
+            synonyms:
+            - cosm
+            link_name: link-db-1
     ListMirrorTopicsResponse:
       description: Metadata of mirror topics
       content:
@@ -1590,25 +1547,55 @@ components:
                 last_source_fetch_offset: 12030
               mirror_status: STOPPED
               state_time_ms: 1612551353640
-    BadRequestErrorResponse:
-      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
+    TooManyRequestsErrorResponse:
+      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
+      content:
+        text/html:
+          schema:
+            type: string
+          example:
+            description: A sample response from Jetty's DoSFilter.
+            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
+    ListLinkConfigsResponse:
+      description: Config name and value
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            bad_request_cannot_deserialize:
-              description: Thrown when trying to deserialize an integer from non-integer data.
-              value:
-                error_code: 400
-                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
-            unsupported_version_exception:
-              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
-              value:
-                error_code: 40035
-                message: The version of this API is not supported in the underlying Kafka cluster.
-    NoContentResponse:
-      description: Operation succeeded, no content in the response
+            $ref: '#/components/schemas/ListLinkConfigsResponseDataList'
+          example:
+            kind: KafkaLinkConfigDataList
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/v-0Ce-CkTyKQol9v46LaCQ/links/link-nb-1/configs
+              next: null
+            data:
+            - kind: KafkaLinkConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+                resource_name: null
+              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+              name: consumer.offset.sync.ms
+              value: '3825940'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_CLUSTER_LINK_CONFIG
+              synonyms:
+              - cosm
+              link_name: link-db-1
+            - kind: KafkaLinkConfigData
+              metadata:
+                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
+                resource_name: null
+              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
+              name: acl.sync.ms
+              value: '5000'
+              is_default: false
+              is_read_only: false
+              is_sensitive: false
+              source: DYNAMIC_CLUSTER_LINK_CONFIG
+              synonyms:
+              - asm
+              link_name: link-db-1
     ListLinksResponse:
       description: A list of link names and properties
       content:
@@ -1657,67 +1644,80 @@ components:
               cluster_link_id: nNFxHqTvQ5CjXt_XWNl6gg
               topic_names: []
               link_state: ACTIVE
-    GetLinkConfigsResponse:
-      description: Config name and value
+    GetLinkResponse:
+      description: Single link name and properties
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ListLinkConfigsResponseData'
-          example:
-            kind: KafkaLinkConfigData
-            metadata:
-              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
-              resource_name: null
-            cluster_id: 1Rh_4htxSuen7RYGvGmgNw
-            name: consumer.offset.sync.ms
-            value: '3825940'
-            is_default: false
-            is_read_only: false
-            is_sensitive: false
-            source: DYNAMIC_CLUSTER_LINK_CONFIG
-            synonyms:
-            - cosm
-            link_name: link-db-1
-    ListLinkConfigsResponse:
-      description: Config name and value
+            $ref: '#/components/schemas/ListLinksResponseData'
+          examples:
+            link_at_destination_cluster:
+              description: Link at destination cluster
+              value:
+                kind: KafkaLinkData
+                metadata:
+                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
+                resource_name: null
+                source_cluster_id: src-cluster-id
+                link_name: my-new-link-1
+                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
+                cluster_link_id: eEBkTffYSESld6EO898x3w
+                topic_names:
+                - topic-db-1
+                - topic-db-2
+            link_at_source_cluster:
+              description: Link at source cluster
+              value:
+                kind: KafkaLinkData
+                metadata:
+                  self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/Fds7TcT9TTqEXsoRLEKMcQ/links/my-new-link-1
+                resource_name: null
+                destination_cluster_id: dst-cluster-id
+                link_name: my-new-link-1
+                link_id: 7840644d-f7d8-4844-a577-a10ef3df31df
+                cluster_link_id: eEBkTffYSESld6EO898x3w
+                topic_names: []
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ListLinkConfigsResponseDataList'
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
+    NoContentResponse:
+      description: Operation succeeded, no content in the response
+    DescribeMirrorTopicResponse:
+      description: Metadata of the mirror topic
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListMirrorTopicsResponseData'
           example:
-            kind: KafkaLinkConfigDataList
+            kind: KafkaMirrorData
             metadata:
-              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/v-0Ce-CkTyKQol9v46LaCQ/links/link-nb-1/configs
-              next: null
-            data:
-            - kind: KafkaLinkConfigData
-              metadata:
-                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
-                resource_name: null
-              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
-              name: consumer.offset.sync.ms
-              value: '3825940'
-              is_default: false
-              is_read_only: false
-              is_sensitive: false
-              source: DYNAMIC_CLUSTER_LINK_CONFIG
-              synonyms:
-              - cosm
-              link_name: link-db-1
-            - kind: KafkaLinkConfigData
-              metadata:
-                self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/1Rh_4htxSuen7RYGvGmgNw/links/my-new-link-1
-                resource_name: null
-              cluster_id: 1Rh_4htxSuen7RYGvGmgNw
-              name: acl.sync.ms
-              value: '5000'
-              is_default: false
-              is_read_only: false
-              is_sensitive: false
-              source: DYNAMIC_CLUSTER_LINK_CONFIG
-              synonyms:
-              - asm
-              link_name: link-db-1
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/link/link-1/mirrors/topic-1
+              resource_name: crn:///kafka=cluster-1
+            link_name: link-sb-1
+            mirror_topic_name: topic-1
+            source_topic_name: topic-1
+            num_partitions: 3
+            mirror_lags:
+            - partition: 0
+              lag: 0
+              last_source_fetch_offset: 0
+            - partition: 1
+              lag: 10000
+              last_source_fetch_offset: 1000
+            - partition: 2
+              lag: 40000
+              last_source_fetch_offset: 12030
+            mirror_status: ACTIVE
+            state_time_ms: 1612550939300
   securitySchemes:
     cloud-api-key:
       type: http

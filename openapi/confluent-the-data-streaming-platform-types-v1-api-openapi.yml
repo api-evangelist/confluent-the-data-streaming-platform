@@ -351,128 +351,6 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    BusinessMetadataDefResponse:
-      properties:
-        category:
-          enum:
-          - PRIMITIVE
-          - OBJECT_ID_TYPE
-          - ENUM
-          - STRUCT
-          - CLASSIFICATION
-          - ENTITY
-          - ARRAY
-          - MAP
-          - RELATIONSHIP
-          - BUSINESS_METADATA
-          type: string
-          description: The category
-        guid:
-          type: string
-          description: The internal guid
-        createdBy:
-          type: string
-          description: The creator
-        updatedBy:
-          type: string
-          description: The updater
-        createTime:
-          format: int64
-          type: integer
-          description: The create time
-        updateTime:
-          format: int64
-          type: integer
-          description: The update time
-        version:
-          format: int32
-          type: integer
-          description: The version
-        name:
-          type: string
-          description: The name
-        description:
-          type: string
-          description: The description
-        typeVersion:
-          type: string
-          description: The type version
-        serviceType:
-          type: string
-          description: The service type
-        options:
-          additionalProperties:
-            type: string
-          type: object
-          description: The options
-        attributeDefs:
-          items:
-            $ref: '#/components/schemas/AttributeDef'
-          type: array
-          description: The attribute definitions
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
-      type: object
-    BusinessMetadataDef:
-      properties:
-        category:
-          enum:
-          - PRIMITIVE
-          - OBJECT_ID_TYPE
-          - ENUM
-          - STRUCT
-          - CLASSIFICATION
-          - ENTITY
-          - ARRAY
-          - MAP
-          - RELATIONSHIP
-          - BUSINESS_METADATA
-          type: string
-          description: The category
-        guid:
-          type: string
-          description: The internal guid
-        createdBy:
-          type: string
-          description: The creator
-        updatedBy:
-          type: string
-          description: The updater
-        createTime:
-          format: int64
-          type: integer
-          description: The create time
-        updateTime:
-          format: int64
-          type: integer
-          description: The update time
-        version:
-          format: int32
-          type: integer
-          description: The version
-        name:
-          type: string
-          description: The name
-        description:
-          type: string
-          description: The description
-        typeVersion:
-          type: string
-          description: The type version
-        serviceType:
-          type: string
-          description: The service type
-        options:
-          additionalProperties:
-            type: string
-          type: object
-          description: The options
-        attributeDefs:
-          items:
-            $ref: '#/components/schemas/AttributeDef'
-          type: array
-          description: The attribute definitions
-      type: object
     TagDefResponse:
       type: object
       properties:
@@ -553,17 +431,68 @@ components:
             type: string
         error:
           $ref: '#/components/schemas/ErrorMessage'
-    ErrorMessage:
-      type: object
+    BusinessMetadataDefResponse:
       properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
+        category:
+          enum:
+          - PRIMITIVE
+          - OBJECT_ID_TYPE
+          - ENUM
+          - STRUCT
+          - CLASSIFICATION
+          - ENTITY
+          - ARRAY
+          - MAP
+          - RELATIONSHIP
+          - BUSINESS_METADATA
           type: string
-          description: The error message
-      description: Error message of this operation
+          description: The category
+        guid:
+          type: string
+          description: The internal guid
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          format: int64
+          type: integer
+          description: The create time
+        updateTime:
+          format: int64
+          type: integer
+          description: The update time
+        version:
+          format: int32
+          type: integer
+          description: The version
+        name:
+          type: string
+          description: The name
+        description:
+          type: string
+          description: The description
+        typeVersion:
+          type: string
+          description: The type version
+        serviceType:
+          type: string
+          description: The service type
+        options:
+          additionalProperties:
+            type: string
+          type: object
+          description: The options
+        attributeDefs:
+          items:
+            $ref: '#/components/schemas/AttributeDef'
+          type: array
+          description: The attribute definitions
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+      type: object
     AttributeDef:
       type: object
       properties:
@@ -718,6 +647,77 @@ components:
           description: The subtypes
           items:
             type: string
+    BusinessMetadataDef:
+      properties:
+        category:
+          enum:
+          - PRIMITIVE
+          - OBJECT_ID_TYPE
+          - ENUM
+          - STRUCT
+          - CLASSIFICATION
+          - ENTITY
+          - ARRAY
+          - MAP
+          - RELATIONSHIP
+          - BUSINESS_METADATA
+          type: string
+          description: The category
+        guid:
+          type: string
+          description: The internal guid
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          format: int64
+          type: integer
+          description: The create time
+        updateTime:
+          format: int64
+          type: integer
+          description: The update time
+        version:
+          format: int32
+          type: integer
+          description: The version
+        name:
+          type: string
+          description: The name
+        description:
+          type: string
+          description: The description
+        typeVersion:
+          type: string
+          description: The type version
+        serviceType:
+          type: string
+          description: The service type
+        options:
+          additionalProperties:
+            type: string
+          type: object
+          description: The options
+        attributeDefs:
+          items:
+            $ref: '#/components/schemas/AttributeDef'
+          type: array
+          description: The attribute definitions
+      type: object
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
   securitySchemes:
     cloud-api-key:
       type: http

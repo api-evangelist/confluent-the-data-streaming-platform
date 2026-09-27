@@ -353,6 +353,15 @@ paths:
       - external-access-token: []
 components:
   responses:
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
     schemaregistry.v1.UnauthorizedError:
       description: Unauthorized
       content:
@@ -394,16 +403,20 @@ components:
           example:
             error_code: 400
             message: Bad Request
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
   schemas:
+    Mode:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: Schema Registry operating mode
+          example: READWRITE
+          x-extensible-enum:
+          - READWRITE
+          - READONLY
+          - READONLY_OVERRIDE
+          - IMPORT
+      description: Schema Registry operating mode
     ModeUpdateRequest:
       type: object
       properties:
@@ -428,19 +441,6 @@ components:
           type: string
           description: The error message
       description: Error message of this operation
-    Mode:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: Schema Registry operating mode
-          example: READWRITE
-          x-extensible-enum:
-          - READWRITE
-          - READONLY
-          - READONLY_OVERRIDE
-          - IMPORT
-      description: Schema Registry operating mode
   securitySchemes:
     cloud-api-key:
       type: http

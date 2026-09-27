@@ -609,6 +609,34 @@ paths:
       - external-access-token: []
 components:
   schemas:
+    CreateDekRequest:
+      example:
+        subject: subject
+        encryptedKeyMaterial: encryptedKeyMaterial
+        version: 0
+        algorithm: AES128_GCM
+      properties:
+        subject:
+          type: string
+          description: Subject of the dek
+        version:
+          type: integer
+          description: Version of the dek
+          format: int32
+        algorithm:
+          type: string
+          description: Algorithm of the dek
+          enum:
+          - AES128_GCM
+          - AES256_GCM
+          - AES256_SIV
+        encryptedKeyMaterial:
+          type: string
+          description: Encrypted key material of the dek
+        deleted:
+          type: boolean
+          description: Whether the dek is deleted
+      type: object
     Dek:
       example:
         kekName: kekName
@@ -647,34 +675,6 @@ components:
           type: integer
           description: Timestamp of the dek
           format: int64
-        deleted:
-          type: boolean
-          description: Whether the dek is deleted
-      type: object
-    CreateDekRequest:
-      example:
-        subject: subject
-        encryptedKeyMaterial: encryptedKeyMaterial
-        version: 0
-        algorithm: AES128_GCM
-      properties:
-        subject:
-          type: string
-          description: Subject of the dek
-        version:
-          type: integer
-          description: Version of the dek
-          format: int32
-        algorithm:
-          type: string
-          description: Algorithm of the dek
-          enum:
-          - AES128_GCM
-          - AES256_GCM
-          - AES256_SIV
-        encryptedKeyMaterial:
-          type: string
-          description: Encrypted key material of the dek
         deleted:
           type: boolean
           description: Whether the dek is deleted

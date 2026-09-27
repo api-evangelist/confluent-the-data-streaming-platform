@@ -530,6 +530,44 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     GlobalObjectReference:
       type: object
       description: ObjectReference provides information for you to locate the referred object
@@ -541,84 +579,6 @@ components:
         id:
           type: string
           description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    EnvScopedObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
           minLength: 1
           maxLength: 255
         related:
@@ -692,6 +652,62 @@ components:
           $ref: '#/components/schemas/networking.v1.NetworkLinkServiceSpec'
         status:
           $ref: '#/components/schemas/networking.v1.NetworkLinkServiceStatus'
+    networking.v1.NetworkLinkServiceAcceptPolicy:
+      type: object
+      title: Network Link Service
+      description: 'List of environments/networks from which connections can be accepted on this network link service.
+
+        '
+      properties:
+        environments:
+          description: 'List of environments from which connections can be accepted.
+
+            All networks win the list of environment will be allowed.
+
+            '
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        networks:
+          description: 'List of networks from which connections can be accepted.
+
+            '
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
+    networking.v1.NetworkLinkServiceSpec:
+      type: object
+      description: The desired state of the Network Link Service
+      properties:
+        display_name:
+          type: string
+          description: The name of the network link service
+          example: prod-net-1-nls
+        description:
+          type: string
+          description: The description of the network link service
+          example: Allow connections from analytics hub
+        accept:
+          description: Network Link Service Accept policy
+          allOf:
+          - $ref: '#/components/schemas/networking.v1.NetworkLinkServiceAcceptPolicy'
+        environment:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: The environment to which this belongs.
+        network:
+          allOf:
+          - $ref: '#/components/schemas/EnvScopedObjectReference'
+          description: The network to which this belongs.
+          x-immutable: true
+      x-enable-id: true
+      x-enable-listmeta: true
+      x-enable-objectmeta: true
     ListMeta:
       type: object
       description: ListMeta describes metadata that resource collections may have
@@ -730,136 +746,6 @@ components:
           format: int32
           minimum: 0
           example: 123
-    networking.v1.NetworkLinkServiceAcceptPolicy:
-      type: object
-      title: Network Link Service
-      description: 'List of environments/networks from which connections can be accepted on this network link service.
-
-        '
-      properties:
-        environments:
-          description: 'List of environments from which connections can be accepted.
-
-            All networks win the list of environment will be allowed.
-
-            '
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-        networks:
-          description: 'List of networks from which connections can be accepted.
-
-            '
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
-    networking.v1.NetworkLinkServiceStatus:
-      type: object
-      required:
-      - phase
-      description: The status of the Network Link Service
-      properties:
-        phase:
-          type: string
-          x-extensible-enum:
-          - READY
-          description: 'The lifecycle phase of the network link service:
-
-
-            READY:  network link service is ready;
-
-            '
-          readOnly: true
-          example: READY
-        error_code:
-          type: string
-          description: 'Error code if network link service is in a failed state.
-
-            May be used for programmatic error checking.
-
-            '
-          readOnly: true
-        error_message:
-          type: string
-          description: Displayable error message if network link service is in a failed state
-          readOnly: true
-      readOnly: true
-    networking.v1.NetworkLinkServiceSpec:
-      type: object
-      description: The desired state of the Network Link Service
-      properties:
-        display_name:
-          type: string
-          description: The name of the network link service
-          example: prod-net-1-nls
-        description:
-          type: string
-          description: The description of the network link service
-          example: Allow connections from analytics hub
-        accept:
-          description: Network Link Service Accept policy
-          allOf:
-          - $ref: '#/components/schemas/networking.v1.NetworkLinkServiceAcceptPolicy'
-        environment:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: The environment to which this belongs.
-        network:
-          allOf:
-          - $ref: '#/components/schemas/EnvScopedObjectReference'
-          description: The network to which this belongs.
-          x-immutable: true
-      x-enable-id: true
-      x-enable-listmeta: true
-      x-enable-objectmeta: true
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     networking.v1.NetworkLinkServiceList:
       type: object
       description: 'Network Link Service is associated with a Private Link Confluent Cloud Network.
@@ -937,7 +823,199 @@ components:
                   - environment
                   - network
           uniqueItems: true
+    EnvScopedObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    networking.v1.NetworkLinkServiceStatus:
+      type: object
+      required:
+      - phase
+      description: The status of the Network Link Service
+      properties:
+        phase:
+          type: string
+          x-extensible-enum:
+          - READY
+          description: 'The lifecycle phase of the network link service:
+
+
+            READY:  network link service is ready;
+
+            '
+          readOnly: true
+          example: READY
+        error_code:
+          type: string
+          description: 'Error code if network link service is in a failed state.
+
+            May be used for programmatic error checking.
+
+            '
+          readOnly: true
+        error_message:
+          type: string
+          description: Displayable error message if network link service is in a failed state
+          readOnly: true
+      readOnly: true
   responses:
+    OverQuotaError:
+      x-summary: Over Quota
+      description: The request would exceed one or more quotas.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '402'
+              code: quota_exceeded
+              title: Kafka Clusters Per Org Quota Exceeded
+              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -963,72 +1041,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -1047,61 +1059,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    OverQuotaError:
-      x-summary: Over Quota
-      description: The request would exceed one or more quotas.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '402'
-              code: quota_exceeded
-              title: Kafka Clusters Per Org Quota Exceeded
-              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1381,6 +1338,49 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

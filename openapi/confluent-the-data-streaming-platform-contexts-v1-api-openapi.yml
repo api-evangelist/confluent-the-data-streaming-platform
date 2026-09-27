@@ -98,6 +98,15 @@ paths:
       - external-access-token: []
 components:
   responses:
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
     schemaregistry.v1.UnauthorizedError:
       description: Unauthorized
       content:
@@ -139,15 +148,6 @@ components:
           example:
             error_code: 400
             message: Bad Request
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
   schemas:
     ErrorMessage:
       type: object

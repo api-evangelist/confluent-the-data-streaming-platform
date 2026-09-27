@@ -553,87 +553,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    GlobalObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    BooleanFilter:
-      type: boolean
-      description: Filter for whether this value is true or false.
-    notifications.v1.RoleEmailTarget:
-      type: object
-      description: Email integration target to send email to all user with specified role
-      required:
-      - kind
-      - role_name
-      properties:
-        kind:
-          type: string
-          enum:
-          - RoleEmail
-          description: Email Integration type for Role
-          example: RoleEmail
-        role_name:
-          type: string
-          description: name of the role
-          example: OrganizationAdmin
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
     notifications.v1.Summary:
       type: object
       description: Summary of unread notifications for the authenticated user.
@@ -690,6 +609,159 @@ components:
                 format: int32
                 description: Number of unread notifications at this severity.
                 example: 2
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GlobalObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    notifications.v1.NotificationAction:
+      type: object
+      x-minispec-transform-ignore: true
+      description: 'A user-facing action associated with a `UserNotification`. The first
+
+        action on a notification is treated as the primary action; subsequent
+
+        actions are secondary.
+
+        '
+      required:
+      - identifier
+      - url
+      - role
+      properties:
+        identifier:
+          type: string
+          description: 'Stable identifier for the action, suitable for analytics. Stable
+
+            across notification deliveries that recommend the same action.
+
+            '
+          example: manage_cluster_settings
+        url:
+          type: string
+          format: uri
+          description: Confluent Cloud URL this action navigates to.
+          example: https://confluent.cloud/environments/env-xyz/clusters/lkc-ds23ad/settings
+        role:
+          type: string
+          x-extensible-enum:
+          - PRIMARY
+          - SECONDARY
+          description: 'Visual prominence of the action. `PRIMARY` is the recommended
+
+            default action; `SECONDARY` is shown alongside as a less prominent
+
+            option.
+
+            '
+          example: PRIMARY
+    notifications.v1.UserNotificationList:
+      type: object
+      description: "`UserNotification` objects represent in-app notifications scoped to a specific\nConfluent Cloud user. Each notification carries a severity, references the\nConfluent Cloud resource it relates to, and tracks whether the user has read it.\n\nThis API lets you list and retrieve your notifications, mark notifications as\nread or unread, and fetch an unread-count summary.\n\n`read` is the only mutable field on this resource; `PATCH` requests with values\nfor other fields will have those values silently ignored.\n\nTwo `PATCH` shapes are supported:\n- `PATCH /user-notifications/{id}` — update a single notification by id.\n- `PATCH /user-notifications` — update the read state of every notification\n  matching the supplied filter query parameters. The body is a narrow\n  payload (`{ \"read\": true | false }`) and the same filters accepted by\n  the list endpoint scope which notifications are updated (with the\n  exception of `include`, which is a list-only partial-response selector).\n\nThe heavier `integrations` and `recommended_actions` fields are populated on\nsingle-resource reads (`GET /user-notifications/{id}`) and omitted from list\nresponses by default to keep collection payloads slim. Use the `include`\nquery parameter on the list endpoint to opt in to populating these fields\n(`?include=integrations,recommended_actions`).\n\n\nRelated guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).\n\n## The User Notifications Model\n<SchemaDefinition schemaRef=\"#/components/schemas/notifications.v1.UserNotification\" />"
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - notifications/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - UserNotificationList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/notifications/v1/user-notifications
+              last:
+                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/notifications.v1.UserNotification'
+            - type: object
+              required:
+              - id
+              - metadata
+              - read
+              - received_at
+              - resource
+              - actions
+              - notification_type
+          uniqueItems: true
     notifications.v1.SlackTarget:
       type: object
       description: Target required for Slack integration
@@ -708,6 +780,187 @@ components:
           format: uri
           description: Slack Webhook URL for the particular Slack channel
           example: https://hooks.slack.com/services/{id}/{id}/{id}
+    notifications.v1.InAppTarget:
+      type: object
+      description: Per-user in-app notification target; lazy-onboarded on first read.
+      required:
+      - kind
+      - user
+      properties:
+        kind:
+          type: string
+          enum:
+          - InApp
+          description: Integration Type
+          example: InApp
+        user:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: Reference to the user the in-app target belongs to.
+    notifications.v1.RoleEmailTarget:
+      type: object
+      description: Email integration target to send email to all user with specified role
+      required:
+      - kind
+      - role_name
+      properties:
+        kind:
+          type: string
+          enum:
+          - RoleEmail
+          description: Email Integration type for Role
+          example: RoleEmail
+        role_name:
+          type: string
+          description: name of the role
+          example: OrganizationAdmin
+    BooleanFilter:
+      type: boolean
+      description: Filter for whether this value is true or false.
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
+    notifications.v1.MsTeamsTarget:
+      type: object
+      description: Target required for MS Teams integration
+      required:
+      - kind
+      - webhook_url
+      properties:
+        kind:
+          type: string
+          enum:
+          - MsTeams
+          description: Integration Type
+          example: MsTeams
+        webhook_url:
+          type: string
+          format: uri
+          description: MS Teams Webhook URL for the particular team channel
+          example: https://admin.webhook.office.com/webhookb2/{id}/IncomingWebhook/{id}
+    notifications.v1.RecommendedActions:
+      type: object
+      description: 'Versioned payload describing the recommended actions a user can take in
+
+        response to a `UserNotification`. The shape is stable per `version` and
+
+        consumers should branch on `version` when deserializing.
+
+        '
+      required:
+      - version
+      - content
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: 'Schema version of the `recommended_actions` payload. Increment when
+
+            the payload shape changes in a non-backward-compatible way.
+
+            '
+          example: 1
+        content:
+          type: string
+          description: 'Human-readable body text describing the recommended actions.
+
+            Rendered as Markdown for `version: 1`.
+
+            '
+          example: Restart the cluster from the Confluent Cloud console.
+    notifications.v1.UserEmailTarget:
+      type: object
+      description: Email integration target to send email to a particular user
+      required:
+      - kind
+      - user
+      properties:
+        kind:
+          type: string
+          enum:
+          - UserEmail
+          description: Email Integration type for User
+          example: UserEmail
+        user:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: Reference to the user
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    notifications.v1.WebhookTarget:
+      type: object
+      description: Target required for webhook integration
+      required:
+      - kind
+      - url
+      properties:
+        kind:
+          type: string
+          enum:
+          - Webhook
+          description: Integration Type
+          example: Webhook
+        url:
+          type: string
+          format: uri
+          description: URL endpoint for the webhook
+          example: https://my.webhook.url/{id}
+    notifications.v1.UpdateUserNotificationsReadRequest:
+      type: object
+      description: 'Request body for setting the read state on every user notification
+
+        matching the supplied filter query parameters.
+
+        '
+      required:
+      - read
+      properties:
+        read:
+          type: boolean
+          description: 'The target read state to apply to all notifications matching the
+
+            filter query parameters. `true` marks them as read; `false` marks
+
+            them as unread.
+
+            '
+          example: true
     notifications.v1.Integration:
       type: object
       description: 'You can create an `Integration` to specify how we can notify you when we receive an alert/notification for
@@ -785,106 +1038,125 @@ components:
             '
           allOf:
           - $ref: '#/components/schemas/notifications.v1.Target'
-    notifications.v1.UserEmailTarget:
+    notifications.v1.NotificationType:
       type: object
-      description: Email integration target to send email to a particular user
-      required:
-      - kind
-      - user
+      description: 'The type of notifications (and their corresponding metadata) supported by Confluent.
+
+
+
+        Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
+
+
+        ## The Notification Types Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.NotificationType" />'
       properties:
-        kind:
+        api_version:
           type: string
           enum:
-          - UserEmail
-          description: Email Integration type for User
-          example: UserEmail
-        user:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: Reference to the user
-    notifications.v1.RecommendedActions:
-      type: object
-      description: 'Versioned payload describing the recommended actions a user can take in
-
-        response to a `UserNotification`. The shape is stable per `version` and
-
-        consumers should branch on `version` when deserializing.
-
-        '
-      required:
-      - version
-      - content
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: 'Schema version of the `recommended_actions` payload. Increment when
-
-            the payload shape changes in a non-backward-compatible way.
-
-            '
-          example: 1
-        content:
+          - notifications/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
           type: string
-          description: 'Human-readable body text describing the recommended actions.
-
-            Rendered as Markdown for `version: 1`.
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - NotificationType
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/notifications/v1/notification-types/nt-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/notification-type=nt-12345
+        display_name:
+          type: string
+          description: 'Human readable display name of the notification type
 
             '
-          example: Restart the cluster from the Confluent Cloud console.
-    notifications.v1.UpdateUserNotificationsReadRequest:
-      type: object
-      description: 'Request body for setting the read state on every user notification
+          example: Cluster Shrink
+        category:
+          type: string
+          x-extensible-enum:
+          - BILLING_LICENSING
+          - SECURITY
+          - SERVICE
+          - ACCOUNT
+          description: "Represents the group with which the notification is associated.\nNotifications are grouped under certain categories for better organization.\n- BILLING_LICENSING: All billing, payments or licensing related notifications are grouped here.\n- SECURITY: All Confluent Cloud and Platform security related notifications are grouped here.\n- SERVICE: All Confluent services (eg. Kafka, Schema Registry, Connect etc.) related notifications are\n  grouped here.\n- ACCOUNT: All Confluent account related notifications are grouped here.\nFor example: Billing, payment or license related notifications are grouped in BILLING_LICENSING category.\n"
+          example: BILLING_LICENSING
+        description:
+          type: string
+          description: 'Human readable description of the notification type
 
-        matching the supplied filter query parameters.
+            '
+          example: Cluster shrink operation is completed
+        subscription_priority:
+          type: string
+          x-extensible-enum:
+          - REQUIRED
+          - RECOMMENDED
+          - OPTIONAL
+          description: 'Indicates whether the notification is auto-subscribed and if the user can opt-out.
 
-        '
-      required:
-      - read
-      properties:
-        read:
+            - REQUIRED: the user is auto-subscribed to this notification and can''t opt-out.
+
+            - RECOMMENDED: the user is auto-subscribed to this notification and can opt-out.
+
+            - OPTIONAL: the user is not auto-subscribed to this notification but can explicitly subscribe to it.
+
+            '
+          example: REQUIRED
+        is_included_in_plan:
           type: boolean
-          description: 'The target read state to apply to all notifications matching the
+          description: 'Whether this notification is available to subscribe or not
 
-            filter query parameters. `true` marks them as read; `false` marks
-
-            them as unread.
+            as per the user''s current billing plan.
 
             '
-          example: true
-    notifications.v1.Target:
-      description: Target for the particular integration
-      oneOf:
-      - $ref: '#/components/schemas/notifications.v1.SlackTarget'
-      - $ref: '#/components/schemas/notifications.v1.RoleEmailTarget'
-      - $ref: '#/components/schemas/notifications.v1.UserEmailTarget'
-      - $ref: '#/components/schemas/notifications.v1.WebhookTarget'
-      - $ref: '#/components/schemas/notifications.v1.MsTeamsTarget'
-      - $ref: '#/components/schemas/notifications.v1.InAppTarget'
-      discriminator:
-        propertyName: kind
-        mapping:
-          Slack: '#/components/schemas/notifications.v1.SlackTarget'
-          RoleEmail: '#/components/schemas/notifications.v1.RoleEmailTarget'
-          UserEmail: '#/components/schemas/notifications.v1.UserEmailTarget'
-          Webhook: '#/components/schemas/notifications.v1.WebhookTarget'
-          MsTeams: '#/components/schemas/notifications.v1.MsTeamsTarget'
-          InApp: '#/components/schemas/notifications.v1.InAppTarget'
-      example:
-        kind: Slack
-        webhook_url: https://hooks.slack.com/services/{id}/{id}/{id}
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
+        severity:
+          type: string
+          x-extensible-enum:
+          - CRITICAL
+          - WARN
+          - INFO
+          description: 'Severity indicates the impact of this notification.
+
+            - CRITICAL: a high impact notification which needs immediate attention.
+
+            - WARN: a warning notification which can be addressed now or later.
+
+            - INFO: an informational notification.
+
+            '
+          example: INFO
+        resource_type:
+          type: string
+          x-extensible-enum:
+          - ORGANIZATION
+          - ENVIRONMENT
+          - CLUSTER
+          - CONNECTOR
+          - TOPIC
+          - FLINK_COMPUTE_POOL
+          - FLINK_STATEMENT
+          - CONNECTOR__CUSTOM_CONNECTOR
+          description: 'The type of resource this notification is associated with. Optional field.
+
+            '
+          example: CONNECTOR
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
     notifications.v1.ResourceSnapshot:
       type: object
       x-minispec-transform-ignore: true
@@ -925,6 +1197,42 @@ components:
 
             '
           example: prod-kafka-cluster
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
     notifications.v1.UserNotification:
       type: object
       description: "`UserNotification` objects represent in-app notifications scoped to a specific\nConfluent Cloud user. Each notification carries a severity, references the\nConfluent Cloud resource it relates to, and tracks whether the user has read it.\n\nThis API lets you list and retrieve your notifications, mark notifications as\nread or unread, and fetch an unread-count summary.\n\n`read` is the only mutable field on this resource; `PATCH` requests with values\nfor other fields will have those values silently ignored.\n\nTwo `PATCH` shapes are supported:\n- `PATCH /user-notifications/{id}` — update a single notification by id.\n- `PATCH /user-notifications` — update the read state of every notification\n  matching the supplied filter query parameters. The body is a narrow\n  payload (`{ \"read\": true | false }`) and the same filters accepted by\n  the list endpoint scope which notifications are updated (with the\n  exception of `include`, which is a list-only partial-response selector).\n\nThe heavier `integrations` and `recommended_actions` fields are populated on\nsingle-resource reads (`GET /user-notifications/{id}`) and omitted from list\nresponses by default to keep collection payloads slim. Use the `include`\nquery parameter on the list endpoint to opt in to populating these fields\n(`?include=integrations,recommended_actions`).\n\n\nRelated guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).\n\n## The User Notifications Model\n<SchemaDefinition schemaRef=\"#/components/schemas/notifications.v1.UserNotification\" />"
@@ -1060,348 +1368,99 @@ components:
           allOf:
           - $ref: '#/components/schemas/notifications.v1.RecommendedActions'
           readOnly: true
-    ListMeta:
+    Failure:
       type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    notifications.v1.InAppTarget:
-      type: object
-      description: Per-user in-app notification target; lazy-onboarded on first read.
+      description: Provides information about problems encountered while performing an operation.
       required:
-      - kind
-      - user
+      - errors
       properties:
-        kind:
-          type: string
-          enum:
-          - InApp
-          description: Integration Type
-          example: InApp
-        user:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: Reference to the user the in-app target belongs to.
-    notifications.v1.UserNotificationList:
-      type: object
-      description: "`UserNotification` objects represent in-app notifications scoped to a specific\nConfluent Cloud user. Each notification carries a severity, references the\nConfluent Cloud resource it relates to, and tracks whether the user has read it.\n\nThis API lets you list and retrieve your notifications, mark notifications as\nread or unread, and fetch an unread-count summary.\n\n`read` is the only mutable field on this resource; `PATCH` requests with values\nfor other fields will have those values silently ignored.\n\nTwo `PATCH` shapes are supported:\n- `PATCH /user-notifications/{id}` — update a single notification by id.\n- `PATCH /user-notifications` — update the read state of every notification\n  matching the supplied filter query parameters. The body is a narrow\n  payload (`{ \"read\": true | false }`) and the same filters accepted by\n  the list endpoint scope which notifications are updated (with the\n  exception of `include`, which is a list-only partial-response selector).\n\nThe heavier `integrations` and `recommended_actions` fields are populated on\nsingle-resource reads (`GET /user-notifications/{id}`) and omitted from list\nresponses by default to keep collection payloads slim. Use the `include`\nquery parameter on the list endpoint to opt in to populating these fields\n(`?include=integrations,recommended_actions`).\n\n\nRelated guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).\n\n## The User Notifications Model\n<SchemaDefinition schemaRef=\"#/components/schemas/notifications.v1.UserNotification\" />"
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - notifications/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - UserNotificationList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/notifications/v1/user-notifications
-              last:
-                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/notifications/v1/user-notifications?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
+        errors:
+          description: List of errors which caused this operation to fail
           type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
           items:
-            allOf:
-            - $ref: '#/components/schemas/notifications.v1.UserNotification'
-            - type: object
-              required:
-              - id
-              - metadata
-              - read
-              - received_at
-              - resource
-              - actions
-              - notification_type
+            $ref: '#/components/schemas/Error'
           uniqueItems: true
-    notifications.v1.NotificationType:
-      type: object
-      description: 'The type of notifications (and their corresponding metadata) supported by Confluent.
-
-
-
-        Related guide: [Cloud Notifications](https://docs.confluent.io/cloud/current/monitoring/configure-notifications.html#notifications-for-ccloud).
-
-
-        ## The Notification Types Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/notifications.v1.NotificationType" />'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - notifications/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - NotificationType
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/notifications/v1/notification-types/nt-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/notification-type=nt-12345
-        display_name:
-          type: string
-          description: 'Human readable display name of the notification type
-
-            '
-          example: Cluster Shrink
-        category:
-          type: string
-          x-extensible-enum:
-          - BILLING_LICENSING
-          - SECURITY
-          - SERVICE
-          - ACCOUNT
-          description: "Represents the group with which the notification is associated.\nNotifications are grouped under certain categories for better organization.\n- BILLING_LICENSING: All billing, payments or licensing related notifications are grouped here.\n- SECURITY: All Confluent Cloud and Platform security related notifications are grouped here.\n- SERVICE: All Confluent services (eg. Kafka, Schema Registry, Connect etc.) related notifications are\n  grouped here.\n- ACCOUNT: All Confluent account related notifications are grouped here.\nFor example: Billing, payment or license related notifications are grouped in BILLING_LICENSING category.\n"
-          example: BILLING_LICENSING
-        description:
-          type: string
-          description: 'Human readable description of the notification type
-
-            '
-          example: Cluster shrink operation is completed
-        subscription_priority:
-          type: string
-          x-extensible-enum:
-          - REQUIRED
-          - RECOMMENDED
-          - OPTIONAL
-          description: 'Indicates whether the notification is auto-subscribed and if the user can opt-out.
-
-            - REQUIRED: the user is auto-subscribed to this notification and can''t opt-out.
-
-            - RECOMMENDED: the user is auto-subscribed to this notification and can opt-out.
-
-            - OPTIONAL: the user is not auto-subscribed to this notification but can explicitly subscribe to it.
-
-            '
-          example: REQUIRED
-        is_included_in_plan:
-          type: boolean
-          description: 'Whether this notification is available to subscribe or not
-
-            as per the user''s current billing plan.
-
-            '
-        severity:
-          type: string
-          x-extensible-enum:
-          - CRITICAL
-          - WARN
-          - INFO
-          description: 'Severity indicates the impact of this notification.
-
-            - CRITICAL: a high impact notification which needs immediate attention.
-
-            - WARN: a warning notification which can be addressed now or later.
-
-            - INFO: an informational notification.
-
-            '
-          example: INFO
-        resource_type:
-          type: string
-          x-extensible-enum:
-          - ORGANIZATION
-          - ENVIRONMENT
-          - CLUSTER
-          - CONNECTOR
-          - TOPIC
-          - FLINK_COMPUTE_POOL
-          - FLINK_STATEMENT
-          - CONNECTOR__CUSTOM_CONNECTOR
-          description: 'The type of resource this notification is associated with. Optional field.
-
-            '
-          example: CONNECTOR
-    notifications.v1.MsTeamsTarget:
-      type: object
-      description: Target required for MS Teams integration
-      required:
-      - kind
-      - webhook_url
-      properties:
-        kind:
-          type: string
-          enum:
-          - MsTeams
-          description: Integration Type
-          example: MsTeams
-        webhook_url:
-          type: string
-          format: uri
-          description: MS Teams Webhook URL for the particular team channel
-          example: https://admin.webhook.office.com/webhookb2/{id}/IncomingWebhook/{id}
-    notifications.v1.WebhookTarget:
-      type: object
-      description: Target required for webhook integration
-      required:
-      - kind
-      - url
-      properties:
-        kind:
-          type: string
-          enum:
-          - Webhook
-          description: Integration Type
-          example: Webhook
-        url:
-          type: string
-          format: uri
-          description: URL endpoint for the webhook
-          example: https://my.webhook.url/{id}
-    notifications.v1.NotificationAction:
-      type: object
-      x-minispec-transform-ignore: true
-      description: 'A user-facing action associated with a `UserNotification`. The first
-
-        action on a notification is treated as the primary action; subsequent
-
-        actions are secondary.
-
-        '
-      required:
-      - identifier
-      - url
-      - role
-      properties:
-        identifier:
-          type: string
-          description: 'Stable identifier for the action, suitable for analytics. Stable
-
-            across notification deliveries that recommend the same action.
-
-            '
-          example: manage_cluster_settings
-        url:
-          type: string
-          format: uri
-          description: Confluent Cloud URL this action navigates to.
-          example: https://confluent.cloud/environments/env-xyz/clusters/lkc-ds23ad/settings
-        role:
-          type: string
-          x-extensible-enum:
-          - PRIMARY
-          - SECONDARY
-          description: 'Visual prominence of the action. `PRIMARY` is the recommended
-
-            default action; `SECONDARY` is shown alongside as a less prominent
-
-            option.
-
-            '
-          example: PRIMARY
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
+    notifications.v1.Target:
+      description: Target for the particular integration
+      oneOf:
+      - $ref: '#/components/schemas/notifications.v1.SlackTarget'
+      - $ref: '#/components/schemas/notifications.v1.RoleEmailTarget'
+      - $ref: '#/components/schemas/notifications.v1.UserEmailTarget'
+      - $ref: '#/components/schemas/notifications.v1.WebhookTarget'
+      - $ref: '#/components/schemas/notifications.v1.MsTeamsTarget'
+      - $ref: '#/components/schemas/notifications.v1.InAppTarget'
+      discriminator:
+        propertyName: kind
+        mapping:
+          Slack: '#/components/schemas/notifications.v1.SlackTarget'
+          RoleEmail: '#/components/schemas/notifications.v1.RoleEmailTarget'
+          UserEmail: '#/components/schemas/notifications.v1.UserEmailTarget'
+          Webhook: '#/components/schemas/notifications.v1.WebhookTarget'
+          MsTeams: '#/components/schemas/notifications.v1.MsTeamsTarget'
+          InApp: '#/components/schemas/notifications.v1.InAppTarget'
+      example:
+        kind: Slack
+        webhook_url: https://hooks.slack.com/services/{id}/{id}/{id}
   responses:
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1427,72 +1486,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -1511,42 +1504,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1826,6 +1783,49 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

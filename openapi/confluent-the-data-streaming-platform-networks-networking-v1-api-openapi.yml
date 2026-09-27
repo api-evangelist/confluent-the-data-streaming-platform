@@ -548,50 +548,342 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
       properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    networking.v1.NetworkList:
+      type: object
+      description: '`Network` represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud
+
+        provider accounts. Dedicated networks support more networking options but can only contain Dedicated clusters.
+
+        Shared networks can contain any cluster type.
+
+
+        The API allows you to list, create, read, update, and delete your networks.
+
+
+
+        Related guide: [APIs to manage networks in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
+
+
+        ## The Networks Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Network" />
+
+
+        ## Quotas and Limits
+
+        This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+        | Quota | Description |
+
+        | --- | --- |
+
+        | `dedicated_networks_per_environment` | Number of dedicated networks per Confluent Cloud environment |'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - networking/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - NetworkList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/networking/v1/networks
+              last:
+                example: https://api.confluent.cloud/networking/v1/networks?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/networking/v1/networks?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/networking/v1/networks?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/networking.v1.Network'
+            - type: object
+              required:
+              - id
+              - metadata
+              - spec
+              - status
+              properties:
+                spec:
+                  type: object
+                  required:
+                  - cloud
+                  - region
+                  - connection_types
+                  - environment
+          uniqueItems: true
+    networking.v1.ZoneInfo:
+      type: object
+      description: Cloud provider zone metadata.
+      properties:
+        zone_id:
+          description: Cloud provider zone id
+          type: string
+          example: use1-az3
+        cidr:
+          description: 'The IPv4 [CIDR block](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) to used for this network.
+
+            Must be a `/27`. Required for VPC peering and AWS TransitGateway.
+
+            '
+          type: string
+          example: 10.20.0.0/27
+    networking.v1.AwsNetwork:
+      type: object
+      description: The AWS network details.
+      required:
+      - kind
+      - vpc
+      - account
+      properties:
+        kind:
+          description: Network kind type.
+          type: string
+          enum:
+          - AwsNetwork
+        vpc:
+          type: string
+          description: The Confluent Cloud VPC ID.
+          example: vpc-00000000000000000
+          readOnly: true
+        account:
+          type: string
+          description: The AWS account ID associated with the Confluent Cloud VPC.
+          example: '000000000000'
+          readOnly: true
+        private_link_endpoint_service:
+          type: string
+          description: The endpoint service of the Confluent Cloud VPC. (used for PrivateLink) if available.
+          example: com.amazonaws.vpce.eu-west-3.vpce-00000000000000000
+          readOnly: true
+    networking.v1.DnsConfig:
+      type: object
+      description: The network DNS config
+      required:
+      - resolution
+      properties:
+        resolution:
+          type: string
+          description: Network DNS resolution type.
+          x-extensible-enum:
+          - CHASED_PRIVATE
+          - PRIVATE
+    ObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
           type: string
           format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
           readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
         resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
           type: string
           format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
           readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
+        api_version:
           type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
+          description: API group and version of the referred resource
+          minLength: 1
           readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
+        kind:
           type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
+          description: Kind of the referred resource
+          minLength: 1
           readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
+    networking.v1.Network:
+      type: object
+      description: '`Network` represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud
+
+        provider accounts. Dedicated networks support more networking options but can only contain Dedicated clusters.
+
+        Shared networks can contain any cluster type.
+
+
+        The API allows you to list, create, read, update, and delete your networks.
+
+
+
+        Related guide: [APIs to manage networks in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
+
+
+        ## The Networks Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Network" />
+
+
+        ## Quotas and Limits
+
+        This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
+
+
+        | Quota | Description |
+
+        | --- | --- |
+
+        | `dedicated_networks_per_environment` | Number of dedicated networks per Confluent Cloud environment |'
+      properties:
+        api_version:
           type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
+          enum:
+          - networking/v1
+          description: APIVersion defines the schema version of this representation of a resource.
           readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
-    networking.v1.ConnectionType:
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - Network
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/networking/v1/networks/n-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-12345
+        spec:
+          $ref: '#/components/schemas/networking.v1.NetworkSpec'
+        status:
+          $ref: '#/components/schemas/networking.v1.NetworkStatus'
+    SearchFilter:
+      description: Filter a collection by a string search
       type: string
-      description: Network connection type.
-      x-extensible-enum:
-      - PEERING
-      - TRANSITGATEWAY
-      - PRIVATELINK
-      example: PRIVATELINK
+    networking.v1.AzureNetwork:
+      type: object
+      description: The Azure network details.
+      required:
+      - kind
+      - vnet
+      - subscription
+      properties:
+        kind:
+          description: Network kind type.
+          type: string
+          enum:
+          - AzureNetwork
+        vnet:
+          type: string
+          description: The resource ID of the Confluent Cloud VNet.
+          example: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/prod-group/providers/Microsoft.Network/virtualNetworks/prod-network
+          readOnly: true
+        subscription:
+          type: string
+          description: The Azure Subscription ID associated with the Confluent Cloud VPC.
+          example: 00000000-0000-0000-0000-000000000000
+          readOnly: true
+        private_link_service_aliases:
+          type: object
+          description: 'The mapping of zones to Private Link Service Aliases if available. Keys are zones
+
+            and values are [Azure Private Link Service
+
+            Aliases](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service).
+
+            '
+          additionalProperties:
+            type: string
+          example:
+            '1': 0-00000-privatelink-1.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+            '2': 0-00000-privatelink-2.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+            '3': 0-00000-privatelink-3.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+          readOnly: true
+        private_link_service_resource_ids:
+          type: object
+          description: 'The mapping of zones to Private Link Service Resource IDs if available. Keys are zones
+
+            and values are [Azure Private Link Service Resource
+
+            IDs](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service).
+
+            '
+          additionalProperties:
+            type: string
+          example:
+            '1': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-1
+            '2': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-2
+            '3': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-3
+          readOnly: true
     networking.v1.NetworkStatus:
       type: object
       required:
@@ -701,163 +993,14 @@ components:
           description: The date and time when the network becomes idle
           readOnly: true
       readOnly: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    networking.v1.Network:
-      type: object
-      description: '`Network` represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud
-
-        provider accounts. Dedicated networks support more networking options but can only contain Dedicated clusters.
-
-        Shared networks can contain any cluster type.
-
-
-        The API allows you to list, create, read, update, and delete your networks.
-
-
-
-        Related guide: [APIs to manage networks in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
-
-
-        ## The Networks Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Network" />
-
-
-        ## Quotas and Limits
-
-        This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
-
-
-        | Quota | Description |
-
-        | --- | --- |
-
-        | `dedicated_networks_per_environment` | Number of dedicated networks per Confluent Cloud environment |'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - networking/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - Network
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/networking/v1/networks/n-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-12345
-        spec:
-          $ref: '#/components/schemas/networking.v1.NetworkSpec'
-        status:
-          $ref: '#/components/schemas/networking.v1.NetworkStatus'
-    networking.v1.AwsNetwork:
-      type: object
-      description: The AWS network details.
-      required:
-      - kind
-      - vpc
-      - account
-      properties:
-        kind:
-          description: Network kind type.
-          type: string
-          enum:
-          - AwsNetwork
-        vpc:
-          type: string
-          description: The Confluent Cloud VPC ID.
-          example: vpc-00000000000000000
-          readOnly: true
-        account:
-          type: string
-          description: The AWS account ID associated with the Confluent Cloud VPC.
-          example: '000000000000'
-          readOnly: true
-        private_link_endpoint_service:
-          type: string
-          description: The endpoint service of the Confluent Cloud VPC. (used for PrivateLink) if available.
-          example: com.amazonaws.vpce.eu-west-3.vpce-00000000000000000
-          readOnly: true
-    networking.v1.AzureNetwork:
-      type: object
-      description: The Azure network details.
-      required:
-      - kind
-      - vnet
-      - subscription
-      properties:
-        kind:
-          description: Network kind type.
-          type: string
-          enum:
-          - AzureNetwork
-        vnet:
-          type: string
-          description: The resource ID of the Confluent Cloud VNet.
-          example: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/prod-group/providers/Microsoft.Network/virtualNetworks/prod-network
-          readOnly: true
-        subscription:
-          type: string
-          description: The Azure Subscription ID associated with the Confluent Cloud VPC.
-          example: 00000000-0000-0000-0000-000000000000
-          readOnly: true
-        private_link_service_aliases:
-          type: object
-          description: 'The mapping of zones to Private Link Service Aliases if available. Keys are zones
-
-            and values are [Azure Private Link Service
-
-            Aliases](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service).
-
-            '
-          additionalProperties:
-            type: string
-          example:
-            '1': 0-00000-privatelink-1.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-            '2': 0-00000-privatelink-2.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-            '3': 0-00000-privatelink-3.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-          readOnly: true
-        private_link_service_resource_ids:
-          type: object
-          description: 'The mapping of zones to Private Link Service Resource IDs if available. Keys are zones
-
-            and values are [Azure Private Link Service Resource
-
-            IDs](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service).
-
-            '
-          additionalProperties:
-            type: string
-          example:
-            '1': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-1
-            '2': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-2
-            '3': /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/0-00000/providers/Microsoft.Network/privateLinkServices/0-00000-privatelink-3
-          readOnly: true
+    networking.v1.ConnectionType:
+      type: string
+      description: Network connection type.
+      x-extensible-enum:
+      - PEERING
+      - TRANSITGATEWAY
+      - PRIVATELINK
+      example: PRIVATELINK
     ListMeta:
       type: object
       description: ListMeta describes metadata that resource collections may have
@@ -896,111 +1039,6 @@ components:
           format: int32
           minimum: 0
           example: 123
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    ObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-        api_version:
-          type: string
-          description: API group and version of the referred resource
-          minLength: 1
-          readOnly: true
-        kind:
-          type: string
-          description: Kind of the referred resource
-          minLength: 1
-          readOnly: true
-    networking.v1.GcpNetwork:
-      type: object
-      description: The GCP network details.
-      required:
-      - kind
-      - project
-      - vpc_network
-      properties:
-        kind:
-          description: Network kind type.
-          type: string
-          enum:
-          - GcpNetwork
-        project:
-          type: string
-          description: The GCP Project ID associated with the Confluent Cloud VPC.
-          example: cc-prod-3
-          readOnly: true
-        vpc_network:
-          type: string
-          description: The network name of the Confluent Cloud VPC.
-          example: prod-network
-          readOnly: true
-        private_service_connect_service_attachments:
-          type: object
-          description: 'The mapping of zones to Private Service Connect Service
-
-            Attachments if available. Keys are zones and values are
-
-            [GCP Private Service Connect Service
-
-            Attachment](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#api_7)
-
-            '
-          additionalProperties:
-            type: string
-          example:
-            us-central1-a: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-a
-            us-central1-b: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-b
-            us-central1-c: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-c
-          readOnly: true
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
-    networking.v1.ZoneInfo:
-      type: object
-      description: Cloud provider zone metadata.
-      properties:
-        zone_id:
-          description: Cloud provider zone id
-          type: string
-          example: use1-az3
-        cidr:
-          description: 'The IPv4 [CIDR block](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) to used for this network.
-
-            Must be a `/27`. Required for VPC peering and AWS TransitGateway.
-
-            '
-          type: string
-          example: 10.20.0.0/27
     networking.v1.NetworkSpec:
       type: object
       description: The desired state of the Network
@@ -1090,138 +1128,100 @@ components:
       x-enable-id: true
       x-enable-listmeta: true
       x-enable-objectmeta: true
-    networking.v1.NetworkList:
+    networking.v1.GcpNetwork:
       type: object
-      description: '`Network` represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud
-
-        provider accounts. Dedicated networks support more networking options but can only contain Dedicated clusters.
-
-        Shared networks can contain any cluster type.
-
-
-        The API allows you to list, create, read, update, and delete your networks.
-
-
-
-        Related guide: [APIs to manage networks in Confluent Cloud](https://docs.confluent.io/cloud/current/networking/overview.html).
-
-
-        ## The Networks Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.Network" />
-
-
-        ## Quotas and Limits
-
-        This resource is subject to the [following quotas](https://docs.confluent.io/cloud/current/quotas/overview.html):
-
-
-        | Quota | Description |
-
-        | --- | --- |
-
-        | `dedicated_networks_per_environment` | Number of dedicated networks per Confluent Cloud environment |'
+      description: The GCP network details.
       required:
-      - api_version
       - kind
-      - metadata
-      - data
+      - project
+      - vpc_network
       properties:
-        api_version:
-          type: string
-          enum:
-          - networking/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
         kind:
+          description: Network kind type.
           type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
           enum:
-          - NetworkList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/networking/v1/networks
-              last:
-                example: https://api.confluent.cloud/networking/v1/networks?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/networking/v1/networks?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/networking/v1/networks?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/networking.v1.Network'
-            - type: object
-              required:
-              - id
-              - metadata
-              - spec
-              - status
-              properties:
-                spec:
-                  type: object
-                  required:
-                  - cloud
-                  - region
-                  - connection_types
-                  - environment
-          uniqueItems: true
-    networking.v1.DnsConfig:
-      type: object
-      description: The network DNS config
-      required:
-      - resolution
-      properties:
-        resolution:
+          - GcpNetwork
+        project:
           type: string
-          description: Network DNS resolution type.
-          x-extensible-enum:
-          - CHASED_PRIVATE
-          - PRIVATE
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
+          description: The GCP Project ID associated with the Confluent Cloud VPC.
+          example: cc-prod-3
+          readOnly: true
+        vpc_network:
           type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
+          description: The network name of the Confluent Cloud VPC.
+          example: prod-network
+          readOnly: true
+        private_service_connect_service_attachments:
           type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
+          description: 'The mapping of zones to Private Service Connect Service
+
+            Attachments if available. Keys are zones and values are
+
+            [GCP Private Service Connect Service
+
+            Attachment](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#api_7)
+
+            '
+          additionalProperties:
+            type: string
+          example:
+            us-central1-a: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-a
+            us-central1-b: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-b
+            us-central1-c: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-c
+          readOnly: true
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     TypedEnvScopedObjectReference:
       type: object
       description: ObjectReference provides information for you to locate the referred object
@@ -1263,6 +1263,84 @@ components:
           minLength: 1
           readOnly: true
   responses:
+    OverQuotaError:
+      x-summary: Over Quota
+      description: The request would exceed one or more quotas.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '402'
+              code: quota_exceeded
+              title: Kafka Clusters Per Org Quota Exceeded
+              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1288,72 +1366,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -1372,61 +1384,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    OverQuotaError:
-      x-summary: Over Quota
-      description: The request would exceed one or more quotas.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '402'
-              code: quota_exceeded
-              title: Kafka Clusters Per Org Quota Exceeded
-              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1706,6 +1663,49 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

@@ -105,7 +105,7 @@ apis:
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Avro
-  - JSON-Schema
+  - JSON Schema
   - Protobuf
   - Schema Registry
   tags_raw:
@@ -113,6 +113,7 @@ apis:
   - JSON Schema
   - Protobuf
   - Schema Registry
+  - JSON-Schema
   properties:
   - type: Documentation
     url: https://docs.confluent.io/platform/current/schema-registry/develop/api.html

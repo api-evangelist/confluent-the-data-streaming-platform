@@ -114,194 +114,7 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
-  responses:
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
   schemas:
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    sql.v1.StatementResultResults:
-      type: object
-      description: A results property that contains a data property that contains an array of results.
-      properties:
-        data:
-          type: array
-          description: 'A data property that contains an array of results. Each entry in the array is a separate result.
-
-
-            The value of `op` attribute (if present) represents the kind of change that a row can describe in a changelog:
-
-
-            `0`: represents `INSERT` (`+I`), i.e. insertion operation;
-
-
-            `1`: represents `UPDATE_BEFORE` (`-U`), i.e. update operation with the previous content of the updated row.
-
-            This kind should occur together with `UPDATE_AFTER` for modelling an update that needs to retract
-
-            the previous row first. It is useful in cases of a non-idempotent update, i.e., an update of a row that is not
-
-            uniquely identifiable by a key;
-
-
-            `2`: represents `UPDATE_AFTER` (`+U`), i.e. update operation with new content of the updated row;
-
-            This kind CAN occur together with `UPDATE_BEFORE` for modelling an update that
-
-            needs to retract the previous row first or it describes an idempotent update, i.e., an
-
-            update of a row that is uniquely identifiable by a key;
-
-
-            `3`: represents `DELETE` (`-D`), i.e. deletion operation;
-
-
-            Defaults to `0`.
-
-            '
-          items: {}
-          example:
-          - op: 0
-            row:
-            - '101'
-            - Jay
-            - - null
-              - abc
-            - - null
-              - '456'
-            - 1990-01-12 12:00.12
-            - - - null
-                - Alice
-              - - '42'
-                - Bob
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -368,6 +181,72 @@ components:
         results:
           allOf:
           - $ref: '#/components/schemas/sql.v1.StatementResultResults'
+    sql.v1.StatementResultResults:
+      type: object
+      description: A results property that contains a data property that contains an array of results.
+      properties:
+        data:
+          type: array
+          description: 'A data property that contains an array of results. Each entry in the array is a separate result.
+
+
+            The value of `op` attribute (if present) represents the kind of change that a row can describe in a changelog:
+
+
+            `0`: represents `INSERT` (`+I`), i.e. insertion operation;
+
+
+            `1`: represents `UPDATE_BEFORE` (`-U`), i.e. update operation with the previous content of the updated row.
+
+            This kind should occur together with `UPDATE_AFTER` for modelling an update that needs to retract
+
+            the previous row first. It is useful in cases of a non-idempotent update, i.e., an update of a row that is not
+
+            uniquely identifiable by a key;
+
+
+            `2`: represents `UPDATE_AFTER` (`+U`), i.e. update operation with new content of the updated row;
+
+            This kind CAN occur together with `UPDATE_BEFORE` for modelling an update that
+
+            needs to retract the previous row first or it describes an idempotent update, i.e., an
+
+            update of a row that is uniquely identifiable by a key;
+
+
+            `3`: represents `DELETE` (`-D`), i.e. deletion operation;
+
+
+            Defaults to `0`.
+
+            '
+          items: {}
+          example:
+          - op: 0
+            row:
+            - '101'
+            - Jay
+            - - null
+              - abc
+            - - null
+              - '456'
+            - 1990-01-12 12:00.12
+            - - - null
+                - Alice
+              - - '42'
+                - Bob
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     ResultListMeta:
       type: object
       description: ListMeta describes metadata that resource collections may have
@@ -386,6 +265,127 @@ components:
           example: '2006-01-02T15:04:05-07:00'
           readOnly: true
           description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+  responses:
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

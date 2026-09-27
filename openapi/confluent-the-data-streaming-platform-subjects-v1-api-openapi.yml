@@ -938,25 +938,23 @@ paths:
       - external-access-token: []
 components:
   schemas:
-    SchemaEntity:
+    SchemaReference:
       type: object
       properties:
-        entityPath:
+        name:
           type: string
-        entityType:
+          description: Reference name
+          example: io.confluent.kafka.example.User
+        subject:
           type: string
-          enum:
-          - sr_record
-          - sr_field
-    RegisterSchemaResponse:
-      type: object
-      properties:
-        id:
+          description: Name of the referenced subject
+          example: User
+        version:
           type: integer
-          description: Globally unique identifier of the schema
+          description: Version number of the referenced subject
           format: int32
-          example: 100001
-      description: Schema register response
+          example: 1
+      description: Schema reference
     SchemaTags:
       type: object
       properties:
@@ -966,6 +964,15 @@ components:
           type: array
           items:
             type: string
+    RegisterSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+      description: Schema register response
     Metadata:
       description: User-defined metadata
       properties:
@@ -988,108 +995,6 @@ components:
       type:
       - object
       - 'null'
-    RuleSet:
-      description: Schema rule set
-      properties:
-        migrationRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-        domainRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-      type:
-      - object
-      - 'null'
-    Schema:
-      type: object
-      properties:
-        subject:
-          type: string
-          description: Name of the subject
-          example: User
-        version:
-          type: integer
-          description: Version number
-          format: int32
-          example: 1
-        id:
-          type: integer
-          description: Globally unique identifier of the schema
-          format: int32
-          example: 100001
-        schemaType:
-          type: string
-          description: Schema type
-          example: AVRO
-        references:
-          type: array
-          description: References to other schemas
-          items:
-            $ref: '#/components/schemas/SchemaReference'
-        schema:
-          type: string
-          description: Schema definition string
-          example: '{"schema": "{"type": "string"}"}'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        ruleSet:
-          $ref: '#/components/schemas/RuleSet'
-        schemaTags:
-          type: array
-          description: Schema tags
-          items:
-            $ref: '#/components/schemas/SchemaTags'
-      description: Schema
-    RegisterSchemaRequest:
-      type: object
-      properties:
-        version:
-          type: integer
-          description: Version number
-          format: int32
-        id:
-          type: integer
-          description: Globally unique identifier of the schema
-          format: int32
-        schemaType:
-          type: string
-          description: Schema type
-        references:
-          type: array
-          description: References to other schemas
-          items:
-            $ref: '#/components/schemas/SchemaReference'
-        schema:
-          type: string
-          description: Schema definition string
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        ruleSet:
-          $ref: '#/components/schemas/RuleSet'
-        schemaTagsToAdd:
-          type: array
-          items:
-            $ref: '#/components/schemas/SchemaTags'
-        schemaTagsToRemove:
-          type: array
-          items:
-            $ref: '#/components/schemas/SchemaTags'
-        propagateSchemaTags:
-          type: boolean
-      description: Schema register request
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
     Rule:
       description: Rule
       properties:
@@ -1144,24 +1049,137 @@ components:
           description: Whether the rule is disabled
           type: boolean
       type: object
-    SchemaReference:
+    RuleSet:
+      description: Schema rule set
+      properties:
+        migrationRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        domainRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+      type:
+      - object
+      - 'null'
+    Schema:
       type: object
       properties:
-        name:
-          type: string
-          description: Reference name
-          example: io.confluent.kafka.example.User
         subject:
           type: string
-          description: Name of the referenced subject
+          description: Name of the subject
           example: User
         version:
           type: integer
-          description: Version number of the referenced subject
+          description: Version number
           format: int32
           example: 1
-      description: Schema reference
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+        schemaType:
+          type: string
+          description: Schema type
+          example: AVRO
+        references:
+          type: array
+          description: References to other schemas
+          items:
+            $ref: '#/components/schemas/SchemaReference'
+        schema:
+          type: string
+          description: Schema definition string
+          example: '{"schema": "{"type": "string"}"}'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        ruleSet:
+          $ref: '#/components/schemas/RuleSet'
+        schemaTags:
+          type: array
+          description: Schema tags
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+      description: Schema
+    SchemaEntity:
+      type: object
+      properties:
+        entityPath:
+          type: string
+        entityType:
+          type: string
+          enum:
+          - sr_record
+          - sr_field
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    RegisterSchemaRequest:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Version number
+          format: int32
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+        schemaType:
+          type: string
+          description: Schema type
+        references:
+          type: array
+          description: References to other schemas
+          items:
+            $ref: '#/components/schemas/SchemaReference'
+        schema:
+          type: string
+          description: Schema definition string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        ruleSet:
+          $ref: '#/components/schemas/RuleSet'
+        schemaTagsToAdd:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        schemaTagsToRemove:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        propagateSchemaTags:
+          type: boolean
+      description: Schema register request
   responses:
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
     RateLimitError:
       description: Rate Limit Exceeded
       headers:
@@ -1185,15 +1203,6 @@ components:
           schema:
             type: integer
           description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    schemaregistry.v1.UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 401
-            message: Unauthorized
     schemaregistry.v1.BadRequestError:
       description: Bad Request
       content:
@@ -1203,15 +1212,6 @@ components:
           example:
             error_code: 400
             message: Bad Request
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
   securitySchemes:
     cloud-api-key:
       type: http
