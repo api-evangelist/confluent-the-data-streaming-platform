@@ -271,45 +271,282 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
+  responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   schemas:
-    Error:
+    cdx.v1.ConnectionType:
+      type: string
+      description: Network connection type.
+      x-extensible-enum:
+      - PRIVATELINK
+      example: PRIVATELINK
+    ListMeta:
       type: object
-      description: Describes a particular error encountered while performing an operation.
+      description: ListMeta describes metadata that resource collections may have
       properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
           type:
           - string
           - 'null'
-      additionalProperties: false
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    cdx.v1.Network:
+      type: object
+      description: The shared cluster's network configurations for consumer to setup private link
+      properties:
+        api_version:
+          type: string
+          enum:
+          - cdx/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - Network
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/cdx/v1/networks/n-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-12345
+        kafka_bootstrap_url:
+          type: string
+          format: uri
+          description: The kafka cluster bootstrap url
+          example: SASL://pkc-xxxxx.us-west-2.aws.confluent.cloud:9092
+          x-immutable: true
+          readOnly: true
+        zones:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          minItems: 3
+          maxItems: 3
+          description: "The 3 availability zones for this network. They can optionally be specified for AWS networks\nused with PrivateLink. Otherwise, they are automatically chosen by Confluent Cloud.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n\nOn Azure, zones are Confluent-chosen names (e.g. 1, 2, 3) since Azure does not\n have universal zone identifiers.\n"
+          example:
+          - use1-az1
+          - use1-az2
+          - use1-az3
+          x-immutable: true
+        dns_domain:
+          type: string
+          description: The root DNS domain for the network if applicable.
+          example: 00000.us-east-1.aws.glb.confluent.cloud
+          readOnly: true
+        zonal_subdomains:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'The DNS subdomain for each zone. Present on networks that support PrivateLink. Keys are zones and
+
+            values are DNS domains.
+
+            '
+          example:
+            use1-az1: use1-az1.00000.us-east-1.aws.confluent.cloud
+            use1-az4: use1-az4.00000.us-east-1.aws.confluent.cloud
+            use1-az5: use1-az5.00000.us-east-1.aws.confluent.cloud
+          readOnly: true
+        cloud:
+          oneOf:
+          - $ref: '#/components/schemas/cdx.v1.AwsNetwork'
+          - $ref: '#/components/schemas/cdx.v1.AzureNetwork'
+          - $ref: '#/components/schemas/cdx.v1.GcpNetwork'
+          description: The cloud-specific network details. These will be populated when the network reaches the READY state.
+          discriminator:
+            propertyName: kind
+            mapping:
+              AwsNetwork: '#/components/schemas/cdx.v1.AwsNetwork'
+              AzureNetwork: '#/components/schemas/cdx.v1.AzureNetwork'
+              GcpNetwork: '#/components/schemas/cdx.v1.GcpNetwork'
+          readOnly: true
+    cdx.v1.AwsNetwork:
+      type: object
+      description: The AWS network details.
+      required:
+      - kind
+      properties:
+        kind:
+          description: Network kind type.
+          type: string
+          enum:
+          - AwsNetwork
+        private_link_endpoint_service:
+          type: string
+          description: The AWS VPC endpoint service for the network (used for PrivateLink) if available.
+          example: com.amazonaws.vpce.eu-west-3.vpce-00000000000000000
+          readOnly: true
     cdx.v1.ConsumerSharedResourceList:
       type: object
       description: '`ConsumerSharedResource` object contains details of the data stream
@@ -365,6 +602,33 @@ components:
               - display_name
               - organization_name
           uniqueItems: true
+    cdx.v1.AzureNetwork:
+      type: object
+      description: The Azure network details.
+      required:
+      - kind
+      properties:
+        kind:
+          description: Network kind type.
+          type: string
+          enum:
+          - AzureNetwork
+        private_link_service_aliases:
+          type: object
+          description: 'The mapping of zones to PrivateLink Service Aliases if available.  Keys are zones
+
+            and values are [Azure PrivateLink Service
+
+            Aliases](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service)
+
+            '
+          additionalProperties:
+            type: string
+          example:
+            '1': 0-00000-privatelink-1.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+            '2': 0-00000-privatelink-2.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+            '3': 0-00000-privatelink-3.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
+          readOnly: true
     cdx.v1.ConsumerSharedResource:
       type: object
       description: '`ConsumerSharedResource` object contains details of the data stream
@@ -482,207 +746,76 @@ components:
           example: https://confluent.cloud/api/cdx/v1/consumer-shared-resources/sr-123/images/logo
           x-immutable: true
           readOnly: true
-    cdx.v1.Schema:
+    cdx.v1.GcpNetwork:
       type: object
+      description: The GCP network details.
+      required:
+      - kind
       properties:
-        subject:
+        kind:
+          description: Network kind type.
           type: string
-          description: Name of the subject
-          example: User
-        version:
-          type: integer
-          description: Version number
-          format: int32
-          example: 1
+          enum:
+          - GcpNetwork
+        private_service_connect_service_attachments:
+          type: object
+          description: 'The mapping of zones to Private Service Connect Service
+
+            Attachments if available. Keys are zones and values are
+
+            [GCP Private Service Connect Service
+
+            Attachment](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#api_7)
+
+            '
+          additionalProperties:
+            type: string
+          example:
+            us-central1-a: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-a
+            us-central1-b: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-b
+            us-central1-c: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-c
+          readOnly: true
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
         id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
           type: integer
-          description: Globally unique identifier of the schema
           format: int32
-          example: 100001
-        schema_type:
-          type: string
-          description: Schema type
-          example: AVRO
-        schema:
-          type: string
-          description: Schema definition string
-          example: '{"schema": "{"type": "string"}"}'
-      description: Schema
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     BooleanFilter:
       type: boolean
       description: Filter for whether this value is true or false.
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
-    cdx.v1.ConnectionType:
-      type: string
-      description: Network connection type.
-      x-extensible-enum:
-      - PRIVATELINK
-      example: PRIVATELINK
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    cdx.v1.Network:
-      type: object
-      description: The shared cluster's network configurations for consumer to setup private link
-      properties:
-        api_version:
-          type: string
-          enum:
-          - cdx/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - Network
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/cdx/v1/networks/n-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-12345
-        kafka_bootstrap_url:
-          type: string
-          format: uri
-          description: The kafka cluster bootstrap url
-          example: SASL://pkc-xxxxx.us-west-2.aws.confluent.cloud:9092
-          x-immutable: true
-          readOnly: true
-        zones:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-          minItems: 3
-          maxItems: 3
-          description: "The 3 availability zones for this network. They can optionally be specified for AWS networks\nused with PrivateLink. Otherwise, they are automatically chosen by Confluent Cloud.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n\nOn Azure, zones are Confluent-chosen names (e.g. 1, 2, 3) since Azure does not\n have universal zone identifiers.\n"
-          example:
-          - use1-az1
-          - use1-az2
-          - use1-az3
-          x-immutable: true
-        dns_domain:
-          type: string
-          description: The root DNS domain for the network if applicable.
-          example: 00000.us-east-1.aws.glb.confluent.cloud
-          readOnly: true
-        zonal_subdomains:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'The DNS subdomain for each zone. Present on networks that support PrivateLink. Keys are zones and
-
-            values are DNS domains.
-
-            '
-          example:
-            use1-az1: use1-az1.00000.us-east-1.aws.confluent.cloud
-            use1-az4: use1-az4.00000.us-east-1.aws.confluent.cloud
-            use1-az5: use1-az5.00000.us-east-1.aws.confluent.cloud
-          readOnly: true
-        cloud:
-          oneOf:
-          - $ref: '#/components/schemas/cdx.v1.AwsNetwork'
-          - $ref: '#/components/schemas/cdx.v1.AzureNetwork'
-          - $ref: '#/components/schemas/cdx.v1.GcpNetwork'
-          description: The cloud-specific network details. These will be populated when the network reaches the READY state.
-          discriminator:
-            propertyName: kind
-            mapping:
-              AwsNetwork: '#/components/schemas/cdx.v1.AwsNetwork'
-              AzureNetwork: '#/components/schemas/cdx.v1.AzureNetwork'
-              GcpNetwork: '#/components/schemas/cdx.v1.GcpNetwork'
-          readOnly: true
-    cdx.v1.AwsNetwork:
-      type: object
-      description: The AWS network details.
-      required:
-      - kind
-      properties:
-        kind:
-          description: Network kind type.
-          type: string
-          enum:
-          - AwsNetwork
-        private_link_endpoint_service:
-          type: string
-          description: The AWS VPC endpoint service for the network (used for PrivateLink) if available.
-          example: com.amazonaws.vpce.eu-west-3.vpce-00000000000000000
-          readOnly: true
-    cdx.v1.AzureNetwork:
-      type: object
-      description: The Azure network details.
-      required:
-      - kind
-      properties:
-        kind:
-          description: Network kind type.
-          type: string
-          enum:
-          - AzureNetwork
-        private_link_service_aliases:
-          type: object
-          description: 'The mapping of zones to PrivateLink Service Aliases if available.  Keys are zones
-
-            and values are [Azure PrivateLink Service
-
-            Aliases](https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service)
-
-            '
-          additionalProperties:
-            type: string
-          example:
-            '1': 0-00000-privatelink-1.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-            '2': 0-00000-privatelink-2.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-            '3': 0-00000-privatelink-3.00000000-0000-0000-0000-000000000000.westeurope.azure.privatelinkservice
-          readOnly: true
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -719,168 +852,35 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    Failure:
+    cdx.v1.Schema:
       type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
       properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    cdx.v1.GcpNetwork:
-      type: object
-      description: The GCP network details.
-      required:
-      - kind
-      properties:
-        kind:
-          description: Network kind type.
+        subject:
           type: string
-          enum:
-          - GcpNetwork
-        private_service_connect_service_attachments:
-          type: object
-          description: 'The mapping of zones to Private Service Connect Service
-
-            Attachments if available. Keys are zones and values are
-
-            [GCP Private Service Connect Service
-
-            Attachment](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#api_7)
-
-            '
-          additionalProperties:
-            type: string
-          example:
-            us-central1-a: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-a
-            us-central1-b: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-b
-            us-central1-c: projects/cc-prod/regions/us-central1/serviceAttachments/s-7jjm9-service-attachment-us-central1-c
-          readOnly: true
-  responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+          description: Name of the subject
+          example: User
+        version:
+          type: integer
+          description: Version number
+          format: int32
+          example: 1
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+        schema_type:
+          type: string
+          description: Schema type
+          example: AVRO
+        schema:
+          type: string
+          description: Schema definition string
+          example: '{"schema": "{"type": "string"}"}'
+      description: Schema
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
   securitySchemes:
     cloud-api-key:
       type: http

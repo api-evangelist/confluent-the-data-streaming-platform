@@ -96,69 +96,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    sql.v1.StatementException:
-      type: object
-      properties:
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          enum:
-          - StatementException
-        name:
-          type: string
-          description: Name of the SQL statement exception.
-          example: java.lang.RuntimeException
-          readOnly: true
-        message:
-          type: string
-          description: Error message of the statement exception.
-          example: 'java.lang.RuntimeException: An error occurred'
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          example: '2025-11-10T16:20:00Z'
-          description: The date and time at which the exception occurred. It is represented in RFC3339 format and is in UTC.
-          readOnly: true
-      x-enable-objectmeta: true
     sql.v1.StatementExceptionList:
       type: object
       description: 'StatementExceptionList is a list of exceptions coming from FAILED or FAILING Statements created by
@@ -198,6 +135,44 @@ components:
           description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
           type: string
           example: https://flink.us-west1.aws.confluent.cloud/sql/v1/environments/env-123/statements/sql123/exceptions
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     Failure:
       type: object
       description: Provides information about problems encountered while performing an operation.
@@ -210,7 +185,109 @@ components:
           items:
             $ref: '#/components/schemas/Error'
           uniqueItems: true
+    sql.v1.StatementException:
+      type: object
+      properties:
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          enum:
+          - StatementException
+        name:
+          type: string
+          description: Name of the SQL statement exception.
+          example: java.lang.RuntimeException
+          readOnly: true
+        message:
+          type: string
+          description: Error message of the statement exception.
+          example: 'java.lang.RuntimeException: An error occurred'
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          example: '2025-11-10T16:20:00Z'
+          description: The date and time at which the exception occurred. It is represented in RFC3339 format and is in UTC.
+          readOnly: true
+      x-enable-objectmeta: true
   responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
     UnauthenticatedError:
       x-summary: Unauthorized
       description: The request lacks valid authentication credentials for this resource.
@@ -235,24 +312,6 @@ components:
               code: user_unauthenticated
               title: Authentication Required
               detail: Valid authentication credentials must be provided
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
     UnauthorizedError:
       x-summary: Forbidden
       description: The access credentials were considered insufficient to grant access
@@ -272,65 +331,6 @@ components:
               code: user_unauthorized
               title: User Access Unauthorized
               detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

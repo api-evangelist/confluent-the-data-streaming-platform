@@ -192,7 +192,262 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
+  responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   schemas:
+    sql.v1.MaterializedTableVersion:
+      type: object
+      description: Represents a specific version of a Materialized Table resource.
+      required:
+      - api_version
+      - kind
+      - metadata
+      - name
+      - organization_id
+      - environment_id
+      - spec
+      properties:
+        api_version:
+          type: string
+          enum:
+          - sql/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          example: sql/v1
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          enum:
+          - MaterializedTableVersion
+          readOnly: true
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - type: object
+            properties:
+              self:
+                example: https://flink.us-west1.aws.confluent.cloud/sql/v1/organizations/org-123/environments/env-123/databases/lkc-123/materialized-tables/high-value-orders/versions/4
+        name:
+          type: string
+          description: 'The resource version name, unique within the Kafka cluster.
+
+            Name conforms to DNS Subdomain (RFC 1123).
+
+            '
+          pattern: '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*'
+          maxLength: 100
+          example: mt-123-v4
+          readOnly: true
+        organization_id:
+          type: string
+          format: uuid
+          description: The unique identifier for the organization.
+          x-immutable: true
+          readOnly: true
+        environment_id:
+          type: string
+          description: The unique identifier for the environment.
+          x-immutable: true
+          readOnly: true
+        spec:
+          $ref: '#/components/schemas/sql.v1.MaterializedTableVersionSpec'
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    sql.v1.ResourceChange:
+      type: object
+      description: Details of a change to a specific resource.
+      required:
+      - kind
+      - environment_locator
+      - database_locator
+      - name
+      - details
+      properties:
+        kind:
+          type: string
+          x-extensible-enum:
+          - MATERIALIZED_TABLE
+          - TABLE
+          - VIEW
+          - FUNCTION
+          description: The type of resource that was changed.
+          example: MATERIALIZED_TABLE
+        environment_locator:
+          type: string
+          description: The environment containing the resource. Can be either the environment name or ID, depending on how it is referenced in the SQL statement text.
+          example: env-abc
+        database_locator:
+          type: string
+          description: The database containing the resource. Can be either the database name or ID, depending on how it is referenced in the SQL statement text.
+          example: lkc-123
+        name:
+          type: string
+          description: The name of the resource, unique within its scope (environment and database).
+          example: orders
+        details:
+          type: array
+          description: Human-readable descriptions of the changes made to this resource.
+          items:
+            type: string
+          example:
+          - 'Column ''product_name: VARCHAR'' added'
+          - 'Column ''product_id: BIGINT'' added'
+      readOnly: true
     ListMeta:
       type: object
       description: ListMeta describes metadata that resource collections may have
@@ -259,100 +514,18 @@ components:
           items:
             $ref: '#/components/schemas/sql.v1.ResourceChange'
           readOnly: true
-    Error:
+    Failure:
       type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    sql.v1.MaterializedTableVersion:
-      type: object
-      description: Represents a specific version of a Materialized Table resource.
+      description: Provides information about problems encountered while performing an operation.
       required:
-      - api_version
-      - kind
-      - metadata
-      - name
-      - organization_id
-      - environment_id
-      - spec
+      - errors
       properties:
-        api_version:
-          type: string
-          enum:
-          - sql/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          example: sql/v1
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          enum:
-          - MaterializedTableVersion
-          readOnly: true
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - type: object
-            properties:
-              self:
-                example: https://flink.us-west1.aws.confluent.cloud/sql/v1/organizations/org-123/environments/env-123/databases/lkc-123/materialized-tables/high-value-orders/versions/4
-        name:
-          type: string
-          description: 'The resource version name, unique within the Kafka cluster.
-
-            Name conforms to DNS Subdomain (RFC 1123).
-
-            '
-          pattern: '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*'
-          maxLength: 100
-          example: mt-123-v4
-          readOnly: true
-        organization_id:
-          type: string
-          format: uuid
-          description: The unique identifier for the organization.
-          x-immutable: true
-          readOnly: true
-        environment_id:
-          type: string
-          description: The unique identifier for the environment.
-          x-immutable: true
-          readOnly: true
-        spec:
-          $ref: '#/components/schemas/sql.v1.MaterializedTableVersionSpec'
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -389,58 +562,6 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    sql.v1.ResourceChange:
-      type: object
-      description: Details of a change to a specific resource.
-      required:
-      - kind
-      - environment_locator
-      - database_locator
-      - name
-      - details
-      properties:
-        kind:
-          type: string
-          x-extensible-enum:
-          - MATERIALIZED_TABLE
-          - TABLE
-          - VIEW
-          - FUNCTION
-          description: The type of resource that was changed.
-          example: MATERIALIZED_TABLE
-        environment_locator:
-          type: string
-          description: The environment containing the resource. Can be either the environment name or ID, depending on how it is referenced in the SQL statement text.
-          example: env-abc
-        database_locator:
-          type: string
-          description: The database containing the resource. Can be either the database name or ID, depending on how it is referenced in the SQL statement text.
-          example: lkc-123
-        name:
-          type: string
-          description: The name of the resource, unique within its scope (environment and database).
-          example: orders
-        details:
-          type: array
-          description: Human-readable descriptions of the changes made to this resource.
-          items:
-            type: string
-          example:
-          - 'Column ''product_name: VARCHAR'' added'
-          - 'Column ''product_id: BIGINT'' added'
-      readOnly: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
     sql.v1.MaterializedTableVersionList:
       type: object
       description: A list of Materialized Table Version resources.
@@ -468,127 +589,6 @@ components:
           items:
             $ref: '#/components/schemas/sql.v1.MaterializedTableVersion'
           uniqueItems: true
-  responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

@@ -207,26 +207,6 @@ paths:
           $ref: '#/components/responses/connect.v1.DefaultSystemError'
 components:
   responses:
-    connect.v1.DefaultSystemError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 500
-              message: Oops, something went wrong
-    connect.v1.AccountNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 404
-              message: account not found
     connect.v1.UnauthenticatedError:
       description: Unauthorized
       content:
@@ -237,6 +217,26 @@ components:
             error:
               code: 401
               message: Unauthorized
+    connect.v1.AccountNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: account not found
+    connect.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 500
+              message: Oops, something went wrong
     RateLimitError:
       description: Rate Limit Exceeded
       headers:

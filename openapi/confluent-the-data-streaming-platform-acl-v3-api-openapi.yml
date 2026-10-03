@@ -166,99 +166,107 @@ paths:
         5XX:
           $ref: '#/components/responses/ServerErrorResponse'
 components:
-  parameters:
-    AclPrincipal:
-      name: principal
-      description: 'The ACL principal. This is the Service Account name or user name.
-
-        Supports both legacy `User:` format (numeric IDs) and new `UserV2:`
-
-        format (sa-xxx format) for service accounts. Use `UserV2:*` to
-
-        retrieve service accounts in the new format.'
-      in: query
-      required: false
-      schema:
-        type: string
-    AclPatternTypeRequired:
-      name: pattern_type
-      description: The ACL pattern type.
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/AclPatternType'
-    AclPermission:
-      name: permission
-      description: The ACL permission.
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AclPermission'
-    AclResourceTypeRequired:
-      name: resource_type
-      description: The ACL resource type.
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/AclResourceType'
-    AclPermissionRequired:
-      name: permission
-      description: The ACL permission.
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/AclPermission'
-    ClusterId:
-      name: cluster_id
-      description: The Kafka cluster ID.
-      in: path
-      required: true
-      schema:
-        type: string
-      example: cluster-1
-    AclOperation:
-      name: operation
-      description: The ACL operation.
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AclOperation'
-    AclResourceType:
-      name: resource_type
-      description: The ACL resource type.
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AclResourceType'
-    AclHost:
-      name: host
-      description: The ACL host.
-      in: query
-      required: false
-      schema:
-        type: string
-    AclPatternType:
-      name: pattern_type
-      description: The ACL pattern type.
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AclPatternType'
-    AclOperationRequired:
-      name: operation
-      description: The ACL operation.
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/AclOperation'
-    AclResourceName:
-      name: resource_name
-      description: The ACL resource name.
-      in: query
-      required: false
-      schema:
-        type: string
   schemas:
+    ResourceCollection:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    CreateAclRequestDataList:
+      allOf:
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/CreateAclRequestData'
+    AclPermission:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - ANY
+      - DENY
+      - ALLOW
+    AclResourceType:
+      type: string
+      enum:
+      - UNKNOWN
+      - ANY
+      - TOPIC
+      - GROUP
+      - CLUSTER
+      - TRANSACTIONAL_ID
+      - DELEGATION_TOKEN
+    AclPatternType:
+      type: string
+      x-extensible-enum:
+      - UNKNOWN
+      - ANY
+      - MATCH
+      - LITERAL
+      - PREFIXED
+    AclData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - resource_type
+        - resource_name
+        - pattern_type
+        - principal
+        - host
+        - operation
+        - permission
+        properties:
+          cluster_id:
+            type: string
+          resource_type:
+            $ref: '#/components/schemas/AclResourceType'
+          resource_name:
+            type: string
+          pattern_type:
+            $ref: '#/components/schemas/AclPatternType'
+          principal:
+            type: string
+          host:
+            type: string
+          operation:
+            $ref: '#/components/schemas/AclOperation'
+          permission:
+            $ref: '#/components/schemas/AclPermission'
+    CreateAclRequestData:
+      type: object
+      required:
+      - resource_type
+      - resource_name
+      - pattern_type
+      - principal
+      - host
+      - operation
+      - permission
+      properties:
+        resource_type:
+          $ref: '#/components/schemas/AclResourceType'
+        resource_name:
+          type: string
+        pattern_type:
+          $ref: '#/components/schemas/AclPatternType'
+        principal:
+          type: string
+        host:
+          type: string
+        operation:
+          $ref: '#/components/schemas/AclOperation'
+        permission:
+          $ref: '#/components/schemas/AclPermission'
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -297,42 +305,27 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    AclPermission:
-      type: string
-      x-extensible-enum:
-      - UNKNOWN
-      - ANY
-      - DENY
-      - ALLOW
-    AclResourceType:
-      type: string
-      enum:
-      - UNKNOWN
-      - ANY
-      - TOPIC
-      - GROUP
-      - CLUSTER
-      - TRANSACTIONAL_ID
-      - DELEGATION_TOKEN
-    AclPatternType:
-      type: string
-      x-extensible-enum:
-      - UNKNOWN
-      - ANY
-      - MATCH
-      - LITERAL
-      - PREFIXED
-    AclDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AclData'
+    Resource:
+      type: object
+      required:
+      - kind
+      - metadata
+      properties:
+        kind:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+    ResourceCollectionMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        next:
+          type:
+          - string
+          - 'null'
     AclOperation:
       type: string
       x-extensible-enum:
@@ -349,54 +342,9 @@ components:
       - DESCRIBE_CONFIGS
       - ALTER_CONFIGS
       - IDEMPOTENT_WRITE
-    ResourceCollectionMetadata:
-      type: object
-      required:
-      - self
-      properties:
-        self:
-          type: string
-        next:
-          type:
-          - string
-          - 'null'
-    Resource:
-      type: object
-      required:
-      - kind
-      - metadata
-      properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceMetadata'
-    CreateAclRequestData:
-      type: object
-      required:
-      - resource_type
-      - resource_name
-      - pattern_type
-      - principal
-      - host
-      - operation
-      - permission
-      properties:
-        resource_type:
-          $ref: '#/components/schemas/AclResourceType'
-        resource_name:
-          type: string
-        pattern_type:
-          $ref: '#/components/schemas/AclPatternType'
-        principal:
-          type: string
-        host:
-          type: string
-        operation:
-          $ref: '#/components/schemas/AclOperation'
-        permission:
-          $ref: '#/components/schemas/AclPermission'
-    CreateAclRequestDataList:
+    AclDataList:
       allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
       - type: object
         required:
         - data
@@ -404,47 +352,7 @@ components:
           data:
             type: array
             items:
-              $ref: '#/components/schemas/CreateAclRequestData'
-    AclData:
-      allOf:
-      - $ref: '#/components/schemas/Resource'
-      - type: object
-        required:
-        - cluster_id
-        - resource_type
-        - resource_name
-        - pattern_type
-        - principal
-        - host
-        - operation
-        - permission
-        properties:
-          cluster_id:
-            type: string
-          resource_type:
-            $ref: '#/components/schemas/AclResourceType'
-          resource_name:
-            type: string
-          pattern_type:
-            $ref: '#/components/schemas/AclPatternType'
-          principal:
-            type: string
-          host:
-            type: string
-          operation:
-            $ref: '#/components/schemas/AclOperation'
-          permission:
-            $ref: '#/components/schemas/AclPermission'
-    ResourceCollection:
-      type: object
-      required:
-      - kind
-      - metadata
-      properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceCollectionMetadata'
+              $ref: '#/components/schemas/AclData'
     ResourceMetadata:
       type: object
       required:
@@ -469,18 +377,6 @@ components:
               value:
                 error_code: 40301
                 message: Request is not authorized
-    BadRequestErrorResponse_CreateAcls:
-      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            create_acls_cluster_name_invalid:
-              description: Thrown when creating an ACL for a CLUSTER resource specifying the wrong resource name.
-              value:
-                error_code: 40002
-                message: The only valid name for the CLUSTER resource is kafka-cluster"
     BadRequestErrorResponse:
       description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
       content:
@@ -498,18 +394,30 @@ components:
               value:
                 error_code: 40035
                 message: The version of this API is not supported in the underlying Kafka cluster.
-    UnauthorizedErrorResponse:
-      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+    BadRequestErrorResponse_CreateAcls:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            kafka_authentication_failed:
-              description: Thrown when using Basic authentication with wrong Kafka credentials.
+            create_acls_cluster_name_invalid:
+              description: Thrown when creating an ACL for a CLUSTER resource specifying the wrong resource name.
               value:
-                error_code: 40101
-                message: Authentication failed
+                error_code: 40002
+                message: The only valid name for the CLUSTER resource is kafka-cluster"
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
     SearchAclsResponse:
       description: The list of ACLs.
       content:
@@ -543,15 +451,6 @@ components:
               host: '*'
               operation: DESCRIBE
               permission: DENY
-    TooManyRequestsErrorResponse:
-      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
-      content:
-        text/html:
-          schema:
-            type: string
-          example:
-            description: A sample response from Jetty's DoSFilter.
-            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
     DeleteAclsResponse:
       description: The list of deleted ACLs.
       content:
@@ -589,6 +488,18 @@ components:
               host: '*'
               operation: DESCRIBE
               permission: DENY
+    UnauthorizedErrorResponse:
+      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authentication_failed:
+              description: Thrown when using Basic authentication with wrong Kafka credentials.
+              value:
+                error_code: 40101
+                message: Authentication failed
     BadRequestErrorResponse_DeleteAcls:
       description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
       content:
@@ -601,33 +512,108 @@ components:
               value:
                 error_code: 400
                 message: resource_type cannot be unspecified or UNKNOWN
-    ServerErrorResponse:
-      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+    TooManyRequestsErrorResponse:
+      description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
       content:
-        application/json:
+        text/html:
           schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            generic_internal_server_error:
-              description: Thrown for generic HTTP 500 errors.
-              value:
-                error_code: 500
-                message: Internal Server Error
-  requestBodies:
-    CreateAclRequest:
-      description: The ACL creation request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAclRequestData'
+            type: string
           example:
-            resource_type: CLUSTER
-            resource_name: kafka-cluster
-            pattern_type: LITERAL
-            principal: principalType:principalName
-            host: '*'
-            operation: DESCRIBE
-            permission: DENY
+            description: A sample response from Jetty's DoSFilter.
+            value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
+  parameters:
+    AclResourceName:
+      name: resource_name
+      description: The ACL resource name.
+      in: query
+      required: false
+      schema:
+        type: string
+    AclPrincipal:
+      name: principal
+      description: 'The ACL principal. This is the Service Account name or user name.
+
+        Supports both legacy `User:` format (numeric IDs) and new `UserV2:`
+
+        format (sa-xxx format) for service accounts. Use `UserV2:*` to
+
+        retrieve service accounts in the new format.'
+      in: query
+      required: false
+      schema:
+        type: string
+    AclPatternType:
+      name: pattern_type
+      description: The ACL pattern type.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AclPatternType'
+    AclOperationRequired:
+      name: operation
+      description: The ACL operation.
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/AclOperation'
+    AclHost:
+      name: host
+      description: The ACL host.
+      in: query
+      required: false
+      schema:
+        type: string
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    AclOperation:
+      name: operation
+      description: The ACL operation.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AclOperation'
+    AclResourceType:
+      name: resource_type
+      description: The ACL resource type.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AclResourceType'
+    AclPatternTypeRequired:
+      name: pattern_type
+      description: The ACL pattern type.
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/AclPatternType'
+    AclPermissionRequired:
+      name: permission
+      description: The ACL permission.
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/AclPermission'
+    AclPermission:
+      name: permission
+      description: The ACL permission.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AclPermission'
+    AclResourceTypeRequired:
+      name: resource_type
+      description: The ACL resource type.
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/AclResourceType'
+  requestBodies:
     BatchCreateAclRequest:
       description: The batch ACL creation request.
       content:
@@ -650,6 +636,20 @@ components:
               host: '*'
               operation: READ
               permission: ALLOW
+    CreateAclRequest:
+      description: The ACL creation request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAclRequestData'
+          example:
+            resource_type: CLUSTER
+            resource_name: kafka-cluster
+            pattern_type: LITERAL
+            principal: principalType:principalName
+            host: '*'
+            operation: DESCRIBE
+            permission: DENY
   securitySchemes:
     cloud-api-key:
       type: http

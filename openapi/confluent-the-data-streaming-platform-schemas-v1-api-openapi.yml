@@ -538,32 +538,6 @@ paths:
       - external-access-token: []
 components:
   schemas:
-    SchemaReference:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Reference name
-          example: io.confluent.kafka.example.User
-        subject:
-          type: string
-          description: Name of the referenced subject
-          example: User
-        version:
-          type: integer
-          description: Version number of the referenced subject
-          format: int32
-          example: 1
-      description: Schema reference
-    SchemaTags:
-      type: object
-      properties:
-        schemaEntity:
-          $ref: '#/components/schemas/SchemaEntity'
-        tags:
-          type: array
-          items:
-            type: string
     Metadata:
       description: User-defined metadata
       properties:
@@ -586,19 +560,47 @@ components:
       type:
       - object
       - 'null'
-    SubjectVersion:
+    RuleSet:
+      description: Schema rule set
+      properties:
+        migrationRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        domainRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+      type:
+      - object
+      - 'null'
+    SchemaReference:
       type: object
       properties:
+        name:
+          type: string
+          description: Reference name
+          example: io.confluent.kafka.example.User
         subject:
           type: string
-          description: Name of the subject
+          description: Name of the referenced subject
           example: User
         version:
           type: integer
-          description: Version number
+          description: Version number of the referenced subject
           format: int32
           example: 1
-      description: Subject version pair
+      description: Schema reference
+    SchemaEntity:
+      type: object
+      properties:
+        entityPath:
+          type: string
+        entityType:
+          type: string
+          enum:
+          - sr_record
+          - sr_field
     Rule:
       description: Rule
       properties:
@@ -653,20 +655,28 @@ components:
           description: Whether the rule is disabled
           type: boolean
       type: object
-    RuleSet:
-      description: Schema rule set
+    SubjectVersion:
+      type: object
       properties:
-        migrationRules:
-          items:
-            $ref: '#/components/schemas/Rule'
+        subject:
+          type: string
+          description: Name of the subject
+          example: User
+        version:
+          type: integer
+          description: Version number
+          format: int32
+          example: 1
+      description: Subject version pair
+    SchemaTags:
+      type: object
+      properties:
+        schemaEntity:
+          $ref: '#/components/schemas/SchemaEntity'
+        tags:
           type: array
-        domainRules:
           items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-      type:
-      - object
-      - 'null'
+            type: string
     Schema:
       type: object
       properties:
@@ -707,16 +717,6 @@ components:
           items:
             $ref: '#/components/schemas/SchemaTags'
       description: Schema
-    SchemaEntity:
-      type: object
-      properties:
-        entityPath:
-          type: string
-        entityType:
-          type: string
-          enum:
-          - sr_record
-          - sr_field
     SchemaString:
       type: object
       properties:
@@ -760,33 +760,6 @@ components:
           description: The error message
       description: Error message of this operation
   responses:
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
-    schemaregistry.v1.UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 401
-            message: Unauthorized
-    schemaregistry.v1.BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 400
-            message: Bad Request
     RateLimitError:
       description: Rate Limit Exceeded
       headers:
@@ -810,6 +783,33 @@ components:
           schema:
             type: integer
           description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
+    schemaregistry.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 400
+            message: Bad Request
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
   securitySchemes:
     cloud-api-key:
       type: http

@@ -73,6 +73,68 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
+  responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
   schemas:
     Error:
       type: object
@@ -112,6 +174,87 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    sts.v1.TokenExchangeReply:
+      type: object
+      description: token exchange response
+      required:
+      - access_token
+      - issued_token_type
+      - token_type
+      - expires_in
+      properties:
+        access_token:
+          type: string
+          description: 'An JWT access token, issued by Confluent, in response to the token exchange request.
+
+            Client application could use the access token to access confluent public api
+
+            '
+        issued_token_type:
+          type: string
+          x-extensible-enum:
+          - urn:ietf:params:oauth:token-type:access_token
+          description: The token type. Always matches the value of requested_token_type from the request.
+          example: urn:ietf:params:oauth:token-type:access_token
+        token_type:
+          type: string
+          x-extensible-enum:
+          - Bearer
+          description: Indicates the token type value. The only type that Confluent supports is Bearer
+          example: Bearer
+        expires_in:
+          type: integer
+          format: int32
+          description: The length of time, in seconds, that the access token is valid.
+          example: 3600
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
     sts.v1.TokenExchangeRequest:
       type: object
       description: token exchange request parameters
@@ -190,149 +333,6 @@ components:
             '
           default: 900
           maximum: 900
-    sts.v1.TokenExchangeReply:
-      type: object
-      description: token exchange response
-      required:
-      - access_token
-      - issued_token_type
-      - token_type
-      - expires_in
-      properties:
-        access_token:
-          type: string
-          description: 'An JWT access token, issued by Confluent, in response to the token exchange request.
-
-            Client application could use the access token to access confluent public api
-
-            '
-        issued_token_type:
-          type: string
-          x-extensible-enum:
-          - urn:ietf:params:oauth:token-type:access_token
-          description: The token type. Always matches the value of requested_token_type from the request.
-          example: urn:ietf:params:oauth:token-type:access_token
-        token_type:
-          type: string
-          x-extensible-enum:
-          - Bearer
-          description: Indicates the token type value. The only type that Confluent supports is Bearer
-          example: Bearer
-        expires_in:
-          type: integer
-          format: int32
-          description: The length of time, in seconds, that the access token is valid.
-          example: 3600
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-  responses:
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

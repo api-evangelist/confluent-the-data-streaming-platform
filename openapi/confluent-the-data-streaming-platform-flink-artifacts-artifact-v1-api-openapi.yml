@@ -535,44 +535,112 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    ListMeta:
+    artifact.v1.UploadSource.PresignedUrl:
       type: object
-      description: ListMeta describes metadata that resource collections may have
+      description: 'Request a presigned upload URL for new Flink Artifact. Note that
+
+        the URL policy expires in one hour. If the policy expires, you can request
+
+        a new presigned upload URL.
+
+
+
+        ## The Presigned Urls Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.PresignedUrl" />'
       properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
+        api_version:
+          type: string
+          enum:
+          - artifact.v1/UploadSource
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - PresignedUrl
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/artifact.v1/UploadSource/presigned-urls/pu-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/presigned-url=pu-12345
+        location:
+          type: string
+          description: 'Location of the Flink Artifact source.
+
+            '
+          x-extensible-enum:
+          - PRESIGNED_URL_LOCATION
+          example: PRESIGNED_URL_LOCATION
+        upload_id:
+          type: string
+          example: e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66
+          description: Upload ID returned by the `/presigned-upload-url` API. This field returns an empty string in all responses.
+    artifact.v1.FlinkArtifactList:
+      type: object
+      description: 'FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
+
+
+
+        ## The Flink Artifacts Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.FlinkArtifact" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - artifact/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - FlinkArtifactList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts
+              last:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+            - type: object
+              required:
+              - id
+              - metadata
+              - cloud
+              - region
+              - environment
+              - display_name
+          uniqueItems: true
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -611,6 +679,128 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    artifact.v1.FlinkArtifactVersion:
+      type: object
+      description: 'Version of the Flink Artifact
+
+        '
+      properties:
+        version:
+          type: string
+          description: Version id of the Flink Artifact.
+          example: cfa-ver-001
+          maxLength: 60
+        release_notes:
+          type: string
+          description: Release Notes of the Flink Artifact version.
+          maxLength: 256
+        is_beta:
+          type: boolean
+          description: Flag to specify stability of the version
+        artifact_id:
+          type: object
+          description: The Flink Artifact this version belongs to.
+          allOf:
+          - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
+        upload_source:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+          description: Upload source of the Flink Artifact Version.
+          discriminator:
+            propertyName: location
+            mapping:
+              PRESIGNED_URL_LOCATION: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
+      required:
+      - version
+      - artifact_id
+      - upload_source
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
     artifact.v1.FlinkArtifact:
       type: object
       description: 'FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
@@ -707,226 +897,12 @@ components:
           description: Versions associated with this Flink Artifact.
           items:
             $ref: '#/components/schemas/artifact.v1.FlinkArtifactVersion'
-    artifact.v1.UploadSource.PresignedUrl:
-      type: object
-      description: 'Request a presigned upload URL for new Flink Artifact. Note that
-
-        the URL policy expires in one hour. If the policy expires, you can request
-
-        a new presigned upload URL.
-
-
-
-        ## The Presigned Urls Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.PresignedUrl" />'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - artifact.v1/UploadSource
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - PresignedUrl
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/artifact.v1/UploadSource/presigned-urls/pu-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/presigned-url=pu-12345
-        location:
-          type: string
-          description: 'Location of the Flink Artifact source.
-
-            '
-          x-extensible-enum:
-          - PRESIGNED_URL_LOCATION
-          example: PRESIGNED_URL_LOCATION
-        upload_id:
-          type: string
-          example: e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66
-          description: Upload ID returned by the `/presigned-upload-url` API. This field returns an empty string in all responses.
-    artifact.v1.FlinkArtifactVersion:
-      type: object
-      description: 'Version of the Flink Artifact
-
-        '
-      properties:
-        version:
-          type: string
-          description: Version id of the Flink Artifact.
-          example: cfa-ver-001
-          maxLength: 60
-        release_notes:
-          type: string
-          description: Release Notes of the Flink Artifact version.
-          maxLength: 256
-        is_beta:
-          type: boolean
-          description: Flag to specify stability of the version
-        artifact_id:
-          type: object
-          description: The Flink Artifact this version belongs to.
-          allOf:
-          - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
-        upload_source:
-          type: object
-          oneOf:
-          - $ref: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
-          description: Upload source of the Flink Artifact Version.
-          discriminator:
-            propertyName: location
-            mapping:
-              PRESIGNED_URL_LOCATION: '#/components/schemas/artifact.v1.UploadSource.PresignedUrl'
-      required:
-      - version
-      - artifact_id
-      - upload_source
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
     SearchFilter:
       description: Filter a collection by a string search
       type: string
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    artifact.v1.FlinkArtifactList:
-      type: object
-      description: 'FlinkArtifact objects represent Flink Artifacts on Confluent Cloud.
-
-
-
-        ## The Flink Artifacts Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/artifact.v1.FlinkArtifact" />'
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - artifact/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - FlinkArtifactList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/artifact/v1/flink-artifacts
-              last:
-                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/artifact/v1/flink-artifacts?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/artifact.v1.FlinkArtifact'
-            - type: object
-              required:
-              - id
-              - metadata
-              - cloud
-              - region
-              - environment
-              - display_name
-          uniqueItems: true
   responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    DefaultSystemError:
-      description: Oops, something went wrong!
+    BadRequestError:
+      description: Bad Request
       headers:
         X-Request-Id:
           schema:
@@ -939,10 +915,28 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
     ValidationError:
       description: Validation Failed
       headers:
@@ -1222,6 +1216,90 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1247,84 +1325,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

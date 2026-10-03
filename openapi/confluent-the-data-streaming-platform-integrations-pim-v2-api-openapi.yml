@@ -509,291 +509,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    Error:
-      type: object
-      description: Describes a particular error encountered while performing an operation.
-      properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
-          type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    pim.v2.IntegrationList:
-      type: object
-      description: '`Provider Integration` objects represent access to public cloud service provider (CSP) resources
-
-        that may be accessed by Confluent resources (for example, connectors).
-
-
-        The API allows you to create, retrieve, update, delete, and validate individual integrations, and also obtain a
-
-        list of all your provider integrations.
-
-
-        Note: The pim/v2 API currently supports only Azure and GCP provider integrations.
-
-
-
-        Related guide: [Provider Integration in Confluent Cloud](https://docs.confluent.io/home/overview.html).
-
-
-        ## The Integrations Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/pim.v2.Integration" />'
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - pim/v2
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - IntegrationList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/pim/v2/integrations
-              last:
-                example: https://api.confluent.cloud/pim/v2/integrations?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/pim/v2/integrations?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/pim/v2/integrations?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/pim.v2.Integration'
-            - type: object
-              required:
-              - id
-              - status
-              - environment
-          uniqueItems: true
-    GlobalObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    ObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-        api_version:
-          type: string
-          description: API group and version of the referred resource
-          minLength: 1
-          readOnly: true
-        kind:
-          type: string
-          description: Kind of the referred resource
-          minLength: 1
-          readOnly: true
-    pim.v2.AzureIntegrationConfig:
-      type: object
-      description: 'config schema for Azure cloud service provider.
-
-        '
-      properties:
-        confluent_multi_tenant_app_id:
-          type: string
-          description: 'The ID of the Confluent Multi-Tenant App that Confluent Cloud uses to impersonate
-
-            customer Azure App when it accesses resources in your Azure subscription.
-
-            '
-          example: 9bb441c4-edef-46ac-8a41-c49e44a3fd9a
-          readOnly: true
-        customer_azure_tenant_id:
-          type: string
-          description: 'The ID of the customer''s Azure Active Directory (Azure AD) tenant
-
-            '
-          example: 12345678-1234-1234-1234-123456789abc
-        kind:
-          type: string
-          description: Cloud provider specific config to which access is provided through provider integration.
-          example: AzureIntegrationConfig
-          x-extensible-enum:
-          - AzureIntegrationConfig
-      required:
-      - kind
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    pim.v2.AwsIntegrationConfig:
-      type: object
-      description: 'config schema for AWS cloud service provider.
-
-        '
-      properties:
-        iam_role_arn:
-          type: string
-          description: 'Amazon Resource Name (ARN) that identifies the Amazon Web Services (AWS)
-
-            Identity and Access Management (IAM) role that Confluent Cloud uses to assume
-
-            customer IAM role when it accesses resources in your AWS account.
-
-            '
-          example: arn:aws:iam::000000000000:role/my-test-aws-role
-          maxLength: 2048
-          minLength: 20
-          readOnly: true
-        external_id:
-          type: string
-          format: uuid
-          description: 'Unique external ID that Confluent Cloud uses when it assumes the IAM role
-
-            in your Amazon Web Services (AWS) account.
-
-            '
-          readOnly: true
-        customer_iam_role_arn:
-          type: string
-          description: 'Amazon Resource Name (ARN) that identifies the Amazon Web Services (AWS)
-
-            Identity and Access Management (IAM) role that Confluent Cloud assumes when
-
-            it accesses resources in your AWS account.
-
-            '
-          example: arn:aws:iam::000000000000:role/my-test-aws-role
-          maxLength: 2048
-          minLength: 20
-        kind:
-          type: string
-          description: Cloud provider specific config to which access is provided through provider integration.
-          example: AwsIntegrationConfig
-          x-extensible-enum:
-          - AwsIntegrationConfig
-      required:
-      - kind
     pim.v2.Integration:
       type: object
       description: '`Provider Integration` objects represent access to public cloud service provider (CSP) resources
@@ -898,6 +613,129 @@ components:
           allOf:
           - $ref: '#/components/schemas/ObjectReference'
           description: The environment to which this belongs.
+    GlobalObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    pim.v2.AwsIntegrationConfig:
+      type: object
+      description: 'config schema for AWS cloud service provider.
+
+        '
+      properties:
+        iam_role_arn:
+          type: string
+          description: 'Amazon Resource Name (ARN) that identifies the Amazon Web Services (AWS)
+
+            Identity and Access Management (IAM) role that Confluent Cloud uses to assume
+
+            customer IAM role when it accesses resources in your AWS account.
+
+            '
+          example: arn:aws:iam::000000000000:role/my-test-aws-role
+          maxLength: 2048
+          minLength: 20
+          readOnly: true
+        external_id:
+          type: string
+          format: uuid
+          description: 'Unique external ID that Confluent Cloud uses when it assumes the IAM role
+
+            in your Amazon Web Services (AWS) account.
+
+            '
+          readOnly: true
+        customer_iam_role_arn:
+          type: string
+          description: 'Amazon Resource Name (ARN) that identifies the Amazon Web Services (AWS)
+
+            Identity and Access Management (IAM) role that Confluent Cloud assumes when
+
+            it accesses resources in your AWS account.
+
+            '
+          example: arn:aws:iam::000000000000:role/my-test-aws-role
+          maxLength: 2048
+          minLength: 20
+        kind:
+          type: string
+          description: Cloud provider specific config to which access is provided through provider integration.
+          example: AwsIntegrationConfig
+          x-extensible-enum:
+          - AwsIntegrationConfig
+      required:
+      - kind
     pim.v2.IntegrationValidateRequest:
       type: object
       description: Request to validate the provider integration configuration.
@@ -948,6 +786,75 @@ components:
           description: The environment to which this belongs.
           allOf:
           - $ref: '#/components/schemas/GlobalObjectReference'
+    pim.v2.GcpIntegrationConfig:
+      type: object
+      description: 'config schema for GCP cloud service provider.
+
+        '
+      properties:
+        google_service_account:
+          type: string
+          description: 'The ID of the Google Service Account that Confluent Cloud uses to impersonate
+
+            customer Google Service Account when it accesses resources in your GCP project.
+
+            '
+          example: cspi-sa1@cflt-project.iam.gserviceaccount.com
+          readOnly: true
+        customer_google_service_account:
+          type: string
+          description: 'The ID of the Google Service Account that Confluent Cloud impersonates
+
+            to access resources in your GCP Project.
+
+            '
+          example: customer-sa@customer-project.iam.gserviceaccount.com
+        kind:
+          type: string
+          description: Cloud provider specific config to which access is provided through provider integration.
+          example: GcpIntegrationConfig
+          x-extensible-enum:
+          - GcpIntegrationConfig
+      required:
+      - kind
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -984,77 +891,145 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    Failure:
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
+    ObjectReference:
       type: object
-      description: Provides information about problems encountered while performing an operation.
+      description: ObjectReference provides information for you to locate the referred object
       required:
-      - errors
+      - id
+      - related
+      - resource_name
       properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    pim.v2.GcpIntegrationConfig:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+        api_version:
+          type: string
+          description: API group and version of the referred resource
+          minLength: 1
+          readOnly: true
+        kind:
+          type: string
+          description: Kind of the referred resource
+          minLength: 1
+          readOnly: true
+    pim.v2.AzureIntegrationConfig:
       type: object
-      description: 'config schema for GCP cloud service provider.
+      description: 'config schema for Azure cloud service provider.
 
         '
       properties:
-        google_service_account:
+        confluent_multi_tenant_app_id:
           type: string
-          description: 'The ID of the Google Service Account that Confluent Cloud uses to impersonate
+          description: 'The ID of the Confluent Multi-Tenant App that Confluent Cloud uses to impersonate
 
-            customer Google Service Account when it accesses resources in your GCP project.
+            customer Azure App when it accesses resources in your Azure subscription.
 
             '
-          example: cspi-sa1@cflt-project.iam.gserviceaccount.com
+          example: 9bb441c4-edef-46ac-8a41-c49e44a3fd9a
           readOnly: true
-        customer_google_service_account:
+        customer_azure_tenant_id:
           type: string
-          description: 'The ID of the Google Service Account that Confluent Cloud impersonates
-
-            to access resources in your GCP Project.
+          description: 'The ID of the customer''s Azure Active Directory (Azure AD) tenant
 
             '
-          example: customer-sa@customer-project.iam.gserviceaccount.com
+          example: 12345678-1234-1234-1234-123456789abc
         kind:
           type: string
           description: Cloud provider specific config to which access is provided through provider integration.
-          example: GcpIntegrationConfig
+          example: AzureIntegrationConfig
           x-extensible-enum:
-          - GcpIntegrationConfig
+          - AzureIntegrationConfig
       required:
       - kind
+    pim.v2.IntegrationList:
+      type: object
+      description: '`Provider Integration` objects represent access to public cloud service provider (CSP) resources
+
+        that may be accessed by Confluent resources (for example, connectors).
+
+
+        The API allows you to create, retrieve, update, delete, and validate individual integrations, and also obtain a
+
+        list of all your provider integrations.
+
+
+        Note: The pim/v2 API currently supports only Azure and GCP provider integrations.
+
+
+
+        Related guide: [Provider Integration in Confluent Cloud](https://docs.confluent.io/home/overview.html).
+
+
+        ## The Integrations Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/pim.v2.Integration" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - pim/v2
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - IntegrationList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/pim/v2/integrations
+              last:
+                example: https://api.confluent.cloud/pim/v2/integrations?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/pim/v2/integrations?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/pim/v2/integrations?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/pim.v2.Integration'
+            - type: object
+              required:
+              - id
+              - status
+              - environment
+          uniqueItems: true
   responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
+    BadRequestError:
+      description: Bad Request
       headers:
         X-Request-Id:
           schema:
@@ -1067,69 +1042,12 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    ConflictError:
-      x-summary: Conflict
-      description: The request is in conflict with the current server state
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        Location:
-          schema:
-            type: string
-            format: uri
-            example: https://api.confluent.cloud/{object}/{id}
-          description: Resource URI of conflicting resource
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '409'
-              code: resource_already_exists
-              title: Resource Already exists
-              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1409,8 +1327,33 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
-    BadRequestError:
-      description: Bad Request
+    ConflictError:
+      x-summary: Conflict
+      description: The request is in conflict with the current server state
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        Location:
+          schema:
+            type: string
+            format: uri
+            example: https://api.confluent.cloud/{object}/{id}
+          description: Resource URI of conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '409'
+              code: resource_already_exists
+              title: Resource Already exists
+              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    NotFoundError:
+      description: Not Found
       headers:
         X-Request-Id:
           schema:
@@ -1423,12 +1366,26 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
+              status: '404'
+              title: Not Found
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
     RateLimitError:
       description: Rate Limit Exceeded
       headers:
@@ -1452,6 +1409,49 @@ components:
           schema:
             type: integer
           description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   securitySchemes:
     cloud-api-key:
       type: http

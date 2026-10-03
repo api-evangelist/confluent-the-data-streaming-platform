@@ -111,45 +111,112 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
+  responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   schemas:
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -188,6 +255,61 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    rtce.v1.RegionList:
+      type: object
+      description: '`Region` objects represent cloud provider regions where RtceTopics can be deployed.
+
+        This API allows you to list all supported RTCE regions.
+
+
+
+        ## The Regions Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/rtce.v1.Region" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - rtce/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - RegionList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/rtce/v1/regions
+              last:
+                example: https://api.confluent.cloud/rtce/v1/regions?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/rtce/v1/regions?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/rtce/v1/regions?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/rtce.v1.Region'
+            - type: object
+              required:
+              - id
+              - metadata
+              - cloud
+              - region
+              - display_name
+          uniqueItems: true
     rtce.v1.Region:
       type: object
       description: '`Region` objects represent cloud provider regions where RtceTopics can be deployed.
@@ -246,6 +368,56 @@ components:
           example: US East (Ohio)
           x-immutable: true
           readOnly: true
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -285,178 +457,6 @@ components:
     SearchFilter:
       description: Filter a collection by a string search
       type: string
-    rtce.v1.RegionList:
-      type: object
-      description: '`Region` objects represent cloud provider regions where RtceTopics can be deployed.
-
-        This API allows you to list all supported RTCE regions.
-
-
-
-        ## The Regions Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/rtce.v1.Region" />'
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - rtce/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - RegionList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/rtce/v1/regions
-              last:
-                example: https://api.confluent.cloud/rtce/v1/regions?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/rtce/v1/regions?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/rtce/v1/regions?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/rtce.v1.Region'
-            - type: object
-              required:
-              - id
-              - metadata
-              - cloud
-              - region
-              - display_name
-          uniqueItems: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-  responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

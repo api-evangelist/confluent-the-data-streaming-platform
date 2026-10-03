@@ -327,6 +327,59 @@ paths:
       - external-access-token: []
 components:
   schemas:
+    CreateKekRequest:
+      example:
+        kmsProps:
+          key: kmsProps
+        shared: true
+        name: name
+        doc: doc
+        kmsKeyId: kmsKeyId
+        kmsType: kmsType
+      properties:
+        name:
+          type: string
+          description: Name of the kek
+        kmsType:
+          type: string
+          description: KMS type of the kek
+        kmsKeyId:
+          type: string
+          description: KMS key ID of the kek
+        kmsProps:
+          type: object
+          additionalProperties:
+            type: string
+          description: Properties of the kek
+        doc:
+          type: string
+          description: Description of the kek
+        shared:
+          type: boolean
+          description: Whether the kek is shared
+        deleted:
+          type: boolean
+          description: Whether the kek is deleted
+      type: object
+    UpdateKekRequest:
+      example:
+        kmsProps:
+          key: kmsProps
+        shared: true
+        doc: doc
+      properties:
+        kmsProps:
+          type: object
+          additionalProperties:
+            type: string
+          description: Properties of the kek
+        doc:
+          type: string
+          description: Description of the kek
+        shared:
+          type: boolean
+          description: Whether the kek is shared
+      type: object
     Kek:
       example:
         kmsProps:
@@ -363,59 +416,6 @@ components:
           type: integer
           description: Timestamp of the kek
           format: int64
-        deleted:
-          type: boolean
-          description: Whether the kek is deleted
-      type: object
-    UpdateKekRequest:
-      example:
-        kmsProps:
-          key: kmsProps
-        shared: true
-        doc: doc
-      properties:
-        kmsProps:
-          type: object
-          additionalProperties:
-            type: string
-          description: Properties of the kek
-        doc:
-          type: string
-          description: Description of the kek
-        shared:
-          type: boolean
-          description: Whether the kek is shared
-      type: object
-    CreateKekRequest:
-      example:
-        kmsProps:
-          key: kmsProps
-        shared: true
-        name: name
-        doc: doc
-        kmsKeyId: kmsKeyId
-        kmsType: kmsType
-      properties:
-        name:
-          type: string
-          description: Name of the kek
-        kmsType:
-          type: string
-          description: KMS type of the kek
-        kmsKeyId:
-          type: string
-          description: KMS key ID of the kek
-        kmsProps:
-          type: object
-          additionalProperties:
-            type: string
-          description: Properties of the kek
-        doc:
-          type: string
-          description: Description of the kek
-        shared:
-          type: boolean
-          description: Whether the kek is shared
         deleted:
           type: boolean
           description: Whether the kek is deleted

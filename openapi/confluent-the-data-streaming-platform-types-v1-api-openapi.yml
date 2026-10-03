@@ -351,6 +351,77 @@ paths:
           description: Internal Server Error
 components:
   schemas:
+    ConstraintDef:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type
+        params:
+          type: object
+          description: The params
+          additionalProperties:
+            type: object
+    BusinessMetadataDef:
+      properties:
+        category:
+          enum:
+          - PRIMITIVE
+          - OBJECT_ID_TYPE
+          - ENUM
+          - STRUCT
+          - CLASSIFICATION
+          - ENTITY
+          - ARRAY
+          - MAP
+          - RELATIONSHIP
+          - BUSINESS_METADATA
+          type: string
+          description: The category
+        guid:
+          type: string
+          description: The internal guid
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          format: int64
+          type: integer
+          description: The create time
+        updateTime:
+          format: int64
+          type: integer
+          description: The update time
+        version:
+          format: int32
+          type: integer
+          description: The version
+        name:
+          type: string
+          description: The name
+        description:
+          type: string
+          description: The description
+        typeVersion:
+          type: string
+          description: The type version
+        serviceType:
+          type: string
+          description: The service type
+        options:
+          additionalProperties:
+            type: string
+          type: object
+          description: The options
+        attributeDefs:
+          items:
+            $ref: '#/components/schemas/AttributeDef'
+          type: array
+          description: The attribute definitions
+      type: object
     TagDefResponse:
       type: object
       properties:
@@ -431,6 +502,84 @@ components:
             type: string
         error:
           $ref: '#/components/schemas/ErrorMessage'
+    TagDef:
+      type: object
+      properties:
+        category:
+          type: string
+          description: The category
+          enum:
+          - PRIMITIVE
+          - OBJECT_ID_TYPE
+          - ENUM
+          - STRUCT
+          - CLASSIFICATION
+          - ENTITY
+          - ARRAY
+          - MAP
+          - RELATIONSHIP
+          - BUSINESS_METADATA
+        guid:
+          type: string
+          description: The internal guid
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          type: integer
+          description: The create time
+          format: int64
+        updateTime:
+          type: integer
+          description: The update time
+          format: int64
+        version:
+          type: integer
+          description: The version
+          format: int32
+        name:
+          type: string
+          description: The name
+        description:
+          type: string
+          description: The description
+        typeVersion:
+          type: string
+          description: The type version
+        serviceType:
+          type: string
+          description: The service type
+        options:
+          type: object
+          description: The options
+          additionalProperties:
+            type: string
+        attributeDefs:
+          type: array
+          description: The attribute definitions
+          items:
+            $ref: '#/components/schemas/AttributeDef'
+        superTypes:
+          uniqueItems: true
+          type: array
+          description: The supertypes
+          items:
+            type: string
+        entityTypes:
+          uniqueItems: true
+          type: array
+          description: The entity types
+          items:
+            type: string
+        subTypes:
+          uniqueItems: true
+          type: array
+          description: The subtypes
+          items:
+            type: string
     BusinessMetadataDefResponse:
       properties:
         category:
@@ -558,155 +707,6 @@ components:
         displayName:
           type: string
           description: The display name
-    ConstraintDef:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type
-        params:
-          type: object
-          description: The params
-          additionalProperties:
-            type: object
-    TagDef:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category
-          enum:
-          - PRIMITIVE
-          - OBJECT_ID_TYPE
-          - ENUM
-          - STRUCT
-          - CLASSIFICATION
-          - ENTITY
-          - ARRAY
-          - MAP
-          - RELATIONSHIP
-          - BUSINESS_METADATA
-        guid:
-          type: string
-          description: The internal guid
-        createdBy:
-          type: string
-          description: The creator
-        updatedBy:
-          type: string
-          description: The updater
-        createTime:
-          type: integer
-          description: The create time
-          format: int64
-        updateTime:
-          type: integer
-          description: The update time
-          format: int64
-        version:
-          type: integer
-          description: The version
-          format: int32
-        name:
-          type: string
-          description: The name
-        description:
-          type: string
-          description: The description
-        typeVersion:
-          type: string
-          description: The type version
-        serviceType:
-          type: string
-          description: The service type
-        options:
-          type: object
-          description: The options
-          additionalProperties:
-            type: string
-        attributeDefs:
-          type: array
-          description: The attribute definitions
-          items:
-            $ref: '#/components/schemas/AttributeDef'
-        superTypes:
-          uniqueItems: true
-          type: array
-          description: The supertypes
-          items:
-            type: string
-        entityTypes:
-          uniqueItems: true
-          type: array
-          description: The entity types
-          items:
-            type: string
-        subTypes:
-          uniqueItems: true
-          type: array
-          description: The subtypes
-          items:
-            type: string
-    BusinessMetadataDef:
-      properties:
-        category:
-          enum:
-          - PRIMITIVE
-          - OBJECT_ID_TYPE
-          - ENUM
-          - STRUCT
-          - CLASSIFICATION
-          - ENTITY
-          - ARRAY
-          - MAP
-          - RELATIONSHIP
-          - BUSINESS_METADATA
-          type: string
-          description: The category
-        guid:
-          type: string
-          description: The internal guid
-        createdBy:
-          type: string
-          description: The creator
-        updatedBy:
-          type: string
-          description: The updater
-        createTime:
-          format: int64
-          type: integer
-          description: The create time
-        updateTime:
-          format: int64
-          type: integer
-          description: The update time
-        version:
-          format: int32
-          type: integer
-          description: The version
-        name:
-          type: string
-          description: The name
-        description:
-          type: string
-          description: The description
-        typeVersion:
-          type: string
-          description: The type version
-        serviceType:
-          type: string
-          description: The service type
-        options:
-          additionalProperties:
-            type: string
-          type: object
-          description: The options
-        attributeDefs:
-          items:
-            $ref: '#/components/schemas/AttributeDef'
-          type: array
-          description: The attribute definitions
-      type: object
     ErrorMessage:
       type: object
       properties:

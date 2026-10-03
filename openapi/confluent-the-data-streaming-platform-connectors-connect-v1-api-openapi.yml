@@ -806,11 +806,108 @@ paths:
         '500':
           $ref: '#/components/responses/connect.v1.DefaultSystemError'
 components:
+  responses:
+    connect.v1.UnauthenticatedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
+    connect.v1.ResourceNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: resource not found
+    connect.v1.AccountNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: account not found
+    connect.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 500
+              message: Oops, something went wrong
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    connect.v1.OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type:
+                - object
+                - 'null'
+          example:
+            error: null
+    connect.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 400
+              message: Bad Request
   schemas:
-    connect.v1.ConnectorExpansionMap:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/connect.v1.ConnectorExpansion'
+    connect.v1.Offsets:
+      type: array
+      description: Array of offsets which are categorised into partitions.
+      items:
+        type: object
+        properties:
+          partition:
+            type: object
+            additionalProperties: true
+            description: "The partition information. For sink connectors this is the kafka topic and \npartition. For source connectors this is depends on the partitions defined by the \nsource connector. For example, the table which this task is pulling data from in a\nJDBC based MySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
+          offset:
+            type: object
+            additionalProperties: true
+            description: "The offset of the partition. For sink connectors this is the kafka offset. For \nsource connectors this is depends on the offset defined by the source connector. \nFor example, the timestamp and incrementing column info in a table, for a JDBC based \nMySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
     connect.v1.ConnectorError:
       type: object
       properties:
@@ -927,112 +1024,6 @@ components:
           enum:
           - sink
           - source
-      required:
-      - name
-      - config
-    connect.v1.ConnectorWithOffsets:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the connector
-        config:
-          type: object
-          description: 'Configuration parameters for the connector. These configurations
-
-            are the minimum set of key-value pairs which can be used to
-
-            define how the connector connects Kafka to the external system.
-
-            Some of these key-value pairs are common to all the connectors, such as
-
-            connection parameters to Kafka, connector metadata, etc. The list
-
-            of common connector configurations is as follows
-
-            - cloud.environment
-
-            - cloud.provider
-
-            - connector.class
-
-            - kafka.api.key
-
-            - kafka.api.secret
-
-            - kafka.endpoint
-
-            - kafka.region
-
-            - name
-
-            A specific connector such as `GcsSink` would have additional
-
-            parameters such as `gcs.bucket.name`, `flush.size`, etc.'
-          required:
-          - cloud.environment
-          - cloud.provider
-          - connector.class
-          - name
-          - kafka.endpoint
-          - kafka.region
-          - kafka.api.key
-          - kafka.api.secret
-          properties:
-            cloud.environment:
-              type: string
-              description: The cloud environment type.
-            cloud.provider:
-              type: string
-              description: The cloud service provider, e.g. aws, azure, etc.
-              x-extensible-enum:
-              - aws
-              - azure
-              - gcp
-            connector.class:
-              type: string
-              description: The connector class name. E.g. BigQuerySink, GcsSink, etc.
-            name:
-              type: string
-              description: Name or alias of the class (plugin) for this connector.
-            kafka.endpoint:
-              type: string
-              description: The Kafka cluster endpoint.
-            kafka.region:
-              type: string
-              description: The Kafka cluster region.
-            kafka.api.key:
-              type: string
-              description: The Kafka cluster API key.
-            kafka.api.secret:
-              type: string
-              description: The Kafka cluster API secret.
-              x-redact: true
-          additionalProperties:
-            type: string
-        tasks:
-          type: array
-          description: List of active tasks generated by the connector
-          items:
-            type: object
-            properties:
-              connector:
-                type: string
-                description: The name of the connector the task belongs to
-              task:
-                type: integer
-                description: Task ID within the connector
-            required:
-            - connector
-            - task
-        type:
-          type: string
-          description: Type of connector, sink or source
-          enum:
-          - sink
-          - source
-        offsets:
-          $ref: '#/components/schemas/connect.v1.Offsets'
       required:
       - name
       - config
@@ -1163,107 +1154,116 @@ components:
           - name
           - type
           - connector
-    connect.v1.Offsets:
-      type: array
-      description: Array of offsets which are categorised into partitions.
-      items:
-        type: object
-        properties:
-          partition:
-            type: object
-            additionalProperties: true
-            description: "The partition information. For sink connectors this is the kafka topic and \npartition. For source connectors this is depends on the partitions defined by the \nsource connector. For example, the table which this task is pulling data from in a\nJDBC based MySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
-          offset:
-            type: object
-            additionalProperties: true
-            description: "The offset of the partition. For sink connectors this is the kafka offset. For \nsource connectors this is depends on the offset defined by the source connector. \nFor example, the timestamp and incrementing column info in a table, for a JDBC based \nMySQL source connector.\nPlease refer to the [documentation](https://docs.confluent.io/cloud/current/connectors/offsets.html#manage-offsets-for-fully-managed-connectors-in-ccloud) for \nmore information."
-  responses:
-    connect.v1.DefaultSystemError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 500
-              message: Oops, something went wrong
-    connect.v1.OK:
-      description: OK
-      content:
-        application/json:
-          schema:
+    connect.v1.ConnectorExpansionMap:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/connect.v1.ConnectorExpansion'
+    connect.v1.ConnectorWithOffsets:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the connector
+        config:
+          type: object
+          description: 'Configuration parameters for the connector. These configurations
+
+            are the minimum set of key-value pairs which can be used to
+
+            define how the connector connects Kafka to the external system.
+
+            Some of these key-value pairs are common to all the connectors, such as
+
+            connection parameters to Kafka, connector metadata, etc. The list
+
+            of common connector configurations is as follows
+
+            - cloud.environment
+
+            - cloud.provider
+
+            - connector.class
+
+            - kafka.api.key
+
+            - kafka.api.secret
+
+            - kafka.endpoint
+
+            - kafka.region
+
+            - name
+
+            A specific connector such as `GcsSink` would have additional
+
+            parameters such as `gcs.bucket.name`, `flush.size`, etc.'
+          required:
+          - cloud.environment
+          - cloud.provider
+          - connector.class
+          - name
+          - kafka.endpoint
+          - kafka.region
+          - kafka.api.key
+          - kafka.api.secret
+          properties:
+            cloud.environment:
+              type: string
+              description: The cloud environment type.
+            cloud.provider:
+              type: string
+              description: The cloud service provider, e.g. aws, azure, etc.
+              x-extensible-enum:
+              - aws
+              - azure
+              - gcp
+            connector.class:
+              type: string
+              description: The connector class name. E.g. BigQuerySink, GcsSink, etc.
+            name:
+              type: string
+              description: Name or alias of the class (plugin) for this connector.
+            kafka.endpoint:
+              type: string
+              description: The Kafka cluster endpoint.
+            kafka.region:
+              type: string
+              description: The Kafka cluster region.
+            kafka.api.key:
+              type: string
+              description: The Kafka cluster API key.
+            kafka.api.secret:
+              type: string
+              description: The Kafka cluster API secret.
+              x-redact: true
+          additionalProperties:
+            type: string
+        tasks:
+          type: array
+          description: List of active tasks generated by the connector
+          items:
             type: object
             properties:
-              error:
-                type:
-                - object
-                - 'null'
-          example:
-            error: null
-    connect.v1.AccountNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 404
-              message: account not found
-    connect.v1.BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 400
-              message: Bad Request
-    connect.v1.ResourceNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 404
-              message: resource not found
-    connect.v1.UnauthenticatedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 401
-              message: Unauthorized
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+              connector:
+                type: string
+                description: The name of the connector the task belongs to
+              task:
+                type: integer
+                description: Task ID within the connector
+            required:
+            - connector
+            - task
+        type:
+          type: string
+          description: Type of connector, sink or source
+          enum:
+          - sink
+          - source
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+      required:
+      - name
+      - config
   securitySchemes:
     cloud-api-key:
       type: http

@@ -170,71 +170,144 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
+  responses:
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    ConflictError:
+      x-summary: Conflict
+      description: The request is in conflict with the current server state
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        Location:
+          schema:
+            type: string
+            format: uri
+            example: https://api.confluent.cloud/{object}/{id}
+          description: Resource URI of conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '409'
+              code: resource_already_exists
+              title: Resource Already exists
+              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
   schemas:
-    PartnerLinkRequest:
+    ActivatePartnerSignupRequest:
       type: object
-      description: The partner linking request
+      description: The partner signup activation request
       required:
-      - token
-      - organization
-      - entitlement
-      properties:
-        token:
-          type: string
-          description: The linking token that was generated.
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-          x-redact: true
-        organization:
-          allOf:
-          - $ref: '#/components/schemas/partner.v2.Organization'
-          - required:
-            - sso_config
-        entitlement:
-          oneOf:
-          - allOf:
-            - $ref: '#/components/schemas/partner.v2.Entitlement'
-            - required:
-              - external_id
-              - name
-              - plan_id
-              - product_id
-          - allOf:
-            - $ref: '#/components/schemas/ObjectReference'
-            - required:
-              - related
-    PartnerSignupResponse:
-      type: object
-      description: The partner signup response
-      required:
+      - user
       - organization_id
-      - sso_url
       properties:
-        organization_id:
-          type: string
-          description: The ID of the organization
-          example: b3a17773-05cc-4431-9560-433fb4613da8
-        sso_url:
-          type: string
-          format: uri
-          description: The login URL for the customer to access Confluent Cloud
-          example: https://confluent.cloud/login/sso/AzureAD-OIDC-Conn
-        display_message:
-          type: string
-          description: The display message contains useful information which is shown on the Marketplace UI to the customers.
-          example: Your support plan will remain the same, to change the plan, follow this [link](https://docs.confluent.io/cloud/current/faq.html#how-do-i-change-support-plans).
-    PartnerSignupRequest:
-      type: object
-      description: The partner signup request
-      required:
-      - organization
-      - entitlement
-      properties:
-        organization:
-          allOf:
-          - $ref: '#/components/schemas/partner.v2.Organization'
-          - required:
-            - name
-            - sso_config
         user:
           allOf:
           - $ref: '#/components/schemas/v2.User'
@@ -242,19 +315,10 @@ components:
             - given_name
             - family_name
             - email
-        entitlement:
-          oneOf:
-          - allOf:
-            - $ref: '#/components/schemas/partner.v2.Entitlement'
-            - required:
-              - external_id
-              - name
-              - plan_id
-              - product_id
-          - allOf:
-            - $ref: '#/components/schemas/ObjectReference'
-            - required:
-              - related
+        organization_id:
+          type: string
+          description: The ID of the organization
+          example: b3a17773-05cc-4431-9560-433fb4613da8
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -293,26 +357,19 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    v2.User:
+    AzureSSOConfig:
       type: object
-    ActivatePartnerSignupRequest:
-      type: object
-      description: The partner signup activation request
       required:
-      - user
-      - organization_id
+      - kind
+      - tenant_id
       properties:
-        user:
-          allOf:
-          - $ref: '#/components/schemas/v2.User'
-          - required:
-            - given_name
-            - family_name
-            - email
-        organization_id:
+        kind:
           type: string
-          description: The ID of the organization
+          example: AzureSSOConfig
+        tenant_id:
+          type: string
           example: b3a17773-05cc-4431-9560-433fb4613da8
+          description: The Azure AD tenant ID
     partner.v2.Organization:
       type: object
       description: '`Organizations` objects represent an entire Confluent Cloud organization.'
@@ -353,19 +410,102 @@ components:
           discriminator:
             propertyName: kind
       additionalProperties: false
-    AzureSSOConfig:
+    PartnerSignupRequest:
       type: object
+      description: The partner signup request
       required:
-      - kind
-      - tenant_id
+      - organization
+      - entitlement
       properties:
-        kind:
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/partner.v2.Organization'
+          - required:
+            - name
+            - sso_config
+        user:
+          allOf:
+          - $ref: '#/components/schemas/v2.User'
+          - required:
+            - given_name
+            - family_name
+            - email
+        entitlement:
+          oneOf:
+          - allOf:
+            - $ref: '#/components/schemas/partner.v2.Entitlement'
+            - required:
+              - external_id
+              - name
+              - plan_id
+              - product_id
+          - allOf:
+            - $ref: '#/components/schemas/ObjectReference'
+            - required:
+              - related
+    PartnerSignupResponse:
+      type: object
+      description: The partner signup response
+      required:
+      - organization_id
+      - sso_url
+      properties:
+        organization_id:
           type: string
-          example: AzureSSOConfig
-        tenant_id:
-          type: string
+          description: The ID of the organization
           example: b3a17773-05cc-4431-9560-433fb4613da8
-          description: The Azure AD tenant ID
+        sso_url:
+          type: string
+          format: uri
+          description: The login URL for the customer to access Confluent Cloud
+          example: https://confluent.cloud/login/sso/AzureAD-OIDC-Conn
+        display_message:
+          type: string
+          description: The display message contains useful information which is shown on the Marketplace UI to the customers.
+          example: Your support plan will remain the same, to change the plan, follow this [link](https://docs.confluent.io/cloud/current/faq.html#how-do-i-change-support-plans).
+    PartnerLinkRequest:
+      type: object
+      description: The partner linking request
+      required:
+      - token
+      - organization
+      - entitlement
+      properties:
+        token:
+          type: string
+          description: The linking token that was generated.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          x-redact: true
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/partner.v2.Organization'
+          - required:
+            - sso_config
+        entitlement:
+          oneOf:
+          - allOf:
+            - $ref: '#/components/schemas/partner.v2.Entitlement'
+            - required:
+              - external_id
+              - name
+              - plan_id
+              - product_id
+          - allOf:
+            - $ref: '#/components/schemas/ObjectReference'
+            - required:
+              - related
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -467,18 +607,8 @@ components:
             - related
           description: The organization associated with this object.
       additionalProperties: false
-    Failure:
+    v2.User:
       type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
     ObjectReference:
       type: object
       description: ObjectReference provides information for you to locate the referred object
@@ -519,136 +649,6 @@ components:
           description: Kind of the referred resource
           minLength: 1
           readOnly: true
-  responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    ConflictError:
-      x-summary: Conflict
-      description: The request is in conflict with the current server state
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        Location:
-          schema:
-            type: string
-            format: uri
-            example: https://api.confluent.cloud/{object}/{id}
-          description: Resource URI of conflicting resource
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '409'
-              code: resource_already_exists
-              title: Resource Already exists
-              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
   securitySchemes:
     cloud-api-key:
       type: http

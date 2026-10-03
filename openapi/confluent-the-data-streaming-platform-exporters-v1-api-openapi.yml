@@ -534,7 +534,121 @@ paths:
       - resource-api-key: []
       - external-access-token: []
 components:
+  responses:
+    schemaregistry.v1.AccountNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 404
+            message: account not found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    schemaregistry.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 500
+            message: Oops, something went wrong
+    schemaregistry.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 400
+            message: Bad Request
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
   schemas:
+    ExporterStatusResponse:
+      type: object
+      properties:
+        name:
+          description: Name of exporter.
+          type: string
+          example: test-exporter
+        state:
+          type: string
+          description: State of the exporter. Could be STARTING, RUNNING or PAUSED
+          example: RUNNING
+          x-extensible-enum:
+          - STARTING
+          - RUNNING
+          - PAUSED
+        offset:
+          type: integer
+          description: Offset of the exporter
+          format: int64
+          example: 100
+        ts:
+          type: integer
+          description: Timestamp of the exporter
+          format: int64
+          example: 1631206325
+        trace:
+          description: Error trace of the exporter
+          type: string
+          example: ''
+      description: Exporter status get request
+    ExporterConfigResponse:
+      type: object
+      properties:
+        schema.registry.url:
+          description: Config SR URL
+          type: string
+          example: <Physical SR Endpoint>
+        basic.auth.credentials.source:
+          description: Config SR Auth
+          type: string
+          example: USER_INFO
+        basic.auth.user.info:
+          description: Config SR User Info
+          type: string
+      description: The map containing exporter's configurations
     ExporterReference:
       type: object
       properties:
@@ -615,51 +729,6 @@ components:
           additionalProperties:
             type: string
       description: Exporter update request
-    ExporterStatusResponse:
-      type: object
-      properties:
-        name:
-          description: Name of exporter.
-          type: string
-          example: test-exporter
-        state:
-          type: string
-          description: State of the exporter. Could be STARTING, RUNNING or PAUSED
-          example: RUNNING
-          x-extensible-enum:
-          - STARTING
-          - RUNNING
-          - PAUSED
-        offset:
-          type: integer
-          description: Offset of the exporter
-          format: int64
-          example: 100
-        ts:
-          type: integer
-          description: Timestamp of the exporter
-          format: int64
-          example: 1631206325
-        trace:
-          description: Error trace of the exporter
-          type: string
-          example: ''
-      description: Exporter status get request
-    ExporterConfigResponse:
-      type: object
-      properties:
-        schema.registry.url:
-          description: Config SR URL
-          type: string
-          example: <Physical SR Endpoint>
-        basic.auth.credentials.source:
-          description: Config SR Auth
-          type: string
-          example: USER_INFO
-        basic.auth.user.info:
-          description: Config SR User Info
-          type: string
-      description: The map containing exporter's configurations
     ExporterResponse:
       type: object
       properties:
@@ -679,75 +748,6 @@ components:
           type: string
           description: The error message
       description: Error message of this operation
-  responses:
-    schemaregistry.v1.AccountNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 404
-            message: account not found
-    schemaregistry.v1.UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 401
-            message: Unauthorized
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
-    schemaregistry.v1.DefaultSystemError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 500
-            message: Oops, something went wrong
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    schemaregistry.v1.BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 400
-            message: Bad Request
   securitySchemes:
     cloud-api-key:
       type: http

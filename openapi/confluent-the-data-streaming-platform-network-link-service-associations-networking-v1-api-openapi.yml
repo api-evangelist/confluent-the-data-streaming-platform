@@ -249,82 +249,97 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    ListMeta:
+    networking.v1.NetworkLinkServiceAssociationStatus:
       type: object
-      description: ListMeta describes metadata that resource collections may have
+      required:
+      - phase
+      description: The status of the Network Link Service Association
       properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    Error:
+        phase:
+          type: string
+          x-extensible-enum:
+          - PROVISIONING
+          - PENDING_ACCEPT
+          - READY
+          - FAILED
+          - DEPROVISIONING
+          - EXPIRED
+          - DISCONNECTED
+          - DISCONNECTING
+          - INACTIVE
+          description: "The lifecycle phase of the network link endpoint:\n\n  PROVISIONING: network link endpoint provisioning is in progress;\n\n  PENDING_ACCEPT: network link endpoint request is pending acceptance by the the owner of the target;\n\n  READY:  network link endpoint is ready;\n\n  FAILED: network link endpoint is in a failed state;\n\n  DEPROVISIONING: network link endpoint deprovisioning is in progress;\n\n  EXPIRED: network link endpoint request is expired, can only be deleted;\n\n  DISCONNECTED: network link endpoint is in a disconnected state, target owner has removed the permissions;\n\n  DISCONNECTING: network link endpoint disconnection is in progress;\n\n  INACTIVE: network link endpoint is created, but not active since there are no clusters in the network;\n"
+          example: READY
+          readOnly: true
+        error_code:
+          type: string
+          description: Error code if network link is in a failed state. May be used for programmatic error checking.
+          readOnly: true
+        error_message:
+          type: string
+          description: Displayable error message if network link is in a failed state
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          example: 2024-01-01 00:00:00+00:00
+          description: The date and time when the request expires if it is not accepted by the target network admin.
+          readOnly: true
+      readOnly: true
+    EnvScopedObjectReference:
       type: object
-      description: Describes a particular error encountered while performing an operation.
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
       properties:
         id:
-          description: A unique identifier for this particular occurrence of the problem.
           type: string
+          description: ID of the referred resource
+          minLength: 1
           maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
+        environment:
           type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
           type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
           type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    GlobalObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
           type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
-          type: integer
-          format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
     networking.v1.NetworkLinkServiceAssociationList:
       type: object
       description: 'List of incoming Network Link Enpoints associated with the Network Link Service.
@@ -388,6 +403,44 @@ components:
                   - network_link_service
                   - environment
           uniqueItems: true
+    Error:
+      type: object
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     networking.v1.NetworkLinkServiceAssociation:
       type: object
       description: 'List of incoming Network Link Enpoints associated with the Network Link Service.
@@ -436,70 +489,88 @@ components:
       type: array
       items:
         type: string
-    networking.v1.NetworkLinkServiceAssociationStatus:
+    networking.v1.NetworkLinkServiceAssociationSpec:
       type: object
-      required:
-      - phase
-      description: The status of the Network Link Service Association
+      description: The desired state of the Network Link Service Association
       properties:
-        phase:
+        display_name:
           type: string
-          x-extensible-enum:
-          - PROVISIONING
-          - PENDING_ACCEPT
-          - READY
-          - FAILED
-          - DEPROVISIONING
-          - EXPIRED
-          - DISCONNECTED
-          - DISCONNECTING
-          - INACTIVE
-          description: "The lifecycle phase of the network link endpoint:\n\n  PROVISIONING: network link endpoint provisioning is in progress;\n\n  PENDING_ACCEPT: network link endpoint request is pending acceptance by the the owner of the target;\n\n  READY:  network link endpoint is ready;\n\n  FAILED: network link endpoint is in a failed state;\n\n  DEPROVISIONING: network link endpoint deprovisioning is in progress;\n\n  EXPIRED: network link endpoint request is expired, can only be deleted;\n\n  DISCONNECTED: network link endpoint is in a disconnected state, target owner has removed the permissions;\n\n  DISCONNECTING: network link endpoint disconnection is in progress;\n\n  INACTIVE: network link endpoint is created, but not active since there are no clusters in the network;\n"
-          example: READY
+          description: The name of the network link endpoint
           readOnly: true
-        error_code:
+          example: prod-net-1-nle
+        description:
           type: string
-          description: Error code if network link is in a failed state. May be used for programmatic error checking.
+          description: The description of the network link endpoint
           readOnly: true
-        error_message:
+          example: Connect to Network - analytics hub
+        network_link_endpoint:
           type: string
-          description: Displayable error message if network link is in a failed state
+          description: ID of the Network link endpoint.
           readOnly: true
-        expires_at:
-          type: string
-          format: date-time
-          example: 2024-01-01 00:00:00+00:00
-          description: The date and time when the request expires if it is not accepted by the target network admin.
-          readOnly: true
-      readOnly: true
-    GlobalObjectReference:
+          example: prod-net-1-nle
+        network_link_service:
+          allOf:
+          - $ref: '#/components/schemas/EnvScopedObjectReference'
+          description: The network_link_service to which this belongs.
+          x-immutable: true
+        environment:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: The environment to which this belongs.
+          x-immutable: true
+      x-enable-id: true
+      x-enable-listmeta: true
+      x-enable-objectmeta: true
+    ListMeta:
       type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
+      description: ListMeta describes metadata that resource collections may have
       properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
           format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
           format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     ObjectMeta:
       description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
@@ -536,94 +607,17 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    EnvScopedObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    networking.v1.NetworkLinkServiceAssociationSpec:
-      type: object
-      description: The desired state of the Network Link Service Association
-      properties:
-        display_name:
-          type: string
-          description: The name of the network link endpoint
-          readOnly: true
-          example: prod-net-1-nle
-        description:
-          type: string
-          description: The description of the network link endpoint
-          readOnly: true
-          example: Connect to Network - analytics hub
-        network_link_endpoint:
-          type: string
-          description: ID of the Network link endpoint.
-          readOnly: true
-          example: prod-net-1-nle
-        network_link_service:
-          allOf:
-          - $ref: '#/components/schemas/EnvScopedObjectReference'
-          description: The network_link_service to which this belongs.
-          x-immutable: true
-        environment:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: The environment to which this belongs.
-          x-immutable: true
-      x-enable-id: true
-      x-enable-listmeta: true
-      x-enable-objectmeta: true
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
   responses:
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
+    BadRequestError:
+      description: Bad Request
       headers:
         X-Request-Id:
           schema:
             type: string
           description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
       content:
         application/json:
           schema:
@@ -631,10 +625,51 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
     DefaultSystemError:
       description: Oops, something went wrong!
       headers:
@@ -672,13 +707,19 @@ components:
               code: user_unauthorized
               title: User Access Unauthorized
               detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    NotFoundError:
-      description: Not Found
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
       headers:
         X-Request-Id:
           schema:
             type: string
           description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
       content:
         application/json:
           schema:
@@ -686,51 +727,10 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
   securitySchemes:
     cloud-api-key:
       type: http

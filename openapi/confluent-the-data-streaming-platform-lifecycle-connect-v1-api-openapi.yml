@@ -161,6 +161,26 @@ paths:
           $ref: '#/components/responses/connect.v1.DefaultSystemError'
 components:
   responses:
+    connect.v1.UnauthenticatedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
+    connect.v1.ResourceNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: resource not found
     connect.v1.DefaultSystemError:
       description: Internal Server Error
       content:
@@ -181,26 +201,6 @@ components:
             error:
               code: 403
               message: Forbidden
-    connect.v1.ResourceNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 404
-              message: resource not found
-    connect.v1.UnauthenticatedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 401
-              message: Unauthorized
     RateLimitError:
       description: Rate Limit Exceeded
       headers:

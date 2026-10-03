@@ -93,13 +93,39 @@ paths:
           $ref: '#/components/responses/ServerErrorResponse'
 components:
   schemas:
-    Relationship:
+    ResourceCollection:
       type: object
       required:
-      - related
+      - kind
+      - metadata
       properties:
-        related:
+        kind:
           type: string
+        metadata:
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
+    PartitionData:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - type: object
+        required:
+        - cluster_id
+        - topic_name
+        - partition_id
+        - replicas
+        - reassignment
+        properties:
+          cluster_id:
+            type: string
+          topic_name:
+            type: string
+          partition_id:
+            type: integer
+          leader:
+            $ref: '#/components/schemas/Relationship'
+          replicas:
+            $ref: '#/components/schemas/Relationship'
+          reassignment:
+            $ref: '#/components/schemas/Relationship'
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -138,40 +164,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    PartitionData:
-      allOf:
-      - $ref: '#/components/schemas/Resource'
-      - type: object
-        required:
-        - cluster_id
-        - topic_name
-        - partition_id
-        - replicas
-        - reassignment
-        properties:
-          cluster_id:
-            type: string
-          topic_name:
-            type: string
-          partition_id:
-            type: integer
-          leader:
-            $ref: '#/components/schemas/Relationship'
-          replicas:
-            $ref: '#/components/schemas/Relationship'
-          reassignment:
-            $ref: '#/components/schemas/Relationship'
-    ResourceCollectionMetadata:
-      type: object
-      required:
-      - self
-      properties:
-        self:
-          type: string
-        next:
-          type:
-          - string
-          - 'null'
     Resource:
       type: object
       required:
@@ -193,16 +185,24 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PartitionData'
-    ResourceCollection:
+    ResourceCollectionMetadata:
       type: object
       required:
-      - kind
-      - metadata
+      - self
       properties:
-        kind:
+        self:
           type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceCollectionMetadata'
+        next:
+          type:
+          - string
+          - 'null'
+    Relationship:
+      type: object
+      required:
+      - related
+      properties:
+        related:
+          type: string
     ResourceMetadata:
       type: object
       required:
@@ -215,6 +215,69 @@ components:
           - string
           - 'null'
   responses:
+    ForbiddenErrorResponse:
+      description: Indicates a client authorization error. Kafka authorization failures will contain error code 40301 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authorization_failed:
+              description: Thrown when the caller is not authorized to perform the underlying operation.
+              value:
+                error_code: 40301
+                message: Request is not authorized
+    BadRequestErrorResponse:
+      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            bad_request_cannot_deserialize:
+              description: Thrown when trying to deserialize an integer from non-integer data.
+              value:
+                error_code: 400
+                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
+            unsupported_version_exception:
+              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
+              value:
+                error_code: 40035
+                message: The version of this API is not supported in the underlying Kafka cluster.
+    ServerErrorResponse:
+      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            generic_internal_server_error:
+              description: Thrown for generic HTTP 500 errors.
+              value:
+                error_code: 500
+                message: Internal Server Error
+    NotFoundErrorResponse:
+      description: Indicates attempted access to an unreachable or non-existing resource like e.g. an unknown topic or partition. GET requests to endpoints not allowed in the accesslists will also result in this response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            endpoint_not_found:
+              description: Thrown for generic HTTP 404 errors.
+              value:
+                error_code: 404
+                message: HTTP 404 Not Found
+            cluster_not_found:
+              description: Thrown when using a non-existing cluster ID.
+              value:
+                error_code: 404
+                message: Cluster my-cluster cannot be found.
+            unknown_topic_or_partition:
+              description: Thrown when using a non-existing topic name or partition ID.
+              value:
+                error_code: 40403
+                message: This server does not host this topic-partition.
     ListPartitionsResponse:
       description: The list of partitions.
       content:
@@ -266,35 +329,6 @@ components:
                 related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/3/replicas
               reassignment:
                 related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/3/reassignment
-    ForbiddenErrorResponse:
-      description: Indicates a client authorization error. Kafka authorization failures will contain error code 40301 in the response body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            kafka_authorization_failed:
-              description: Thrown when the caller is not authorized to perform the underlying operation.
-              value:
-                error_code: 40301
-                message: Request is not authorized
-    BadRequestErrorResponse:
-      description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            bad_request_cannot_deserialize:
-              description: Thrown when trying to deserialize an integer from non-integer data.
-              value:
-                error_code: 400
-                message: 'Cannot deserialize value of type `java.lang.Integer` from String "A": not a valid `java.lang.Integer` value'
-            unsupported_version_exception:
-              description: Thrown when the version of this API is not supported in the underlying Kafka cluster.
-              value:
-                error_code: 40035
-                message: The version of this API is not supported in the underlying Kafka cluster.
     UnauthorizedErrorResponse:
       description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
       content:
@@ -316,28 +350,6 @@ components:
           example:
             description: A sample response from Jetty's DoSFilter.
             value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
-    NotFoundErrorResponse:
-      description: Indicates attempted access to an unreachable or non-existing resource like e.g. an unknown topic or partition. GET requests to endpoints not allowed in the accesslists will also result in this response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            endpoint_not_found:
-              description: Thrown for generic HTTP 404 errors.
-              value:
-                error_code: 404
-                message: HTTP 404 Not Found
-            cluster_not_found:
-              description: Thrown when using a non-existing cluster ID.
-              value:
-                error_code: 404
-                message: Cluster my-cluster cannot be found.
-            unknown_topic_or_partition:
-              description: Thrown when using a non-existing topic name or partition ID.
-              value:
-                error_code: 40403
-                message: This server does not host this topic-partition.
     GetPartitionResponse:
       description: The partition
       content:
@@ -358,18 +370,6 @@ components:
               related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/replicas
             reassignment:
               related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/reassignment
-    ServerErrorResponse:
-      description: A server-side problem that might not be addressable from the client side. Retriable Kafka errors will contain error code 50003 in the response body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            generic_internal_server_error:
-              description: Thrown for generic HTTP 500 errors.
-              value:
-                error_code: 500
-                message: Internal Server Error
   parameters:
     PartitionId:
       name: partition_id
@@ -379,14 +379,6 @@ components:
       schema:
         type: integer
       example: 0
-    TopicName:
-      name: topic_name
-      description: The topic name.
-      in: path
-      required: true
-      schema:
-        type: string
-      example: topic-1
     ClusterId:
       name: cluster_id
       description: The Kafka cluster ID.
@@ -395,6 +387,14 @@ components:
       schema:
         type: string
       example: cluster-1
+    TopicName:
+      name: topic_name
+      description: The topic name.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: topic-1
   securitySchemes:
     cloud-api-key:
       type: http
