@@ -1,0 +1,304 @@
+slug: confluent-the-data-streaming-platform
+provider: Confluent | the Data Streaming Platform
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 29
+edges:
+- tag: Role Bindings (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-role-bindings-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /iam/v2/role-bindings  createIamV2RoleBinding  Create a Role Binding; schema iam.v2.RoleBinding
+  reason: Creating, reading and deleting role bindings under an /iam/v2 path is role-based access control
+    administration, squarely Identity & Access Management.
+- tag: ACL (v3)
+  spec_file: confluent-the-data-streaming-platform-acl-v3-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: 'POST /kafka/v3/clusters/{cluster_id}/acls  createKafkaAcls  Create an ACL; schemas: AclPermission,
+    AclResourceType, AclOperation'
+  reason: Operations create, list and delete access control lists granting principals operations on Kafka
+    resources — plainly access control administration, mapping to Identity & Access Management.
+- tag: Service Accounts (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-service-accounts-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /iam/v2/service-accounts  createIamV2ServiceAccount  Create a Service Account; schema
+    iam.v2.ServiceAccount
+  reason: Lifecycle management of non-human machine identities under the /iam/v2 namespace — identity
+    administration. Could alternatively be read as developer credential management, but IAM is the honest
+    primary fit.
+- tag: Users (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-users-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /iam/v2/users 'List of Users'; PATCH /iam/v2/users/{id}/auth 'Update Auth Type of a User'
+  reason: Operations manage user accounts and their authentication type under an /iam/v2 path, i.e. identity
+    and access administration for the platform. That is Identity & Access Management; it is not HR employee
+    record keeping since the objects are platform principals.
+- tag: Identity Pools (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-identity-pools-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /iam/v2/identity-providers/{provider_id}/identity-pools createIamV2IdentityPool 'Create
+    an Identity Pool'; schema iam.v2.IdentityPool
+  reason: Identity pools attached to registered identity providers define federated workload/user identities
+    and their access — squarely Identity & Access Management (federation).
+- tag: Identity Providers (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-identity-providers-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /iam/v2/identity-providers createIamV2IdentityProvider 'Create an Identity Provider';
+    schema iam.v2.JwksObject
+  reason: Registration and lifecycle of OIDC identity providers (JWKS configuration) for federated authentication
+    — Identity & Access Management / federation.
+- tag: Access Points (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-access-points-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: 'POST /networking/v1/access-points  createNetworkingV1AccessPoint; schemas: networking.v1.AwsEgressPrivateLinkEndpoint,
+    networking.v1.GcpEgressPrivateServiceConnectEndpoint'
+  reason: Provisioning of private-link / private-service-connect endpoints across AWS, Azure and GCP is
+    cloud network infrastructure management, matching IT Infrastructure Management.
+- tag: Certificate Authorities (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"POST /iam/v2/certificate-authorities  createIamV2CertificateAuthority  Create a Certificate
+    Authority"; schema "iam.v2.CreateCertRequest"'
+  reason: Under the iam/v2 namespace, these operations manage certificate authorities used to authenticate
+    principals to the platform — identity and access management credential infrastructure, not a business-domain
+    capability.
+- tag: Certificate Identity Pools (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"createIamV2CertificateIdentityPool  Create a Certificate Identity Pool" under /iam/v2/certificate-authorities/{certificate_authority_id}/identity-pools'
+  reason: Identity pools mapping certificate-based principals to platform access are classic IAM/federation
+    objects; the iam/v2 path and schema names ground this to Identity & Access Management.
+- tag: Entity (v1)
+  spec_file: confluent-the-data-streaming-platform-entity-v1-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.8
+  evidence: '"POST /catalog/v1/entity/businessmetadata createBusinessMetadata Bulk Create Business Metadata",
+    "Read Tags for an Entity", schemas "BusinessMetadata", "Classification"'
+  reason: Stream Catalog operations attach business metadata, tags and classifications to data entities
+    — data cataloguing and stewardship, i.e. Data Governance Management.
+- tag: Gateways (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-gateways-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: networking.v1.AwsEgressPrivateLinkGatewaySpec, networking.v1.AzurePeeringGatewaySpec, networking.v1.GcpIngressPrivateServiceConnectGatewaySpec;
+    'Create a Gateway'
+  reason: Operations provision and manage cloud network gateways (PrivateLink, peering, Private Service
+    Connect) across AWS/Azure/GCP — this is cloud network infrastructure management, i.e. IT Infrastructure
+    Management.
+- tag: Group Mappings (iam/v2/sso)
+  spec_file: confluent-the-data-streaming-platform-group-mappings-iam-v2-sso-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /iam/v2/sso/group-mappings listIamV2SsoGroupMappings 'List of Group Mappings'; schema
+    iam.v2.sso.GroupMapping
+  reason: The surface maps external SSO identity-provider groups to platform access, which is federation/authorisation
+    administration — Identity & Access Management. (A tenant-identity-federation reading is also possible,
+    hence not maximal confidence.)
+- tag: Network Link Endpoints (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-network-link-endpoints-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /networking/v1/network-link-endpoints  createNetworkingV1NetworkLinkEndpoint  'Create
+    a Network Link Endpoint'
+  reason: CRUD over private network link endpoints configures cloud network connectivity to the service
+    — network/cloud infrastructure management.
+- tag: Networks (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-networks-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /networking/v1/networks createNetworkingV1Network "Create a Network"; schemas networking.v1.AwsNetwork,
+    networking.v1.AzureNetwork, networking.v1.GcpNetwork, networking.v1.DnsConfig
+  reason: CRUD over cloud networks across AWS/Azure/GCP with DNS and zone configuration is network/cloud
+    infrastructure provisioning, mapping to IT Infrastructure Management.
+- tag: Clusters (cmk/v2)
+  spec_file: confluent-the-data-streaming-platform-clusters-cmk-v2-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"POST /cmk/v2/clusters  createCmkV2Cluster  Create a Cluster"; schemas "cmk.v2.Dedicated",
+    "cmk.v2.Standard", "cmk.v2.ClusterSpec"'
+  reason: Full lifecycle CRUD over managed Kafka clusters with sizing tiers — provisioning and managing
+    cloud compute/storage infrastructure.
+- tag: DNS Forwarders (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-dns-forwarders-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"Create a DNS Forwarder", schemas "networking.v1.ForwardViaIp", "networking.v1.Ip"'
+  reason: Operations configure DNS forwarding for the customer's cloud network attachment to Confluent
+    — network infrastructure configuration, which is IT Infrastructure Management (compute, storage, network,
+    cloud).
+- tag: DNS Records (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-dns-records-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"POST /networking/v1/dns-records createNetworkingV1DnsRecord Create a DNS Record", schema
+    "networking.v1.PrivateLinkAccessPoint"'
+  reason: CRUD over DNS records tied to PrivateLink access points — network/cloud infrastructure provisioning
+    and configuration, i.e. IT Infrastructure Management.
+- tag: Peerings (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-peerings-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: POST /networking/v1/peerings createNetworkingV1Peering "Create a Peering"; schemas networking.v1.AwsPeering,
+    networking.v1.AzurePeering, networking.v1.GcpPeering, networking.v1.Cidr
+  reason: VPC/VNet peering lifecycle across cloud providers with CIDR configuration is network connectivity
+    provisioning, i.e. IT Infrastructure Management.
+- tag: Transit Gateway Attachments (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-transit-gateway-attachments-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: POST /networking/v1/transit-gateway-attachments  createNetworkingV1TransitGatewayAttachment;
+    schemas networking.v1.AwsTransitGatewayAttachment, networking.v1.Cidr
+  reason: Provisioning of AWS transit gateway attachments and CIDR routing between customer VPCs and the
+    service — network/cloud infrastructure management, i.e. IT Infrastructure Management.
+- tag: Types (v1)
+  spec_file: confluent-the-data-streaming-platform-types-v1-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.75
+  evidence: POST /catalog/v1/types/businessmetadatadefs  createBusinessMetadataDefs  Bulk Create Business
+    Metadata Definitions; GET /catalog/v1/types/tagdefs  getAllTagDefs  Bulk Read Tag Definitions
+  reason: Definition of business metadata and tag taxonomies in the data catalog — stewardship of data
+    classification standards, squarely Data Governance Management under Information & Data Management.
+- tag: Network Link Service Associations (networking/v1)
+  spec_file: confluent-the-data-streaming-platform-network-link-service-associations-networking-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: GET /networking/v1/network-link-service-associations  'List of Network Link Service Associations'
+  reason: Read-only views of network link service associations describe cloud network connectivity relationships,
+    part of IT network/cloud infrastructure management; no commercial or product capability is implied
+    by 'Service Associations' here.
+- tag: API Keys (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-api-keys-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: 'POST /iam/v2/api-keys  createIamV2ApiKey  Create an API Key; schemas: iam.v2.ApiKeySpec'
+  reason: Lifecycle of API credentials under the vendor's iam/v2 namespace — issuance and revocation of
+    access credentials, i.e. Identity & Access Management. Some ambiguity with developer credential management
+    (BC-4270.40) keeps confidence at 0.7.
+- tag: Clusters (ksqldbcm/v2)
+  spec_file: confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: '"createKsqldbcmV2Cluster  Create a Cluster"; schema "ksqldbcm.v2.ClusterSpec"'
+  reason: Provisioning and deleting ksqlDB processing clusters is cloud infrastructure lifecycle management
+    for the data platform.
+- tag: Compute Pools (fcpm/v2)
+  spec_file: confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: '"POST /fcpm/v2/compute-pools  createFcpmV2ComputePool  Create a Compute Pool"; schema "fcpm.v2.ComputePoolSpec"'
+  reason: Creating and sizing Flink compute pools is provisioning of cloud compute capacity — IT Infrastructure
+    Management, not a business-domain capability.
+- tag: Configs (v3)
+  spec_file: confluent-the-data-streaming-platform-configs-v3-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: List Dynamic Broker Configs; Update Dynamic Broker Config; Batch Alter Topic Configs
+  reason: Broker and topic configuration management for Kafka clusters is administration of messaging/compute
+    infrastructure, i.e. IT Infrastructure Management. Not a business-domain capability despite the generic
+    'Configs' noun.
+- tag: Connect Clusters (usm/v1)
+  spec_file: confluent-the-data-streaming-platform-connect-clusters-usm-v1-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /usm/v1/connect-clusters createUsmV1ConnectCluster Create a Connect Cluster
+  reason: Create/read/delete of Connect clusters is provisioning and decommissioning of compute infrastructure
+    for the streaming platform — IT Infrastructure Management.
+- tag: Data Encryption Keys (v1)
+  spec_file: confluent-the-data-streaming-platform-data-encryption-keys-v1-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: '"POST /dek-registry/v1/keks/{name}/deks createDek Create a dek", schema "Dek"'
+  reason: Lifecycle of data encryption keys (DEKs) under key encryption keys for field-level encryption
+    of streamed data. This is cryptographic key management, a cybersecurity control; no listed L2 names
+    key management specifically, so L1 only.
+- tag: IP Filters (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-ip-filters-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /iam/v2/ip-filters createIamV2IpFilter 'Create an IP Filter'; schema iam.v2.IpFilter
+  reason: CRUD over IP-based access filters in the IAM namespace, restricting which networks may access
+    the organisation's resources — access control administration.
+- tag: Jwks (iam/v2)
+  spec_file: confluent-the-data-streaming-platform-jwks-iam-v2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: PATCH /iam/v2/identity-providers/{provider_id}/jwks  refreshIamV2JsonWebKeySet  'Refresh a
+    provider's JWKS'
+  reason: The single operation refreshes the JSON Web Key Set of a configured identity provider, i.e.
+    maintenance of SSO/identity federation trust material — squarely identity & access management rather
+    than cryptographic product features.

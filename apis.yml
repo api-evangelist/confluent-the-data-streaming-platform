@@ -4247,6 +4247,9 @@ apis:
   - type: DataModel
     url: data-model/confluent-the-data-streaming-platform-data-model.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/confluent-the-data-streaming-platform-capability-edges.yml
+    name: Confluent | the Data Streaming Platform Business Capability Map
   - type: Overlay
     url: overlays/confluent-the-data-streaming-platform-cloud-apis-overlay.yaml
   - type: OAuthScopes
