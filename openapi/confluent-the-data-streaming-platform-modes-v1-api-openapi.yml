@@ -404,6 +404,17 @@ components:
             error_code: 403
             message: Forbidden
   schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
     Mode:
       type: object
       properties:
@@ -430,17 +441,6 @@ components:
           - READONLY_OVERRIDE
           - IMPORT
       description: Mode update request
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
   securitySchemes:
     cloud-api-key:
       type: http

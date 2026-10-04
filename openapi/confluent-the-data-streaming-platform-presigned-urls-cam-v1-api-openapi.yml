@@ -100,77 +100,128 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
-  schemas:
-    cam.v1.PresignedUrl:
-      type: object
-      description: 'Request a presigned upload URL for new Connect Artifact. Note that
-
-        the URL policy expires in one hour. If the policy expires, you can request
-
-        a new presigned upload URL.
-
-
-
-        ## The Presigned Urls Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/cam.v1.PresignedUrl" />'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - cam/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - PresignedUrl
-        content_format:
-          type: string
-          description: Content format of the Connect Artifact archive.
-          example: JAR
-          x-extensible-enum:
-          - ZIP
-          - JAR
-          readOnly: true
-        cloud:
-          type: string
-          description: Cloud provider where the Connect Artifact archive is uploaded.
-          example: AWS
-          x-extensible-enum:
-          - AWS
-          readOnly: true
-        environment:
-          type: string
-          description: The Environment the uploaded Connect Artifact belongs to.
-          example: env-00000
-          readOnly: true
-        upload_id:
-          type: string
-          description: Unique identifier of this upload.
-          example: e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66
-          readOnly: true
-        upload_url:
-          type: string
-          format: uri
-          description: Upload URL for the Connect Artifact archive.
-          example: https://confluent-custom-connectors-stag-us-west-2.s3.dualstack.us-west-2.amazonaws.com/
-          readOnly: true
-        upload_form_data:
-          type: object
-          description: Upload form data of the Connect Artifact. All values should be strings.
+  responses:
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
           example:
-            bucket: confluent-custom-connectors-stag-us-west-2
-            key: staging/flink-artifact/2f37f0b6-f8da-4e8b-bc5f-282ebb0511be/flink-e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66/artifact.zip
-            policy: string
-            x-amz-algorithm: AWS4-HMAC-SHA256
-            x-amz-credential: string
-            x-amz-date: 20230725T013857Z
-            x-amz-security-token: string
-            x-amz-signature: string
-          readOnly: true
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+  schemas:
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -257,6 +308,76 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
+    cam.v1.PresignedUrl:
+      type: object
+      description: 'Request a presigned upload URL for new Connect Artifact. Note that
+
+        the URL policy expires in one hour. If the policy expires, you can request
+
+        a new presigned upload URL.
+
+
+
+        ## The Presigned Urls Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/cam.v1.PresignedUrl" />'
+      properties:
+        api_version:
+          type: string
+          enum:
+          - cam/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - PresignedUrl
+        content_format:
+          type: string
+          description: Content format of the Connect Artifact archive.
+          example: JAR
+          x-extensible-enum:
+          - ZIP
+          - JAR
+          readOnly: true
+        cloud:
+          type: string
+          description: Cloud provider where the Connect Artifact archive is uploaded.
+          example: AWS
+          x-extensible-enum:
+          - AWS
+          readOnly: true
+        environment:
+          type: string
+          description: The Environment the uploaded Connect Artifact belongs to.
+          example: env-00000
+          readOnly: true
+        upload_id:
+          type: string
+          description: Unique identifier of this upload.
+          example: e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66
+          readOnly: true
+        upload_url:
+          type: string
+          format: uri
+          description: Upload URL for the Connect Artifact archive.
+          example: https://confluent-custom-connectors-stag-us-west-2.s3.dualstack.us-west-2.amazonaws.com/
+          readOnly: true
+        upload_form_data:
+          type: object
+          description: Upload form data of the Connect Artifact. All values should be strings.
+          example:
+            bucket: confluent-custom-connectors-stag-us-west-2
+            key: staging/flink-artifact/2f37f0b6-f8da-4e8b-bc5f-282ebb0511be/flink-e53bb2e8-8de3-49fa-9fb1-4e3fd9a16b66/artifact.zip
+            policy: string
+            x-amz-algorithm: AWS4-HMAC-SHA256
+            x-amz-credential: string
+            x-amz-date: 20230725T013857Z
+            x-amz-security-token: string
+            x-amz-signature: string
+          readOnly: true
     cam.v1.PresignedUrlRequest:
       type: object
       description: 'Request schema of the presigned upload URL.
@@ -307,127 +428,6 @@ components:
           example: env-00000
           description: The Environment the uploaded Connect Artifact belongs to.
           maxLength: 255
-  responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   securitySchemes:
     cloud-api-key:
       type: http

@@ -114,16 +114,22 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    billing.v1.Environment:
+    billing.v1.Resource:
       type: object
-      description: 'The details of the environment for a given resource.
-
-        '
+      description: "The resource associated with this object. The resource can be one of Kafka Cluster ID (example: lkc-12345),\nConnector ID (example:\n    lcc-12345), Schema Registry Cluster ID (example: lsrc-12345), or ksqlDB Cluster ID\n(example: lksqlc-12345).\nMay be null or omitted if not associated with a resource.\n"
       properties:
         id:
           type: string
-          description: ID of the environment.
-          example: env-123
+          description: ID of the resource.
+          example: lkc-12345
+        display_name:
+          type: string
+          description: Display name of the resource.
+          example: prod-kafka-cluster
+        environment:
+          description: The environment associated with this resource
+          allOf:
+          - $ref: '#/components/schemas/billing.v1.Environment'
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -162,17 +168,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    CostListMeta:
-      type: object
-      description: CostListMeta describes metadata that resource collections may have
-      properties:
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
     Failure:
       type: object
       description: Provides information about problems encountered while performing an operation.
@@ -185,22 +180,6 @@ components:
           items:
             $ref: '#/components/schemas/Error'
           uniqueItems: true
-    billing.v1.Resource:
-      type: object
-      description: "The resource associated with this object. The resource can be one of Kafka Cluster ID (example: lkc-12345),\nConnector ID (example:\n    lcc-12345), Schema Registry Cluster ID (example: lsrc-12345), or ksqlDB Cluster ID\n(example: lksqlc-12345).\nMay be null or omitted if not associated with a resource.\n"
-      properties:
-        id:
-          type: string
-          description: ID of the resource.
-          example: lkc-12345
-        display_name:
-          type: string
-          description: Display name of the resource.
-          example: prod-kafka-cluster
-        environment:
-          description: The environment associated with this resource
-          allOf:
-          - $ref: '#/components/schemas/billing.v1.Environment'
     billing.v1.CostList:
       type: object
       description: '`Cost` objects represent the aggregated billing costs for an organization
@@ -251,6 +230,16 @@ components:
               - unit
               - original_amount
           uniqueItems: true
+    billing.v1.Environment:
+      type: object
+      description: 'The details of the environment for a given resource.
+
+        '
+      properties:
+        id:
+          type: string
+          description: ID of the environment.
+          example: env-123
     billing.v1.Cost:
       type: object
       description: '`Cost` objects represent the aggregated billing costs for an organization
@@ -412,27 +401,18 @@ components:
     SearchFilter:
       description: Filter a collection by a string search
       type: string
+    CostListMeta:
+      type: object
+      description: CostListMeta describes metadata that resource collections may have
+      properties:
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
   responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     RateLimitError:
       description: Rate Limit Exceeded
       headers:
@@ -474,25 +454,6 @@ components:
               code: out_of_gas
               title: DeLorean Out Of Gas
               detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
     UnauthenticatedError:
       x-summary: Unauthorized
       description: The request lacks valid authentication credentials for this resource.
@@ -517,6 +478,45 @@ components:
               code: user_unauthenticated
               title: Authentication Required
               detail: Valid authentication credentials must be provided
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
   securitySchemes:
     cloud-api-key:
       type: http

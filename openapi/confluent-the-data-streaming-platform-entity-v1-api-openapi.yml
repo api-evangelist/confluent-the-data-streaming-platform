@@ -431,6 +431,137 @@ paths:
           description: Internal Server Error
 components:
   schemas:
+    TermAssignmentHeader:
+      type: object
+      properties:
+        termGuid:
+          type: string
+          description: The term guid
+        relationGuid:
+          type: string
+          description: The relation guid
+        description:
+          type: string
+          description: The description
+        displayText:
+          type: string
+          description: The display text
+        expression:
+          type: string
+          description: The expression
+        createdBy:
+          type: string
+          description: The creator
+        steward:
+          type: string
+          description: The steward
+        source:
+          type: string
+          description: The source
+        confidence:
+          type: integer
+          description: The confidence
+          format: int32
+        status:
+          type: string
+          description: The status
+          enum:
+          - DISCOVERED
+          - PROPOSED
+          - IMPORTED
+          - VALIDATED
+          - DEPRECATED
+          - OBSOLETE
+          - OTHER
+    BusinessMetadata:
+      properties:
+        typeName:
+          type: string
+          description: The business metadata name
+        attributes:
+          type: object
+          description: The business metadata attributes
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+      type: object
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    EntityPartialUpdate:
+      type: object
+      properties:
+        UPDATE:
+          type: array
+          description: The updated entities.
+          items:
+            $ref: '#/components/schemas/PartialUpdateParams'
+      description: The updated entities.
+    TimeBoundary:
+      type: object
+      properties:
+        startTime:
+          type: string
+          description: The start time of format yyyy/MM/dd HH:mm:ss
+        endTime:
+          type: string
+          description: The end time of format yyyy/MM/dd HH:mm:ss
+        timeZone:
+          type: string
+          description: The time zone (see java.util.TimeZone)
+    Tag:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The tag name
+        attributes:
+          type: object
+          description: The tag attributes
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        validityPeriods:
+          type: array
+          description: The validity periods
+          items:
+            $ref: '#/components/schemas/TimeBoundary'
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+        entityType:
+          type: string
+          description: The entity type
+        entityName:
+          type: string
+          description: The qualified name of the entity
+    EntityPartialUpdateResponse:
+      type: object
+      properties:
+        mutatedEntities:
+          $ref: '#/components/schemas/EntityPartialUpdate'
+      description: The type name
     Entity:
       type: object
       description: The entity
@@ -515,49 +646,6 @@ components:
         proxy:
           type: boolean
           description: Whether is a proxy
-    EntityPartialUpdateResponse:
-      type: object
-      properties:
-        mutatedEntities:
-          $ref: '#/components/schemas/EntityPartialUpdate'
-      description: The type name
-    BusinessMetadata:
-      properties:
-        typeName:
-          type: string
-          description: The business metadata name
-        attributes:
-          type: object
-          description: The business metadata attributes
-        entityType:
-          type: string
-          description: The entity type
-        entityName:
-          type: string
-          description: The qualified name of the entity
-      type: object
-    TimeBoundary:
-      type: object
-      properties:
-        startTime:
-          type: string
-          description: The start time of format yyyy/MM/dd HH:mm:ss
-        endTime:
-          type: string
-          description: The end time of format yyyy/MM/dd HH:mm:ss
-        timeZone:
-          type: string
-          description: The time zone (see java.util.TimeZone)
-    EntityWithExtInfo:
-      type: object
-      properties:
-        referredEntities:
-          type: object
-          description: The referred entities
-          additionalProperties:
-            $ref: '#/components/schemas/Entity'
-        entity:
-          $ref: '#/components/schemas/Entity'
     Classification:
       type: object
       properties:
@@ -590,147 +678,23 @@ components:
         removePropagationsOnEntityDelete:
           type: boolean
           description: Whether to remove propagations on entity delete
-    PartialUpdateParams:
-      type: object
+    BusinessMetadataResponse:
       properties:
         typeName:
           type: string
-          description: The type name
+          description: The business metadata name
         attributes:
           type: object
-          description: The attributes
-        guid:
-          type: string
-          description: The internal guid
-        status:
-          type: string
-          description: The status
-          enum:
-          - ACTIVE
-          - DELETED
-          - PURGED
-        classificationNames:
-          type: array
-          description: The classification (tag) names
-          items:
-            type: string
-        classifications:
-          type: array
-          description: The classifications (tags)
-          items:
-            $ref: '#/components/schemas/ClassificationHeader'
-        isIncomplete:
-          type: boolean
-          description: Whether is incomplete
-    TermAssignmentHeader:
-      type: object
-      properties:
-        termGuid:
-          type: string
-          description: The term guid
-        relationGuid:
-          type: string
-          description: The relation guid
-        description:
-          type: string
-          description: The description
-        displayText:
-          type: string
-          description: The display text
-        expression:
-          type: string
-          description: The expression
-        createdBy:
-          type: string
-          description: The creator
-        steward:
-          type: string
-          description: The steward
-        source:
-          type: string
-          description: The source
-        confidence:
-          type: integer
-          description: The confidence
-          format: int32
-        status:
-          type: string
-          description: The status
-          enum:
-          - DISCOVERED
-          - PROPOSED
-          - IMPORTED
-          - VALIDATED
-          - DEPRECATED
-          - OBSOLETE
-          - OTHER
-    EntityPartialUpdate:
-      type: object
-      properties:
-        UPDATE:
-          type: array
-          description: The updated entities.
-          items:
-            $ref: '#/components/schemas/PartialUpdateParams'
-      description: The updated entities.
-    Tag:
-      type: object
-      properties:
-        typeName:
-          type: string
-          description: The tag name
-        attributes:
-          type: object
-          description: The tag attributes
-        entityGuid:
-          type: string
-          description: The internal entity guid
-        entityStatus:
-          type: string
-          description: The entity status
-          enum:
-          - ACTIVE
-          - DELETED
-          - PURGED
-        propagate:
-          type: boolean
-          description: Whether to propagate the tag
-        validityPeriods:
-          type: array
-          description: The validity periods
-          items:
-            $ref: '#/components/schemas/TimeBoundary'
-        removePropagationsOnEntityDelete:
-          type: boolean
-          description: Whether to remove propagations on entity delete
+          description: The business metadata attributes
         entityType:
           type: string
           description: The entity type
         entityName:
           type: string
           description: The qualified name of the entity
-    ClassificationHeader:
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
       type: object
-      properties:
-        typeName:
-          type: string
-          description: The tag name
-        entityGuid:
-          type: string
-          description: The internal entity guid
-        entityStatus:
-          type: string
-          description: The entity status
-          enum:
-          - ACTIVE
-          - DELETED
-          - PURGED
-        propagate:
-          type: boolean
-          description: Whether to propagate the tag
-        removePropagationsOnEntityDelete:
-          type: boolean
-          description: Whether to remove propagations on entity delete
     TagResponse:
       type: object
       properties:
@@ -769,34 +733,70 @@ components:
           description: The qualified name of the entity
         error:
           $ref: '#/components/schemas/ErrorMessage'
-    ErrorMessage:
+    ClassificationHeader:
       type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
-    BusinessMetadataResponse:
       properties:
         typeName:
           type: string
-          description: The business metadata name
+          description: The tag name
+        entityGuid:
+          type: string
+          description: The internal entity guid
+        entityStatus:
+          type: string
+          description: The entity status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        propagate:
+          type: boolean
+          description: Whether to propagate the tag
+        removePropagationsOnEntityDelete:
+          type: boolean
+          description: Whether to remove propagations on entity delete
+    PartialUpdateParams:
+      type: object
+      properties:
+        typeName:
+          type: string
+          description: The type name
         attributes:
           type: object
-          description: The business metadata attributes
-        entityType:
+          description: The attributes
+        guid:
           type: string
-          description: The entity type
-        entityName:
+          description: The internal guid
+        status:
           type: string
-          description: The qualified name of the entity
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
+          description: The status
+          enum:
+          - ACTIVE
+          - DELETED
+          - PURGED
+        classificationNames:
+          type: array
+          description: The classification (tag) names
+          items:
+            type: string
+        classifications:
+          type: array
+          description: The classifications (tags)
+          items:
+            $ref: '#/components/schemas/ClassificationHeader'
+        isIncomplete:
+          type: boolean
+          description: Whether is incomplete
+    EntityWithExtInfo:
       type: object
+      properties:
+        referredEntities:
+          type: object
+          description: The referred entities
+          additionalProperties:
+            $ref: '#/components/schemas/Entity'
+        entity:
+          $ref: '#/components/schemas/Entity'
   securitySchemes:
     cloud-api-key:
       type: http

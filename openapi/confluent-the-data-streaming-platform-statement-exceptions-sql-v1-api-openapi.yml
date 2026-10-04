@@ -96,6 +96,14 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
+    ExceptionListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          example: https://flink.us-west1.aws.confluent.cloud/sql/v1/environments/env-123/statements/sql123/exceptions
     sql.v1.StatementExceptionList:
       type: object
       description: 'StatementExceptionList is a list of exceptions coming from FAILED or FAILING Statements created by
@@ -127,14 +135,6 @@ components:
           items:
             allOf:
             - $ref: '#/components/schemas/sql.v1.StatementException'
-    ExceptionListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          example: https://flink.us-west1.aws.confluent.cloud/sql/v1/environments/env-123/statements/sql123/exceptions
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -211,42 +211,6 @@ components:
           readOnly: true
       x-enable-objectmeta: true
   responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
     RateLimitError:
       description: Rate Limit Exceeded
       headers:
@@ -331,6 +295,42 @@ components:
               code: user_unauthorized
               title: User Access Unauthorized
               detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
   securitySchemes:
     cloud-api-key:
       type: http

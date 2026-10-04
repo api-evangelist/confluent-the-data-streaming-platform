@@ -93,16 +93,6 @@ paths:
           $ref: '#/components/responses/ServerErrorResponse'
 components:
   schemas:
-    ResourceCollection:
-      type: object
-      required:
-      - kind
-      - metadata
-      properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ResourceCollectionMetadata'
     PartitionData:
       allOf:
       - $ref: '#/components/schemas/Resource'
@@ -164,7 +154,18 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    Resource:
+    ResourceMetadata:
+      type: object
+      required:
+      - self
+      properties:
+        self:
+          type: string
+        resource_name:
+          type:
+          - string
+          - 'null'
+    ResourceCollection:
       type: object
       required:
       - kind
@@ -173,18 +174,7 @@ components:
         kind:
           type: string
         metadata:
-          $ref: '#/components/schemas/ResourceMetadata'
-    PartitionDataList:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollection'
-      - type: object
-        required:
-        - data
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PartitionData'
+          $ref: '#/components/schemas/ResourceCollectionMetadata'
     ResourceCollectionMetadata:
       type: object
       required:
@@ -203,18 +193,75 @@ components:
       properties:
         related:
           type: string
-    ResourceMetadata:
+    PartitionDataList:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollection'
+      - type: object
+        required:
+        - data
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PartitionData'
+    Resource:
       type: object
       required:
-      - self
+      - kind
+      - metadata
       properties:
-        self:
+        kind:
           type: string
-        resource_name:
-          type:
-          - string
-          - 'null'
+        metadata:
+          $ref: '#/components/schemas/ResourceMetadata'
+  parameters:
+    TopicName:
+      name: topic_name
+      description: The topic name.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: topic-1
+    ClusterId:
+      name: cluster_id
+      description: The Kafka cluster ID.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: cluster-1
+    PartitionId:
+      name: partition_id
+      description: The partition ID.
+      in: path
+      required: true
+      schema:
+        type: integer
+      example: 0
   responses:
+    NotFoundErrorResponse:
+      description: Indicates attempted access to an unreachable or non-existing resource like e.g. an unknown topic or partition. GET requests to endpoints not allowed in the accesslists will also result in this response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            endpoint_not_found:
+              description: Thrown for generic HTTP 404 errors.
+              value:
+                error_code: 404
+                message: HTTP 404 Not Found
+            cluster_not_found:
+              description: Thrown when using a non-existing cluster ID.
+              value:
+                error_code: 404
+                message: Cluster my-cluster cannot be found.
+            unknown_topic_or_partition:
+              description: Thrown when using a non-existing topic name or partition ID.
+              value:
+                error_code: 40403
+                message: This server does not host this topic-partition.
     ForbiddenErrorResponse:
       description: Indicates a client authorization error. Kafka authorization failures will contain error code 40301 in the response body.
       content:
@@ -227,6 +274,38 @@ components:
               value:
                 error_code: 40301
                 message: Request is not authorized
+    UnauthorizedErrorResponse:
+      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            kafka_authentication_failed:
+              description: Thrown when using Basic authentication with wrong Kafka credentials.
+              value:
+                error_code: 40101
+                message: Authentication failed
+    GetPartitionResponse:
+      description: The partition
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartitionData'
+          example:
+            kind: KafkaPartition
+            metadata:
+              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1
+              resource_name: crn:///kafka=cluster-1/topic=topic-1/partition=1
+            cluster_id: cluster-1
+            topic_name: topic-1
+            partition_id: 1
+            leader:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/replicas/1
+            replicas:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/replicas
+            reassignment:
+              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/reassignment
     BadRequestErrorResponse:
       description: Indicates a bad request error. It could be caused by an unexpected request body format or other forms of request validation failure.
       content:
@@ -256,28 +335,6 @@ components:
               value:
                 error_code: 500
                 message: Internal Server Error
-    NotFoundErrorResponse:
-      description: Indicates attempted access to an unreachable or non-existing resource like e.g. an unknown topic or partition. GET requests to endpoints not allowed in the accesslists will also result in this response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            endpoint_not_found:
-              description: Thrown for generic HTTP 404 errors.
-              value:
-                error_code: 404
-                message: HTTP 404 Not Found
-            cluster_not_found:
-              description: Thrown when using a non-existing cluster ID.
-              value:
-                error_code: 404
-                message: Cluster my-cluster cannot be found.
-            unknown_topic_or_partition:
-              description: Thrown when using a non-existing topic name or partition ID.
-              value:
-                error_code: 40403
-                message: This server does not host this topic-partition.
     ListPartitionsResponse:
       description: The list of partitions.
       content:
@@ -329,18 +386,6 @@ components:
                 related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/3/replicas
               reassignment:
                 related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/3/reassignment
-    UnauthorizedErrorResponse:
-      description: Indicates a client authentication error. Kafka authentication failures will contain error code 40101 in the response body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            kafka_authentication_failed:
-              description: Thrown when using Basic authentication with wrong Kafka credentials.
-              value:
-                error_code: 40101
-                message: Authentication failed
     TooManyRequestsErrorResponse:
       description: Indicates that a rate limit threshold has been reached, and the client should retry again later.
       content:
@@ -350,51 +395,6 @@ components:
           example:
             description: A sample response from Jetty's DoSFilter.
             value: <html> <head> <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> <title>Error 429 Too Many Requests</title> </head> <body> <h2>HTTP ERROR 429 Too Many Requests</h2> <table> <tr> <th>URI:</th> <td>/v3/clusters/my-cluster</td> </tr> <tr> <th>STATUS:</th> <td>429</td> </tr> <tr> <th>MESSAGE:</th> <td>Too Many Requests</td> </tr> <tr> <th>SERVLET:</th> <td>default</td> </tr> </table> </body> </html>
-    GetPartitionResponse:
-      description: The partition
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PartitionData'
-          example:
-            kind: KafkaPartition
-            metadata:
-              self: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1
-              resource_name: crn:///kafka=cluster-1/topic=topic-1/partition=1
-            cluster_id: cluster-1
-            topic_name: topic-1
-            partition_id: 1
-            leader:
-              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/replicas/1
-            replicas:
-              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/replicas
-            reassignment:
-              related: https://pkc-00000.region.provider.confluent.cloud/kafka/v3/clusters/cluster-1/topics/topic-1/partitions/1/reassignment
-  parameters:
-    PartitionId:
-      name: partition_id
-      description: The partition ID.
-      in: path
-      required: true
-      schema:
-        type: integer
-      example: 0
-    ClusterId:
-      name: cluster_id
-      description: The Kafka cluster ID.
-      in: path
-      required: true
-      schema:
-        type: string
-      example: cluster-1
-    TopicName:
-      name: topic_name
-      description: The topic name.
-      in: path
-      required: true
-      schema:
-        type: string
-      example: topic-1
   securitySchemes:
     cloud-api-key:
       type: http

@@ -495,7 +495,141 @@ paths:
       - resource-api-key: []
       - external-access-token: []
 components:
+  responses:
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    schemaregistry.v1.UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 401
+            message: Unauthorized
+    schemaregistry.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 400
+            message: Bad Request
+    schemaregistry.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 403
+            message: Forbidden
+    schemaregistry.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error_code: 500
+            message: Oops, something went wrong
   schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    Config:
+      type: object
+      properties:
+        alias:
+          type: string
+          description: 'If alias is specified, then this subject is an alias for the subject
+
+            named by the alias. That means that any reference to this subject
+
+            will be replaced by the alias.'
+        normalize:
+          type: boolean
+          description: 'If true, then schemas are automatically normalized when registered or
+
+            when passed during lookups. This means that clients do not have to
+
+            pass the "normalize" query parameter to have normalization occur.'
+        compatibilityLevel:
+          type: string
+          description: Compatibility Level
+          example: FULL_TRANSITIVE
+          x-extensible-enum:
+          - BACKWARD
+          - BACKWARD_TRANSITIVE
+          - FORWARD
+          - FORWARD_TRANSITIVE
+          - FULL
+          - FULL_TRANSITIVE
+          - NONE
+        compatibilityGroup:
+          type: string
+          description: 'Only schemas that belong to the same compatibility group will be
+
+            checked for compatibility.'
+        defaultMetadata:
+          type: object
+          description: Default value for the metadata to be used during schema registration.
+          properties:
+            properties:
+              type: object
+              description: The metadata properties and their new values
+        overrideMetadata:
+          type: object
+          description: Override value for the metadata to be used during schema registration.
+          properties:
+            properties:
+              type: object
+              description: The metadata properties and their new values
+        defaultRuleSet:
+          type: object
+          description: Default value for the ruleSet to be used during schema registration.
+          properties:
+            properties:
+              type: object
+              description: The metadata properties and their new values
+        overrideRuleSet:
+          type: object
+          description: Override value for the ruleSet to be used during schema registration.
+          properties:
+            properties:
+              type: object
+              description: The metadata properties and their new values
+      description: Config
     ConfigUpdateRequest:
       type: object
       properties:
@@ -573,140 +707,6 @@ components:
           format: int32
           example: 25
       description: Cluster Config
-    Config:
-      type: object
-      properties:
-        alias:
-          type: string
-          description: 'If alias is specified, then this subject is an alias for the subject
-
-            named by the alias. That means that any reference to this subject
-
-            will be replaced by the alias.'
-        normalize:
-          type: boolean
-          description: 'If true, then schemas are automatically normalized when registered or
-
-            when passed during lookups. This means that clients do not have to
-
-            pass the "normalize" query parameter to have normalization occur.'
-        compatibilityLevel:
-          type: string
-          description: Compatibility Level
-          example: FULL_TRANSITIVE
-          x-extensible-enum:
-          - BACKWARD
-          - BACKWARD_TRANSITIVE
-          - FORWARD
-          - FORWARD_TRANSITIVE
-          - FULL
-          - FULL_TRANSITIVE
-          - NONE
-        compatibilityGroup:
-          type: string
-          description: 'Only schemas that belong to the same compatibility group will be
-
-            checked for compatibility.'
-        defaultMetadata:
-          type: object
-          description: Default value for the metadata to be used during schema registration.
-          properties:
-            properties:
-              type: object
-              description: The metadata properties and their new values
-        overrideMetadata:
-          type: object
-          description: Override value for the metadata to be used during schema registration.
-          properties:
-            properties:
-              type: object
-              description: The metadata properties and their new values
-        defaultRuleSet:
-          type: object
-          description: Default value for the ruleSet to be used during schema registration.
-          properties:
-            properties:
-              type: object
-              description: The metadata properties and their new values
-        overrideRuleSet:
-          type: object
-          description: Override value for the ruleSet to be used during schema registration.
-          properties:
-            properties:
-              type: object
-              description: The metadata properties and their new values
-      description: Config
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
-  responses:
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    schemaregistry.v1.DefaultSystemError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 500
-            message: Oops, something went wrong
-    schemaregistry.v1.BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 400
-            message: Bad Request
-    schemaregistry.v1.UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 401
-            message: Unauthorized
-    schemaregistry.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          example:
-            error_code: 403
-            message: Forbidden
   securitySchemes:
     cloud-api-key:
       type: http

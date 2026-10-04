@@ -549,183 +549,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    networking.v1.DnsRecord:
-      type: object
-      description: 'DNS record objects are associated with Confluent Cloud networking resources. This API allows you to list, create, read, update, and delete your DNS records.
-
-
-        ## The DNS Records Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.DnsRecord" />'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - networking/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - DnsRecord
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          maxLength: 255
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/networking/v1/dns-records/dnsrec-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/gateway=gw-456xyz/dns-record=dnsrec-12345
-        spec:
-          $ref: '#/components/schemas/networking.v1.DnsRecordSpec'
-        status:
-          $ref: '#/components/schemas/networking.v1.DnsRecordStatus'
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    networking.v1.PrivateLinkAccessPoint:
-      type: object
-      description: DNS record that is associated with a PrivateLink access point.
-      required:
-      - kind
-      - resource_id
-      properties:
-        kind:
-          description: PrivateLinkAccessPoint kind.
-          type: string
-          enum:
-          - PrivateLinkAccessPoint
-        resource_id:
-          description: ID of the target resource.
-          type: string
-          minLength: 1
-          example: ap-12345
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    TypedEnvScopedObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-        api_version:
-          type: string
-          description: API group and version of the referred resource
-          minLength: 1
-          readOnly: true
-        kind:
-          type: string
-          description: Kind of the referred resource
-          minLength: 1
-          readOnly: true
-    networking.v1.DnsRecordStatus:
-      type: object
-      required:
-      - phase
-      description: The status of the Dns Record
-      properties:
-        phase:
-          type: string
-          x-extensible-enum:
-          - PROVISIONING
-          - CREATED
-          - READY
-          - FAILED
-          - DEPROVISIONING
-          description: "The lifecycle phase of the DNS record:\n\n  PROVISIONING: DNS record provisioning is in progress;\n\n  CREATED: DNS record is created. It will automatically become ready once a Kafka cluster is provisioned;\n\n  READY: DNS record is ready;\n\n  FAILED: DNS record is in a failed state;\n\n  DEPROVISIONING: DNS record deprovisioning is in progress;\n"
-          readOnly: true
-          example: READY
-        error_code:
-          type: string
-          description: Error code if the DNS record is in a failed state. May be used for programmatic error checking.
-          readOnly: true
-        error_message:
-          type: string
-          description: Displayable error message if the DNS record is in a failed state.
-          readOnly: true
-      readOnly: true
     networking.v1.DnsRecordList:
       type: object
       description: 'DNS record objects are associated with Confluent Cloud networking resources. This API allows you to list, create, read, update, and delete your DNS records.
@@ -859,9 +682,110 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
+    networking.v1.DnsRecordStatus:
+      type: object
+      required:
+      - phase
+      description: The status of the Dns Record
+      properties:
+        phase:
+          type: string
+          x-extensible-enum:
+          - PROVISIONING
+          - CREATED
+          - READY
+          - FAILED
+          - DEPROVISIONING
+          description: "The lifecycle phase of the DNS record:\n\n  PROVISIONING: DNS record provisioning is in progress;\n\n  CREATED: DNS record is created. It will automatically become ready once a Kafka cluster is provisioned;\n\n  READY: DNS record is ready;\n\n  FAILED: DNS record is in a failed state;\n\n  DEPROVISIONING: DNS record deprovisioning is in progress;\n"
+          readOnly: true
+          example: READY
+        error_code:
+          type: string
+          description: Error code if the DNS record is in a failed state. May be used for programmatic error checking.
+          readOnly: true
+        error_message:
+          type: string
+          description: Displayable error message if the DNS record is in a failed state.
+          readOnly: true
+      readOnly: true
+    TypedEnvScopedObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+        api_version:
+          type: string
+          description: API group and version of the referred resource
+          minLength: 1
+          readOnly: true
+        kind:
+          type: string
+          description: Kind of the referred resource
+          minLength: 1
+          readOnly: true
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
     ObjectReference:
       type: object
       description: ObjectReference provides information for you to locate the referred object
@@ -902,6 +826,82 @@ components:
           description: Kind of the referred resource
           minLength: 1
           readOnly: true
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    networking.v1.PrivateLinkAccessPoint:
+      type: object
+      description: DNS record that is associated with a PrivateLink access point.
+      required:
+      - kind
+      - resource_id
+      properties:
+        kind:
+          description: PrivateLinkAccessPoint kind.
+          type: string
+          enum:
+          - PrivateLinkAccessPoint
+        resource_id:
+          description: ID of the target resource.
+          type: string
+          minLength: 1
+          example: ap-12345
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
+    networking.v1.DnsRecord:
+      type: object
+      description: 'DNS record objects are associated with Confluent Cloud networking resources. This API allows you to list, create, read, update, and delete your DNS records.
+
+
+        ## The DNS Records Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/networking.v1.DnsRecord" />'
+      properties:
+        api_version:
+          type: string
+          enum:
+          - networking/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - DnsRecord
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/networking/v1/dns-records/dnsrec-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/gateway=gw-456xyz/dns-record=dnsrec-12345
+        spec:
+          $ref: '#/components/schemas/networking.v1.DnsRecordSpec'
+        status:
+          $ref: '#/components/schemas/networking.v1.DnsRecordStatus'
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
     networking.v1.DnsRecordSpec:
       type: object
       description: The desired state of the Dns Record
@@ -937,26 +937,6 @@ components:
       x-enable-listmeta: true
       x-enable-objectmeta: true
   responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1236,6 +1216,126 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1261,106 +1361,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   securitySchemes:
     cloud-api-key:
       type: http

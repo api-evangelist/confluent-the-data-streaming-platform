@@ -938,42 +938,45 @@ paths:
       - external-access-token: []
 components:
   schemas:
-    Metadata:
-      description: User-defined metadata
+    SchemaTags:
+      type: object
       properties:
+        schemaEntity:
+          $ref: '#/components/schemas/SchemaEntity'
         tags:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          type: object
-        properties:
-          additionalProperties:
-            type: string
-          type: object
-        sensitive:
+          type: array
           items:
             type: string
-          type: array
-          uniqueItems: true
-      type:
-      - object
-      - 'null'
-    RuleSet:
-      description: Schema rule set
+    SchemaEntity:
+      type: object
       properties:
-        migrationRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-        domainRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-      type:
-      - object
-      - 'null'
+        entityPath:
+          type: string
+        entityType:
+          type: string
+          enum:
+          - sr_record
+          - sr_field
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    RegisterSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Globally unique identifier of the schema
+          format: int32
+          example: 100001
+      description: Schema register response
     SchemaReference:
       type: object
       properties:
@@ -991,16 +994,6 @@ components:
           format: int32
           example: 1
       description: Schema reference
-    SchemaEntity:
-      type: object
-      properties:
-        entityPath:
-          type: string
-        entityType:
-          type: string
-          enum:
-          - sr_record
-          - sr_field
     Rule:
       description: Rule
       properties:
@@ -1055,52 +1048,6 @@ components:
           description: Whether the rule is disabled
           type: boolean
       type: object
-    RegisterSchemaRequest:
-      type: object
-      properties:
-        version:
-          type: integer
-          description: Version number
-          format: int32
-        id:
-          type: integer
-          description: Globally unique identifier of the schema
-          format: int32
-        schemaType:
-          type: string
-          description: Schema type
-        references:
-          type: array
-          description: References to other schemas
-          items:
-            $ref: '#/components/schemas/SchemaReference'
-        schema:
-          type: string
-          description: Schema definition string
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        ruleSet:
-          $ref: '#/components/schemas/RuleSet'
-        schemaTagsToAdd:
-          type: array
-          items:
-            $ref: '#/components/schemas/SchemaTags'
-        schemaTagsToRemove:
-          type: array
-          items:
-            $ref: '#/components/schemas/SchemaTags'
-        propagateSchemaTags:
-          type: boolean
-      description: Schema register request
-    SchemaTags:
-      type: object
-      properties:
-        schemaEntity:
-          $ref: '#/components/schemas/SchemaEntity'
-        tags:
-          type: array
-          items:
-            type: string
     Schema:
       type: object
       properties:
@@ -1141,26 +1088,79 @@ components:
           items:
             $ref: '#/components/schemas/SchemaTags'
       description: Schema
-    RegisterSchemaResponse:
+    RuleSet:
+      description: Schema rule set
+      properties:
+        migrationRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        domainRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+      type:
+      - object
+      - 'null'
+    RegisterSchemaRequest:
       type: object
       properties:
+        version:
+          type: integer
+          description: Version number
+          format: int32
         id:
           type: integer
           description: Globally unique identifier of the schema
           format: int32
-          example: 100001
-      description: Schema register response
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
+        schemaType:
           type: string
-          description: The error message
-      description: Error message of this operation
+          description: Schema type
+        references:
+          type: array
+          description: References to other schemas
+          items:
+            $ref: '#/components/schemas/SchemaReference'
+        schema:
+          type: string
+          description: Schema definition string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        ruleSet:
+          $ref: '#/components/schemas/RuleSet'
+        schemaTagsToAdd:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        schemaTagsToRemove:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaTags'
+        propagateSchemaTags:
+          type: boolean
+      description: Schema register request
+    Metadata:
+      description: User-defined metadata
+      properties:
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          type: object
+        properties:
+          additionalProperties:
+            type: string
+          type: object
+        sensitive:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type:
+      - object
+      - 'null'
   responses:
     RateLimitError:
       description: Rate Limit Exceeded

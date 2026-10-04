@@ -170,136 +170,6 @@ paths:
         '500':
           $ref: '#/components/responses/DefaultSystemError'
 components:
-  responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    ConflictError:
-      x-summary: Conflict
-      description: The request is in conflict with the current server state
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        Location:
-          schema:
-            type: string
-            format: uri
-            example: https://api.confluent.cloud/{object}/{id}
-          description: Resource URI of conflicting resource
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '409'
-              code: resource_already_exists
-              title: Resource Already exists
-              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
   schemas:
     ActivatePartnerSignupRequest:
       type: object
@@ -319,6 +189,46 @@ components:
           type: string
           description: The ID of the organization
           example: b3a17773-05cc-4431-9560-433fb4613da8
+    ObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+        api_version:
+          type: string
+          description: API group and version of the referred resource
+          minLength: 1
+          readOnly: true
+        kind:
+          type: string
+          description: Kind of the referred resource
+          minLength: 1
+          readOnly: true
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -357,59 +267,18 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    AzureSSOConfig:
+    Failure:
       type: object
+      description: Provides information about problems encountered while performing an operation.
       required:
-      - kind
-      - tenant_id
+      - errors
       properties:
-        kind:
-          type: string
-          example: AzureSSOConfig
-        tenant_id:
-          type: string
-          example: b3a17773-05cc-4431-9560-433fb4613da8
-          description: The Azure AD tenant ID
-    partner.v2.Organization:
-      type: object
-      description: '`Organizations` objects represent an entire Confluent Cloud organization.'
-      properties:
-        api_version:
-          type: string
-          enum:
-          - partner/v2
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - Organization
-        id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
-          type: string
-          readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          $ref: '#/components/schemas/ObjectMeta'
-        name:
-          type: string
-          description: The name of the organization
-          example: Acme Organization
-          pattern: ^[^<>#%'*^`{|}~\"]{1,31}$
-        sso_url:
-          type: string
-          format: uri
-          description: The login URL for the customer to access Confluent Cloud
-          example: https://confluent.cloud/login/sso/AzureAD-OIDC-Conn
-          readOnly: true
-        sso_config:
-          oneOf:
-          - $ref: '#/components/schemas/AzureSSOConfig'
-          discriminator:
-            propertyName: kind
-      additionalProperties: false
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     PartnerSignupRequest:
       type: object
       description: The partner signup request
@@ -443,6 +312,55 @@ components:
             - $ref: '#/components/schemas/ObjectReference'
             - required:
               - related
+    AzureSSOConfig:
+      type: object
+      required:
+      - kind
+      - tenant_id
+      properties:
+        kind:
+          type: string
+          example: AzureSSOConfig
+        tenant_id:
+          type: string
+          example: b3a17773-05cc-4431-9560-433fb4613da8
+          description: The Azure AD tenant ID
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
     PartnerSignupResponse:
       type: object
       description: The partner signup response
@@ -494,54 +412,48 @@ components:
             - $ref: '#/components/schemas/ObjectReference'
             - required:
               - related
-    Failure:
+    v2.User:
       type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
+    partner.v2.Organization:
+      type: object
+      description: '`Organizations` objects represent an entire Confluent Cloud organization.'
       properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+        api_version:
+          type: string
+          enum:
+          - partner/v2
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - Organization
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          $ref: '#/components/schemas/ObjectMeta'
+        name:
+          type: string
+          description: The name of the organization
+          example: Acme Organization
+          pattern: ^[^<>#%'*^`{|}~\"]{1,31}$
+        sso_url:
           type: string
           format: uri
+          description: The login URL for the customer to access Confluent Cloud
+          example: https://confluent.cloud/login/sso/AzureAD-OIDC-Conn
           readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
+        sso_config:
+          oneOf:
+          - $ref: '#/components/schemas/AzureSSOConfig'
+          discriminator:
+            propertyName: kind
+      additionalProperties: false
     partner.v2.Entitlement:
       type: object
       description: '`Entitlement` objects represent metadata about a marketplace entitlement.'
@@ -607,48 +519,136 @@ components:
             - related
           description: The organization associated with this object.
       additionalProperties: false
-    v2.User:
-      type: object
-    ObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-        api_version:
-          type: string
-          description: API group and version of the referred resource
-          minLength: 1
-          readOnly: true
-        kind:
-          type: string
-          description: Kind of the referred resource
-          minLength: 1
-          readOnly: true
+  responses:
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    ConflictError:
+      x-summary: Conflict
+      description: The request is in conflict with the current server state
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        Location:
+          schema:
+            type: string
+            format: uri
+            example: https://api.confluent.cloud/{object}/{id}
+          description: Resource URI of conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '409'
+              code: resource_already_exists
+              title: Resource Already exists
+              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
   securitySchemes:
     cloud-api-key:
       type: http

@@ -351,77 +351,6 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    ConstraintDef:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type
-        params:
-          type: object
-          description: The params
-          additionalProperties:
-            type: object
-    BusinessMetadataDef:
-      properties:
-        category:
-          enum:
-          - PRIMITIVE
-          - OBJECT_ID_TYPE
-          - ENUM
-          - STRUCT
-          - CLASSIFICATION
-          - ENTITY
-          - ARRAY
-          - MAP
-          - RELATIONSHIP
-          - BUSINESS_METADATA
-          type: string
-          description: The category
-        guid:
-          type: string
-          description: The internal guid
-        createdBy:
-          type: string
-          description: The creator
-        updatedBy:
-          type: string
-          description: The updater
-        createTime:
-          format: int64
-          type: integer
-          description: The create time
-        updateTime:
-          format: int64
-          type: integer
-          description: The update time
-        version:
-          format: int32
-          type: integer
-          description: The version
-        name:
-          type: string
-          description: The name
-        description:
-          type: string
-          description: The description
-        typeVersion:
-          type: string
-          description: The type version
-        serviceType:
-          type: string
-          description: The service type
-        options:
-          additionalProperties:
-            type: string
-          type: object
-          description: The options
-        attributeDefs:
-          items:
-            $ref: '#/components/schemas/AttributeDef'
-          type: array
-          description: The attribute definitions
-      type: object
     TagDefResponse:
       type: object
       properties:
@@ -502,6 +431,155 @@ components:
             type: string
         error:
           $ref: '#/components/schemas/ErrorMessage'
+    ConstraintDef:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type
+        params:
+          type: object
+          description: The params
+          additionalProperties:
+            type: object
+    AttributeDef:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name
+        typeName:
+          type: string
+          description: The type name
+        isOptional:
+          type: boolean
+          description: Whether is optional
+        cardinality:
+          type: string
+          description: The cardinality
+          enum:
+          - SINGLE
+          - LIST
+          - SET
+        valuesMinCount:
+          type: integer
+          description: The values min count
+          format: int32
+        valuesMaxCount:
+          type: integer
+          description: The values max count
+          format: int32
+        isUnique:
+          type: boolean
+          description: Whether is unique
+        isIndexable:
+          type: boolean
+          description: Whether is indexable
+        includeInNotification:
+          type: boolean
+          description: Whether to include in notifications
+        defaultValue:
+          type: string
+          description: The default value
+        description:
+          type: string
+          description: The description
+        searchWeight:
+          type: integer
+          description: The search weight
+          format: int32
+        indexType:
+          type: string
+          description: The index type
+          enum:
+          - DEFAULT
+          - STRING
+        constraints:
+          type: array
+          description: The constraints
+          items:
+            $ref: '#/components/schemas/ConstraintDef'
+        options:
+          type: object
+          description: The options
+          additionalProperties:
+            type: string
+        displayName:
+          type: string
+          description: The display name
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
+    BusinessMetadataDefResponse:
+      properties:
+        category:
+          enum:
+          - PRIMITIVE
+          - OBJECT_ID_TYPE
+          - ENUM
+          - STRUCT
+          - CLASSIFICATION
+          - ENTITY
+          - ARRAY
+          - MAP
+          - RELATIONSHIP
+          - BUSINESS_METADATA
+          type: string
+          description: The category
+        guid:
+          type: string
+          description: The internal guid
+        createdBy:
+          type: string
+          description: The creator
+        updatedBy:
+          type: string
+          description: The updater
+        createTime:
+          format: int64
+          type: integer
+          description: The create time
+        updateTime:
+          format: int64
+          type: integer
+          description: The update time
+        version:
+          format: int32
+          type: integer
+          description: The version
+        name:
+          type: string
+          description: The name
+        description:
+          type: string
+          description: The description
+        typeVersion:
+          type: string
+          description: The type version
+        serviceType:
+          type: string
+          description: The service type
+        options:
+          additionalProperties:
+            type: string
+          type: object
+          description: The options
+        attributeDefs:
+          items:
+            $ref: '#/components/schemas/AttributeDef'
+          type: array
+          description: The attribute definitions
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+      type: object
     TagDef:
       type: object
       properties:
@@ -580,7 +658,7 @@ components:
           description: The subtypes
           items:
             type: string
-    BusinessMetadataDefResponse:
+    BusinessMetadataDef:
       properties:
         category:
           enum:
@@ -639,85 +717,7 @@ components:
             $ref: '#/components/schemas/AttributeDef'
           type: array
           description: The attribute definitions
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
       type: object
-    AttributeDef:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name
-        typeName:
-          type: string
-          description: The type name
-        isOptional:
-          type: boolean
-          description: Whether is optional
-        cardinality:
-          type: string
-          description: The cardinality
-          enum:
-          - SINGLE
-          - LIST
-          - SET
-        valuesMinCount:
-          type: integer
-          description: The values min count
-          format: int32
-        valuesMaxCount:
-          type: integer
-          description: The values max count
-          format: int32
-        isUnique:
-          type: boolean
-          description: Whether is unique
-        isIndexable:
-          type: boolean
-          description: Whether is indexable
-        includeInNotification:
-          type: boolean
-          description: Whether to include in notifications
-        defaultValue:
-          type: string
-          description: The default value
-        description:
-          type: string
-          description: The description
-        searchWeight:
-          type: integer
-          description: The search weight
-          format: int32
-        indexType:
-          type: string
-          description: The index type
-          enum:
-          - DEFAULT
-          - STRING
-        constraints:
-          type: array
-          description: The constraints
-          items:
-            $ref: '#/components/schemas/ConstraintDef'
-        options:
-          type: object
-          description: The options
-          additionalProperties:
-            type: string
-        displayName:
-          type: string
-          description: The display name
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
   securitySchemes:
     cloud-api-key:
       type: http

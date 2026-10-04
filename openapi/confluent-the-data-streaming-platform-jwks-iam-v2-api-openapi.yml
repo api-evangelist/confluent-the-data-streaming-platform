@@ -136,6 +136,115 @@ components:
               detail: The 'delorean' resource can't be filtered by 'num_doors'
               source:
                 parameter: num_doors
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
+    ConflictError:
+      x-summary: Conflict
+      description: The request is in conflict with the current server state
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        Location:
+          schema:
+            type: string
+            format: uri
+            example: https://api.confluent.cloud/{object}/{id}
+          description: Resource URI of conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '409'
+              code: resource_already_exists
+              title: Resource Already exists
+              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
     NotFoundError:
       description: Not Found
       headers:
@@ -431,115 +540,6 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
-    ConflictError:
-      x-summary: Conflict
-      description: The request is in conflict with the current server state
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        Location:
-          schema:
-            type: string
-            format: uri
-            example: https://api.confluent.cloud/{object}/{id}
-          description: Resource URI of conflicting resource
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '409'
-              code: resource_already_exists
-              title: Resource Already exists
-              detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
   schemas:
     Error:
       type: object
@@ -591,38 +591,6 @@ components:
           items:
             $ref: '#/components/schemas/Error'
           uniqueItems: true
-    iam.v2.JwksSpec:
-      type: object
-      description: The desired state of the Jwks
-      properties:
-        jwks_status:
-          type: string
-          x-extensible-enum:
-          - REFRESHED
-          description: The desired state of the public key data
-          example: REFRESHED
-      x-enable-id: false
-      x-enable-listmeta: true
-      x-enable-objectmeta: false
-    iam.v2.JwksStatus:
-      description: The status of the Jwks
-      type: object
-      properties:
-        jwks_status:
-          type: string
-          x-extensible-enum:
-          - REFRESHED
-          - OK
-          - INVALID_JWKS_URI
-          - ERROR_FETCHING_JWKS
-          description: The actual state of the public key data
-          example: REFRESHED
-        jwks_last_refresh_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          description: The last successful refresh time for the public key data
-      readOnly: true
     iam.v2.Jwks:
       type: object
       description: '`JWKS` objects represent public key sets for a specific OAuth/OpenID Connect provider within
@@ -657,6 +625,38 @@ components:
           $ref: '#/components/schemas/iam.v2.JwksSpec'
         status:
           $ref: '#/components/schemas/iam.v2.JwksStatus'
+    iam.v2.JwksStatus:
+      description: The status of the Jwks
+      type: object
+      properties:
+        jwks_status:
+          type: string
+          x-extensible-enum:
+          - REFRESHED
+          - OK
+          - INVALID_JWKS_URI
+          - ERROR_FETCHING_JWKS
+          description: The actual state of the public key data
+          example: REFRESHED
+        jwks_last_refresh_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          description: The last successful refresh time for the public key data
+      readOnly: true
+    iam.v2.JwksSpec:
+      type: object
+      description: The desired state of the Jwks
+      properties:
+        jwks_status:
+          type: string
+          x-extensible-enum:
+          - REFRESHED
+          description: The desired state of the public key data
+          example: REFRESHED
+      x-enable-id: false
+      x-enable-listmeta: true
+      x-enable-objectmeta: false
   securitySchemes:
     cloud-api-key:
       type: http

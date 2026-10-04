@@ -527,204 +527,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    fcpm.v2.ComputePoolSpec:
-      type: object
-      description: The desired state of the Compute Pool
-      properties:
-        display_name:
-          type: string
-          example: flink_compute_pool_0
-          description: The name of the Flink compute pool.
-          pattern: ^(?:[0-9A-Za-z\-])[\w\.-]{0,63}$
-          x-immutable: false
-        cloud:
-          type: string
-          description: The cloud service provider that runs the compute pool.
-          x-extensible-enum:
-          - AWS
-          - GCP
-          - AZURE
-          example: AWS
-          x-immutable: true
-        region:
-          type: string
-          example: us-west-1
-          description: Flink compute pools in the region provided will be able to use this identity pool
-          x-immutable: true
-        max_cfu:
-          type: integer
-          format: int32
-          example: 5
-          description: 'Maximum number of Confluent Flink Units (CFUs) that the Flink compute pool should auto-scale to.
-
-            '
-          x-extensible-enum:
-          - 5
-          - 10
-          - 20
-          - 30
-          - 40
-          - 50
-          x-immutable: false
-        enable_ai:
-          type: boolean
-          default: false
-          description: 'The flag to enable AI computing using Ray for the Flink compute pool. It''s available in the Early Access API
-
-            lifecycle stage only.
-
-            '
-          x-immutable: true
-        default_pool:
-          type: boolean
-          default: false
-          description: 'The flag to indicate whether the Flink compute pool is a default compute pool or not.
-
-            Only one default compute pool per environment and region is allowed.
-
-            '
-          x-immutable: false
-        environment:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: The environment to which this belongs.
-        network:
-          allOf:
-          - $ref: '#/components/schemas/EnvScopedObjectReference'
-          description: The network to which this belongs.
-          x-immutable: true
-      x-enable-id: true
-      x-enable-listmeta: true
-      x-enable-objectmeta: true
-    GlobalObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    fcpm.v2.ComputePoolStatus:
-      type: object
-      required:
-      - phase
-      - current_cfu
-      description: The status of the Compute Pool
-      properties:
-        phase:
-          type: string
-          x-extensible-enum:
-          - PROVISIONING
-          - PROVISIONED
-          - FAILED
-          - DEPROVISIONING
-          description: Status of the Flink compute pool.
-          example: PROVISIONING
-          readOnly: true
-        current_cfu:
-          type: integer
-          format: int32
-          example: 4
-          description: The number of Confluent Flink Units (CFUs) currently allocated to this Flink compute pool.
-          readOnly: true
-      readOnly: true
-    EnvScopedObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -799,53 +601,111 @@ components:
           readOnly: true
           description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-    fcpm.v2.ComputePool:
+    GlobalObjectReference:
       type: object
-      description: 'A Compute Pool represents a set of compute resources that is used to run your Queries.
-
-        The resources (CPUs, memory,…) provided by a Compute Pool are shared between all Queries that use it.
-
-        Note that the Compute Pool API supports a limited pagination API, only the `next` field will be populated.
-
-
-
-        ## The Compute Pools Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.ComputePool" />'
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
       properties:
-        api_version:
-          type: string
-          enum:
-          - fcpm/v2
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - ComputePool
         id:
-          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
           type: string
+          description: ID of the referred resource
+          minLength: 1
           maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
           readOnly: true
-          example: dlz-f3a90de
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ObjectMeta'
-          - properties:
-              self:
-                example: https://api.confluent.cloud/fcpm/v2/compute-pools/lfcp-12345
-              resource_name:
-                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/flink-region=aws.us-east-2/compute-pool=lfcp-12345
-        spec:
-          $ref: '#/components/schemas/fcpm.v2.ComputePoolSpec'
-        status:
-          $ref: '#/components/schemas/fcpm.v2.ComputePoolStatus'
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    EnvScopedObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
     fcpm.v2.ComputePoolList:
       type: object
       description: 'A Compute Pool represents a set of compute resources that is used to run your Queries.
@@ -911,27 +771,147 @@ components:
                   - max_cfu
                   - environment
           uniqueItems: true
+    fcpm.v2.ComputePool:
+      type: object
+      description: 'A Compute Pool represents a set of compute resources that is used to run your Queries.
+
+        The resources (CPUs, memory,…) provided by a Compute Pool are shared between all Queries that use it.
+
+        Note that the Compute Pool API supports a limited pagination API, only the `next` field will be populated.
+
+
+
+        ## The Compute Pools Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/fcpm.v2.ComputePool" />'
+      properties:
+        api_version:
+          type: string
+          enum:
+          - fcpm/v2
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - ComputePool
+        id:
+          description: ID is the "natural identifier" for an object within its scope/namespace; it is normally unique across time but not space. That is, you can assume that the ID will not be reclaimed and reused after an object is deleted ("time"); however, it may collide with IDs for other object `kinds` or objects of the same `kind` within a different scope/namespace ("space").
+          type: string
+          maxLength: 255
+          readOnly: true
+          example: dlz-f3a90de
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ObjectMeta'
+          - properties:
+              self:
+                example: https://api.confluent.cloud/fcpm/v2/compute-pools/lfcp-12345
+              resource_name:
+                example: crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/flink-region=aws.us-east-2/compute-pool=lfcp-12345
+        spec:
+          $ref: '#/components/schemas/fcpm.v2.ComputePoolSpec'
+        status:
+          $ref: '#/components/schemas/fcpm.v2.ComputePoolStatus'
+    fcpm.v2.ComputePoolSpec:
+      type: object
+      description: The desired state of the Compute Pool
+      properties:
+        display_name:
+          type: string
+          example: flink_compute_pool_0
+          description: The name of the Flink compute pool.
+          pattern: ^(?:[0-9A-Za-z\-])[\w\.-]{0,63}$
+          x-immutable: false
+        cloud:
+          type: string
+          description: The cloud service provider that runs the compute pool.
+          x-extensible-enum:
+          - AWS
+          - GCP
+          - AZURE
+          example: AWS
+          x-immutable: true
+        region:
+          type: string
+          example: us-west-1
+          description: Flink compute pools in the region provided will be able to use this identity pool
+          x-immutable: true
+        max_cfu:
+          type: integer
+          format: int32
+          example: 5
+          description: 'Maximum number of Confluent Flink Units (CFUs) that the Flink compute pool should auto-scale to.
+
+            '
+          x-extensible-enum:
+          - 5
+          - 10
+          - 20
+          - 30
+          - 40
+          - 50
+          x-immutable: false
+        enable_ai:
+          type: boolean
+          default: false
+          description: 'The flag to enable AI computing using Ray for the Flink compute pool. It''s available in the Early Access API
+
+            lifecycle stage only.
+
+            '
+          x-immutable: true
+        default_pool:
+          type: boolean
+          default: false
+          description: 'The flag to indicate whether the Flink compute pool is a default compute pool or not.
+
+            Only one default compute pool per environment and region is allowed.
+
+            '
+          x-immutable: false
+        environment:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: The environment to which this belongs.
+        network:
+          allOf:
+          - $ref: '#/components/schemas/EnvScopedObjectReference'
+          description: The network to which this belongs.
+          x-immutable: true
+      x-enable-id: true
+      x-enable-listmeta: true
+      x-enable-objectmeta: true
+    fcpm.v2.ComputePoolStatus:
+      type: object
+      required:
+      - phase
+      - current_cfu
+      description: The status of the Compute Pool
+      properties:
+        phase:
+          type: string
+          x-extensible-enum:
+          - PROVISIONING
+          - PROVISIONED
+          - FAILED
+          - DEPROVISIONING
+          description: Status of the Flink compute pool.
+          example: PROVISIONING
+          readOnly: true
+        current_cfu:
+          type: integer
+          format: int32
+          example: 4
+          description: The number of Confluent Flink Units (CFUs) currently allocated to this Flink compute pool.
+          readOnly: true
+      readOnly: true
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
   responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1211,6 +1191,126 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1236,106 +1336,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   securitySchemes:
     cloud-api-key:
       type: http

@@ -223,28 +223,36 @@ paths:
       - external-access-token: []
 components:
   schemas:
-    Metadata:
-      description: User-defined metadata
+    SchemaTags:
+      type: object
       properties:
+        schemaEntity:
+          $ref: '#/components/schemas/SchemaEntity'
         tags:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          type: object
-        properties:
-          additionalProperties:
-            type: string
-          type: object
-        sensitive:
+          type: array
           items:
             type: string
-          type: array
-          uniqueItems: true
-      type:
-      - object
-      - 'null'
+    SchemaEntity:
+      type: object
+      properties:
+        entityPath:
+          type: string
+        entityType:
+          type: string
+          enum:
+          - sr_record
+          - sr_field
+    ErrorMessage:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          description: The error code
+          format: int32
+        message:
+          type: string
+          description: The error message
+      description: Error message of this operation
     SchemaReference:
       type: object
       properties:
@@ -262,16 +270,6 @@ components:
           format: int32
           example: 1
       description: Schema reference
-    SchemaEntity:
-      type: object
-      properties:
-        entityPath:
-          type: string
-        entityType:
-          type: string
-          enum:
-          - sr_record
-          - sr_field
     Rule:
       description: Rule
       properties:
@@ -326,6 +324,35 @@ components:
           description: Whether the rule is disabled
           type: boolean
       type: object
+    CompatibilityCheckResponse:
+      type: object
+      properties:
+        is_compatible:
+          type: boolean
+          description: Whether the compared schemas are compatible
+        messages:
+          type: array
+          description: Error messages
+          example: []
+          items:
+            type: string
+            description: Error messages
+            example: '[]'
+      description: Compatibility check response
+    RuleSet:
+      description: Schema rule set
+      properties:
+        migrationRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        domainRules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+      type:
+      - object
+      - 'null'
     RegisterSchemaRequest:
       type: object
       properties:
@@ -363,55 +390,28 @@ components:
         propagateSchemaTags:
           type: boolean
       description: Schema register request
-    SchemaTags:
-      type: object
+    Metadata:
+      description: User-defined metadata
       properties:
-        schemaEntity:
-          $ref: '#/components/schemas/SchemaEntity'
         tags:
-          type: array
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          type: object
+        properties:
+          additionalProperties:
+            type: string
+          type: object
+        sensitive:
           items:
             type: string
-    CompatibilityCheckResponse:
-      type: object
-      properties:
-        is_compatible:
-          type: boolean
-          description: Whether the compared schemas are compatible
-        messages:
           type: array
-          description: Error messages
-          example: []
-          items:
-            type: string
-            description: Error messages
-            example: '[]'
-      description: Compatibility check response
-    RuleSet:
-      description: Schema rule set
-      properties:
-        migrationRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-        domainRules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
+          uniqueItems: true
       type:
       - object
       - 'null'
-    ErrorMessage:
-      type: object
-      properties:
-        error_code:
-          type: integer
-          description: The error code
-          format: int32
-        message:
-          type: string
-          description: The error message
-      description: Error message of this operation
   responses:
     RateLimitError:
       description: Rate Limit Exceeded

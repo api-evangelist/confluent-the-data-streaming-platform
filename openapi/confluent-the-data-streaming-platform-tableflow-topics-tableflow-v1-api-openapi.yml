@@ -530,211 +530,6 @@ paths:
           $ref: '#/components/responses/DefaultSystemError'
 components:
   schemas:
-    tableflow.v1.TableflowTopicList:
-      type: object
-      description: 'A Tableflow Topic represents configuration related to a Tableflow enabled kafka topic
-
-
-
-        ## The Tableflow Topics Model
-
-        <SchemaDefinition schemaRef="#/components/schemas/tableflow.v1.TableflowTopic" />'
-      required:
-      - api_version
-      - kind
-      - metadata
-      - data
-      properties:
-        api_version:
-          type: string
-          enum:
-          - tableflow/v1
-          description: APIVersion defines the schema version of this representation of a resource.
-          readOnly: true
-        kind:
-          type: string
-          description: Kind defines the object this REST resource represents.
-          readOnly: true
-          enum:
-          - TableflowTopicList
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/ListMeta'
-          - properties:
-              first:
-                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics
-              last:
-                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=bcAOehAY8F16YD84Z1wT
-              prev:
-                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=YIXRY97wWYmwzrax4dld
-              next:
-                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=UvmDWOB1iwfAIBPj6EYb
-        data:
-          type: array
-          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/tableflow.v1.TableflowTopic'
-            - type: object
-              required:
-              - metadata
-              - spec
-              - status
-              properties:
-                spec:
-                  type: object
-                  required:
-                  - display_name
-                  - storage
-                  - environment
-                  - kafka_cluster
-          uniqueItems: true
-    GlobalObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    tableflow.v1.ManagedStorageSpec:
-      type: object
-      description: The storage config for confluent managed Tableflow enabled topic.
-      required:
-      - kind
-      properties:
-        kind:
-          type: string
-          enum:
-          - Managed
-          description: 'The storage type.
-
-            '
-          x-immutable: true
-        table_path:
-          type: string
-          description: The current storage path where the data and metadata is stored for this table
-          example: s3://dummy-bucket-name-1/10011010/11101100/org-1/env-2/lkc-3/v1/tableId
-          readOnly: true
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    tableflow.v1.TableflowTopicSpec:
-      type: object
-      description: The desired state of the Tableflow Topic
-      properties:
-        display_name:
-          type: string
-          description: The name of the Kafka topic for which Tableflow is enabled.
-          example: topic_1
-          x-immutable: true
-        suspended:
-          type: boolean
-          description: Indicates whether the Tableflow should be suspended. The API allows setting it only to `false` i.e., to resume the Tableflow. Pausing the Tableflow on-demand is not currently supported.
-          example: false
-        config:
-          type: object
-          description: The config for the Tableflow enabled topic
-          allOf:
-          - $ref: '#/components/schemas/tableflow.v1.TableFlowTopicConfigsSpec'
-        storage:
-          type: object
-          description: The storage config
-          oneOf:
-          - $ref: '#/components/schemas/tableflow.v1.ByobAwsSpec'
-          - $ref: '#/components/schemas/tableflow.v1.ManagedStorageSpec'
-          - $ref: '#/components/schemas/tableflow.v1.AzureAdlsSpec'
-          discriminator:
-            propertyName: kind
-            mapping:
-              ByobAws: '#/components/schemas/tableflow.v1.ByobAwsSpec'
-              Managed: '#/components/schemas/tableflow.v1.ManagedStorageSpec'
-              AzureDataLakeStorageGen2: '#/components/schemas/tableflow.v1.AzureAdlsSpec'
-          x-immutable: true
-        table_formats:
-          type: array
-          description: 'The supported table formats for the Tableflow-enabled topic.
-
-            '
-          items:
-            type: string
-            x-extensible-enum:
-            - DELTA
-            - ICEBERG
-          minItems: 1
-          uniqueItems: true
-          example:
-          - DELTA
-          default:
-          - ICEBERG
-        environment:
-          allOf:
-          - $ref: '#/components/schemas/GlobalObjectReference'
-          description: The environment to which the target Kafka cluster belongs.
-        kafka_cluster:
-          allOf:
-          - $ref: '#/components/schemas/EnvScopedObjectReference'
-          description: The kafka cluster of the topic for which Tableflow is enabled
-      x-enable-id: false
-      x-enable-listmeta: true
-      x-enable-objectmeta: true
     tableflow.v1.TableflowTopic:
       type: object
       description: 'A Tableflow Topic represents configuration related to a Tableflow enabled kafka topic
@@ -769,154 +564,6 @@ components:
           $ref: '#/components/schemas/tableflow.v1.TableflowTopicSpec'
         status:
           $ref: '#/components/schemas/tableflow.v1.TableflowTopicStatus'
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
-    tableflow.v1.ErrorHandlingSkip:
-      type: object
-      description: 'Configuration for the `SKIP` error handling mode.
-
-        '
-      properties:
-        mode:
-          type: string
-          enum:
-          - SKIP
-          description: 'The error handling mode for the Tableflow enabled topic.
-
-
-            In this mode, the bad records are skipped and the materialization continues with the next record.
-
-            '
-      required:
-      - mode
-    EnvScopedObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
-      required:
-      - id
-      - related
-      - resource_name
-      properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        environment:
-          type: string
-          description: Environment of the referred resource, if env-scoped
-          minLength: 1
-          maxLength: 255
-        related:
-          type: string
-          format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
-          readOnly: true
-        resource_name:
-          type: string
-          format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
-          readOnly: true
-    tableflow.v1.ByobAwsSpec:
-      type: object
-      description: The Tableflow storage config for BYOB enabled topic in AWS
-      required:
-      - kind
-      - bucket_name
-      - provider_integration_id
-      properties:
-        kind:
-          type: string
-          enum:
-          - ByobAws
-          description: 'The storage type
-
-            '
-          x-immutable: true
-        bucket_name:
-          description: Bucket name
-          type: string
-          example: bucket_1
-          x-immutable: true
-        bucket_region:
-          description: Bucket region
-          type: string
-          example: us-east-1
-          x-immutable: true
-          readOnly: true
-        provider_integration_id:
-          type: string
-          description: The provider integration id
-          example: cspi-stgce89r7
-          x-immutable: true
-        table_path:
-          type: string
-          description: The current storage path where the data and metadata is stored for this table
-          example: s3://dummy-bucket-name-1/10011010/11101100/org-1/env-2/lkc-3/v1/tableId
-          readOnly: true
-    tableflow.v1.ErrorHandlingSuspend:
-      type: object
-      description: 'Configuration for the `SUSPEND` error handling mode.
-
-        '
-      properties:
-        mode:
-          type: string
-          enum:
-          - SUSPEND
-          description: 'The error handling mode for the Tableflow enabled topic.
-
-
-            In this mode, the materialization of the topic is suspended in case of record failures.
-
-            '
-      required:
-      - mode
-    tableflow.v1.ErrorHandlingLog:
-      type: object
-      description: 'Configuration for the `LOG` error handling mode.
-
-        '
-      properties:
-        mode:
-          type: string
-          enum:
-          - LOG
-          description: 'The error handling mode for the Tableflow enabled topic.
-
-
-            In this mode, the bad records are logged to a dead-letter queue (DLQ) topic and the
-
-
-            materialization continues with the next record.
-
-            '
-        target:
-          type: string
-          description: 'The topic to which the bad records will be logged in case of `LOG` error handling mode.
-
-
-            Creates the topic if it doesn''t already exist; otherwise, the operation is idempotent and no action is taken.
-
-
-            Default topic is `error_log`.
-
-            '
-          default: error_log
-      required:
-      - mode
     Error:
       type: object
       description: Describes a particular error encountered while performing an operation.
@@ -955,120 +602,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    tableflow.v1.CatalogSyncStatus:
-      type: object
-      description: The synchronization status of an external catalog for a Tableflow topic
-      properties:
-        catalog_integration_id:
-          type: string
-          description: The ID of the catalog integration
-          example: tci-12345
-        catalog_type:
-          type: string
-          description: The type of the external catalog
-          x-extensible-enum:
-          - AWS_GLUE
-          - SNOWFLAKE
-          - UNITY
-          example: AWS_GLUE
-        sync_status:
-          type: string
-          description: "The current synchronization status:\n\n  PENDING: sync is pending;\n\n  SYNCED: successfully synced;\n\n  FAILED: sync failed;\n\n  DISCONNECTED: catalog integration is disconnected.\n"
-          x-extensible-enum:
-          - PENDING
-          - SYNCED
-          - FAILED
-          - DISCONNECTED
-          example: SYNCED
-        error_message:
-          type:
-          - string
-          - 'null'
-          description: 'Error message if the sync failed. This field is only present when `sync_status` is `FAILED`.
-
-            '
-          example: 'Failed to connect to catalog: authentication error'
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-      required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
-    tableflow.v1.AzureAdlsSpec:
-      type: object
-      description: The Tableflow storage config for customer-owned Azure Data Lake Storage Gen2
-      required:
-      - kind
-      - storage_account_name
-      - container_name
-      - provider_integration_id
-      properties:
-        kind:
-          type: string
-          enum:
-          - AzureDataLakeStorageGen2
-          description: 'The storage type.
-
-            '
-          x-immutable: true
-        storage_account_name:
-          description: Storage Account Name
-          type: string
-          example: confluentstorage1
-          x-immutable: true
-        container_name:
-          description: Container name
-          type: string
-          example: container-tableflow
-          x-immutable: true
-        storage_region:
-          description: Storage account region
-          type: string
-          example: centralus
-          readOnly: true
-        provider_integration_id:
-          type: string
-          description: The provider integration id
-          example: cspi-6nxn5
-          x-immutable: true
-        table_path:
-          type: string
-          description: The current storage path where the data and metadata is stored for this table
-          example: abfss://container@account.dfs.core.windows.net/10011010/11101100/org/env/lkc/v1/tableId
-          readOnly: true
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
     tableflow.v1.TableFlowTopicConfigsSpec:
       type: object
       description: The configs for the Tableflow enabled topic
@@ -1156,6 +689,428 @@ components:
               SUSPEND: '#/components/schemas/tableflow.v1.ErrorHandlingSuspend'
               SKIP: '#/components/schemas/tableflow.v1.ErrorHandlingSkip'
               LOG: '#/components/schemas/tableflow.v1.ErrorHandlingLog'
+    tableflow.v1.TableflowTopicSpec:
+      type: object
+      description: The desired state of the Tableflow Topic
+      properties:
+        display_name:
+          type: string
+          description: The name of the Kafka topic for which Tableflow is enabled.
+          example: topic_1
+          x-immutable: true
+        suspended:
+          type: boolean
+          description: Indicates whether the Tableflow should be suspended. The API allows setting it only to `false` i.e., to resume the Tableflow. Pausing the Tableflow on-demand is not currently supported.
+          example: false
+        config:
+          type: object
+          description: The config for the Tableflow enabled topic
+          allOf:
+          - $ref: '#/components/schemas/tableflow.v1.TableFlowTopicConfigsSpec'
+        storage:
+          type: object
+          description: The storage config
+          oneOf:
+          - $ref: '#/components/schemas/tableflow.v1.ByobAwsSpec'
+          - $ref: '#/components/schemas/tableflow.v1.ManagedStorageSpec'
+          - $ref: '#/components/schemas/tableflow.v1.AzureAdlsSpec'
+          discriminator:
+            propertyName: kind
+            mapping:
+              ByobAws: '#/components/schemas/tableflow.v1.ByobAwsSpec'
+              Managed: '#/components/schemas/tableflow.v1.ManagedStorageSpec'
+              AzureDataLakeStorageGen2: '#/components/schemas/tableflow.v1.AzureAdlsSpec'
+          x-immutable: true
+        table_formats:
+          type: array
+          description: 'The supported table formats for the Tableflow-enabled topic.
+
+            '
+          items:
+            type: string
+            x-extensible-enum:
+            - DELTA
+            - ICEBERG
+          minItems: 1
+          uniqueItems: true
+          example:
+          - DELTA
+          default:
+          - ICEBERG
+        environment:
+          allOf:
+          - $ref: '#/components/schemas/GlobalObjectReference'
+          description: The environment to which the target Kafka cluster belongs.
+        kafka_cluster:
+          allOf:
+          - $ref: '#/components/schemas/EnvScopedObjectReference'
+          description: The kafka cluster of the topic for which Tableflow is enabled
+      x-enable-id: false
+      x-enable-listmeta: true
+      x-enable-objectmeta: true
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+      required:
+      - self
+      properties:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
+        resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
+          type: string
+          format: uri
+          readOnly: true
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
+      readOnly: true
+    GlobalObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    tableflow.v1.AzureAdlsSpec:
+      type: object
+      description: The Tableflow storage config for customer-owned Azure Data Lake Storage Gen2
+      required:
+      - kind
+      - storage_account_name
+      - container_name
+      - provider_integration_id
+      properties:
+        kind:
+          type: string
+          enum:
+          - AzureDataLakeStorageGen2
+          description: 'The storage type.
+
+            '
+          x-immutable: true
+        storage_account_name:
+          description: Storage Account Name
+          type: string
+          example: confluentstorage1
+          x-immutable: true
+        container_name:
+          description: Container name
+          type: string
+          example: container-tableflow
+          x-immutable: true
+        storage_region:
+          description: Storage account region
+          type: string
+          example: centralus
+          readOnly: true
+        provider_integration_id:
+          type: string
+          description: The provider integration id
+          example: cspi-6nxn5
+          x-immutable: true
+        table_path:
+          type: string
+          description: The current storage path where the data and metadata is stored for this table
+          example: abfss://container@account.dfs.core.windows.net/10011010/11101100/org/env/lkc/v1/tableId
+          readOnly: true
+    tableflow.v1.ManagedStorageSpec:
+      type: object
+      description: The storage config for confluent managed Tableflow enabled topic.
+      required:
+      - kind
+      properties:
+        kind:
+          type: string
+          enum:
+          - Managed
+          description: 'The storage type.
+
+            '
+          x-immutable: true
+        table_path:
+          type: string
+          description: The current storage path where the data and metadata is stored for this table
+          example: s3://dummy-bucket-name-1/10011010/11101100/org-1/env-2/lkc-3/v1/tableId
+          readOnly: true
+    EnvScopedObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        environment:
+          type: string
+          description: Environment of the referred resource, if env-scoped
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    tableflow.v1.ErrorHandlingSkip:
+      type: object
+      description: 'Configuration for the `SKIP` error handling mode.
+
+        '
+      properties:
+        mode:
+          type: string
+          enum:
+          - SKIP
+          description: 'The error handling mode for the Tableflow enabled topic.
+
+
+            In this mode, the bad records are skipped and the materialization continues with the next record.
+
+            '
+      required:
+      - mode
+    tableflow.v1.ErrorHandlingLog:
+      type: object
+      description: 'Configuration for the `LOG` error handling mode.
+
+        '
+      properties:
+        mode:
+          type: string
+          enum:
+          - LOG
+          description: 'The error handling mode for the Tableflow enabled topic.
+
+
+            In this mode, the bad records are logged to a dead-letter queue (DLQ) topic and the
+
+
+            materialization continues with the next record.
+
+            '
+        target:
+          type: string
+          description: 'The topic to which the bad records will be logged in case of `LOG` error handling mode.
+
+
+            Creates the topic if it doesn''t already exist; otherwise, the operation is idempotent and no action is taken.
+
+
+            Default topic is `error_log`.
+
+            '
+          default: error_log
+      required:
+      - mode
+    tableflow.v1.CatalogSyncStatus:
+      type: object
+      description: The synchronization status of an external catalog for a Tableflow topic
+      properties:
+        catalog_integration_id:
+          type: string
+          description: The ID of the catalog integration
+          example: tci-12345
+        catalog_type:
+          type: string
+          description: The type of the external catalog
+          x-extensible-enum:
+          - AWS_GLUE
+          - SNOWFLAKE
+          - UNITY
+          example: AWS_GLUE
+        sync_status:
+          type: string
+          description: "The current synchronization status:\n\n  PENDING: sync is pending;\n\n  SYNCED: successfully synced;\n\n  FAILED: sync failed;\n\n  DISCONNECTED: catalog integration is disconnected.\n"
+          x-extensible-enum:
+          - PENDING
+          - SYNCED
+          - FAILED
+          - DISCONNECTED
+          example: SYNCED
+        error_message:
+          type:
+          - string
+          - 'null'
+          description: 'Error message if the sync failed. This field is only present when `sync_status` is `FAILED`.
+
+            '
+          example: 'Failed to connect to catalog: authentication error'
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    tableflow.v1.TableflowTopicList:
+      type: object
+      description: 'A Tableflow Topic represents configuration related to a Tableflow enabled kafka topic
+
+
+
+        ## The Tableflow Topics Model
+
+        <SchemaDefinition schemaRef="#/components/schemas/tableflow.v1.TableflowTopic" />'
+      required:
+      - api_version
+      - kind
+      - metadata
+      - data
+      properties:
+        api_version:
+          type: string
+          enum:
+          - tableflow/v1
+          description: APIVersion defines the schema version of this representation of a resource.
+          readOnly: true
+        kind:
+          type: string
+          description: Kind defines the object this REST resource represents.
+          readOnly: true
+          enum:
+          - TableflowTopicList
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - properties:
+              first:
+                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics
+              last:
+                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=bcAOehAY8F16YD84Z1wT
+              prev:
+                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=YIXRY97wWYmwzrax4dld
+              next:
+                example: https://api.confluent.cloud/tableflow/v1/tableflow-topics?page_token=UvmDWOB1iwfAIBPj6EYb
+        data:
+          type: array
+          description: A data property that contains an array of resource items. Each entry in the array is a separate resource.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/tableflow.v1.TableflowTopic'
+            - type: object
+              required:
+              - metadata
+              - spec
+              - status
+              properties:
+                spec:
+                  type: object
+                  required:
+                  - display_name
+                  - storage
+                  - environment
+                  - kafka_cluster
+          uniqueItems: true
+    Failure:
+      type: object
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
+      properties:
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    tableflow.v1.ErrorHandlingSuspend:
+      type: object
+      description: 'Configuration for the `SUSPEND` error handling mode.
+
+        '
+      properties:
+        mode:
+          type: string
+          enum:
+          - SUSPEND
+          description: 'The error handling mode for the Tableflow enabled topic.
+
+
+            In this mode, the materialization of the topic is suspended in case of record failures.
+
+            '
+      required:
+      - mode
     tableflow.v1.TableflowTopicStatus:
       type: object
       required:
@@ -1222,27 +1177,52 @@ components:
           example: APPEND
           readOnly: true
       readOnly: true
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
+    tableflow.v1.ByobAwsSpec:
+      type: object
+      description: The Tableflow storage config for BYOB enabled topic in AWS
+      required:
+      - kind
+      - bucket_name
+      - provider_integration_id
+      properties:
+        kind:
+          type: string
+          enum:
+          - ByobAws
+          description: 'The storage type
+
+            '
+          x-immutable: true
+        bucket_name:
+          description: Bucket name
+          type: string
+          example: bucket_1
+          x-immutable: true
+        bucket_region:
+          description: Bucket region
+          type: string
+          example: us-east-1
+          x-immutable: true
+          readOnly: true
+        provider_integration_id:
+          type: string
+          description: The provider integration id
+          example: cspi-stgce89r7
+          x-immutable: true
+        table_path:
+          type: string
+          description: The current storage path where the data and metadata is stored for this table
+          example: s3://dummy-bucket-name-1/10011010/11101100/org-1/env-2/lkc-3/v1/tableId
+          readOnly: true
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
   responses:
-    BadRequestError:
-      description: Bad Request
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '400'
-              code: invalid_filter
-              title: Invalid Filter
-              detail: The 'delorean' resource can't be filtered by 'num_doors'
-              source:
-                parameter: num_doors
     ValidationError:
       description: Validation Failed
       headers:
@@ -1522,6 +1502,126 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
+    NotFoundError:
+      description: Not Found
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '404'
+              title: Not Found
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    BadRequestError:
+      description: Bad Request
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '400'
+              code: invalid_filter
+              title: Invalid Filter
+              detail: The 'delorean' resource can't be filtered by 'num_doors'
+              source:
+                parameter: num_doors
+    UnauthenticatedError:
+      x-summary: Unauthorized
+      description: The request lacks valid authentication credentials for this resource.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+          example: Basic error="invalid_key", error_description="The API Key is invalid"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '401'
+              code: user_unauthenticated
+              title: Authentication Required
+              detail: Valid authentication credentials must be provided
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1547,106 +1647,6 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
-    NotFoundError:
-      description: Not Found
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '404'
-              title: Not Found
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    UnauthenticatedError:
-      x-summary: Unauthorized
-      description: The request lacks valid authentication credentials for this resource.
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        WWW-Authenticate:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-          example: Basic error="invalid_key", error_description="The API Key is invalid"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '401'
-              code: user_unauthenticated
-              title: Authentication Required
-              detail: Valid authentication credentials must be provided
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
   securitySchemes:
     cloud-api-key:
       type: http
