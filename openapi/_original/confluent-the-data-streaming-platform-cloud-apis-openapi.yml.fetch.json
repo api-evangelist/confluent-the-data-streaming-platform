@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.confluent.io/cloud/current/openapi.yaml",
+ "requested_url": "https://docs.confluent.io/cloud/current/openapi.yaml",
+ "status": 200,
+ "content_type": "application/yaml",
+ "bytes": 2880555,
+ "sha256": "4bbccb7fdb6dad821cd8964baa24a7317f6f0d5b6310ccb787e929ee270e2c1b",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.958), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
