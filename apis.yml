@@ -4247,6 +4247,8 @@ apis:
   - type: DataModel
     url: data-model/confluent-the-data-streaming-platform-data-model.yml
 common:
+  - type: FinOps
+    url: finops/confluent-the-data-streaming-platform-finops.yml
   - type: CapabilityMap
     url: capabilities/confluent-the-data-streaming-platform-capability-edges.yml
     name: Confluent | the Data Streaming Platform Business Capability Map
