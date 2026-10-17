@@ -580,80 +580,59 @@ components:
           minimum: 1
           example: 2
       readOnly: true
-    Error:
+    Failure:
       type: object
-      description: Describes a particular error encountered while performing an operation.
+      description: Provides information about problems encountered while performing an operation.
+      required:
+      - errors
       properties:
-        id:
-          description: A unique identifier for this particular occurrence of the problem.
+        errors:
+          description: List of errors which caused this operation to fail
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          uniqueItems: true
+    cmk.v2.Freight:
+      type: object
+      description: 'A freight cluster with its parameters.
+
+        '
+      properties:
+        kind:
           type: string
-          maxLength: 255
-        status:
-          description: The HTTP status code applicable to this problem, expressed as a string value.
-          type: string
-        code:
-          description: An application-specific error code, expressed as a string value.
-          type: string
-        title:
-          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
-          type: string
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-        source:
-          type: object
-          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
-          properties:
-            pointer:
-              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
-              type: string
-            parameter:
-              description: A string indicating which query parameter caused the error.
-              type: string
-        error_code:
+          enum:
+          - Freight
+          description: 'Freight cluster type.
+
+            '
+        max_ecku:
+          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
+
+            Kafka clusters with `HIGH` availability must have at least two eCKUs.
+
+            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
+
+            '
           type: integer
           format: int32
-        message:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    ObjectMeta:
-      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
+          minimum: 1
+          example: 2
+        zones:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          minItems: 1
+          maxItems: 3
+          description: "The list of zones the cluster is in.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n"
+          readOnly: true
+          example:
+          - us-central1-a
+          - us-central1-b
+          - us-central1-c
+          x-immutable: true
       required:
-      - self
-      properties:
-        self:
-          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
-          type: string
-          format: uri
-          readOnly: true
-          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
-        resource_name:
-          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
-          type: string
-          format: uri
-          readOnly: true
-          example: crn://confluent.cloud/kafka=lkc-f3a90de
-        created_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
-        deleted_at:
-          type: string
-          format: date-time
-          example: '2006-01-02T15:04:05-07:00'
-          readOnly: true
-          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
-      readOnly: true
+      - kind
     cmk.v2.Enterprise:
       type: object
       description: 'The enterprise cluster type.
@@ -681,6 +660,140 @@ components:
           example: 2
       required:
       - kind
+    cmk.v2.Dedicated:
+      type: object
+      description: 'A dedicated cluster with its parameters.
+
+        '
+      properties:
+        kind:
+          type: string
+          enum:
+          - Dedicated
+          description: 'Dedicated cluster type.
+
+            '
+        cku:
+          description: 'The number of Confluent Kafka Units (CKUs) for Dedicated cluster types.
+
+            MULTI_ZONE dedicated clusters must have at least two CKUs.
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          example: 2
+        encryption_key:
+          type: string
+          description: 'The id of the encryption key that is used to encrypt the data in the Kafka cluster.
+
+            (e.g. for Amazon Web Services, the Amazon Resource Name of the key).
+
+            '
+          example: arn:aws:kms:us-west-2:000000000000:key/0000xxxx-00xx-00xx-00xx-0000000000xx
+          deprecated: true
+          x-immutable: true
+        zones:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          minItems: 1
+          maxItems: 3
+          description: "The list of zones the cluster is in.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n"
+          readOnly: false
+          example:
+          - us-central1-a
+          - us-central1-b
+          - us-central1-c
+          x-immutable: true
+        release_priority:
+          type: string
+          x-extensible-enum:
+          - REGULAR
+          - PRIORITY
+          description: 'Specifies the release priority for cluster updates. Defaults to REGULAR. Clusters with PRIORITY are updated before clusters with REGULAR.
+
+            '
+          default: REGULAR
+          example: REGULAR
+      required:
+      - kind
+      - cku
+    GlobalObjectReference:
+      type: object
+      description: ObjectReference provides information for you to locate the referred object
+      required:
+      - id
+      - related
+      - resource_name
+      properties:
+        id:
+          type: string
+          description: ID of the referred resource
+          minLength: 1
+          maxLength: 255
+        related:
+          type: string
+          format: uri
+          description: API URL for accessing or modifying the referred object
+          minLength: 1
+          readOnly: true
+        resource_name:
+          type: string
+          format: uri
+          description: CRN reference to the referred resource
+          minLength: 1
+          readOnly: true
+    cmk.v2.EndpointsMap:
+      type: object
+      description: 'Map of endpoints for a Kafka cluster, keyed by access point ID.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/cmk.v2.Endpoints'
+      readOnly: true
+      example:
+        ap1pni123:
+          kafka_bootstrap_endpoint: lkc-s1232-00000.us-central1.gcp.private.confluent.cloud:9092
+          http_endpoint: https://lkc-s1232.us-central1.gcp.private.confluent.cloud:443
+          connection_type: PRIVATE_NETWORK_INTERFACE
+        ap2platt67890:
+          kafka_bootstrap_endpoint: lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092
+          http_endpoint: https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud
+          connection_type: PRIVATE_LINK
+    cmk.v2.Standard:
+      type: object
+      description: 'The standard cluster type.
+
+        '
+      properties:
+        kind:
+          description: 'Standard cluster type.
+
+            '
+          type: string
+          enum:
+          - Standard
+        max_ecku:
+          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
+
+            Kafka clusters with `HIGH` availability must have at least two eCKUs.
+
+            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          example: 2
+      required:
+      - kind
+    MultipleSearchFilter:
+      description: Filter a collection by a string search for one or more values
+      type: array
+      items:
+        type: string
     cmk.v2.ClusterList:
       type: object
       description: '`Clusters` objects represent Apache Kafka Clusters on Confluent Cloud.
@@ -761,116 +874,70 @@ components:
                   - config
                   - environment
           uniqueItems: true
-    GlobalObjectReference:
-      type: object
-      description: ObjectReference provides information for you to locate the referred object
+    ObjectMeta:
+      description: ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
       required:
-      - id
-      - related
-      - resource_name
+      - self
       properties:
-        id:
-          type: string
-          description: ID of the referred resource
-          minLength: 1
-          maxLength: 255
-        related:
+        self:
+          description: Self is a Uniform Resource Locator (URL) at which an object can be addressed. This URL encodes the service location, API version, and other particulars necessary to locate the resource at a point in time
           type: string
           format: uri
-          description: API URL for accessing or modifying the referred object
-          minLength: 1
           readOnly: true
+          example: https://api.confluent.cloud/v2/kafka-clusters/lkc-f3a90de
         resource_name:
+          description: Resource Name is a Uniform Resource Identifier (URI) that is globally unique across space and time. It is represented as a Confluent Resource Name
           type: string
           format: uri
-          description: CRN reference to the referred resource
-          minLength: 1
           readOnly: true
-    cmk.v2.Freight:
-      type: object
-      description: 'A freight cluster with its parameters.
-
-        '
-      properties:
-        kind:
+          example: crn://confluent.cloud/kafka=lkc-f3a90de
+        created_at:
           type: string
-          enum:
-          - Freight
-          description: 'Freight cluster type.
-
-            '
-        max_ecku:
-          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
-
-            Kafka clusters with `HIGH` availability must have at least two eCKUs.
-
-            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
-
-            '
-          type: integer
-          format: int32
-          minimum: 1
-          example: 2
-        zones:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-          minItems: 1
-          maxItems: 3
-          description: "The list of zones the cluster is in.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n"
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
           readOnly: true
-          example:
-          - us-central1-a
-          - us-central1-b
-          - us-central1-c
-          x-immutable: true
-      required:
-      - kind
-    cmk.v2.Standard:
-      type: object
-      description: 'The standard cluster type.
-
-        '
-      properties:
-        kind:
-          description: 'Standard cluster type.
-
-            '
+          description: The date and time at which this object was created. It is represented in RFC3339 format and is in UTC.
+        updated_at:
           type: string
-          enum:
-          - Standard
-        max_ecku:
-          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
-
-            Kafka clusters with `HIGH` availability must have at least two eCKUs.
-
-            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
-
-            '
-          type: integer
-          format: int32
-          minimum: 1
-          example: 2
-      required:
-      - kind
-    cmk.v2.EndpointsMap:
-      type: object
-      description: 'Map of endpoints for a Kafka cluster, keyed by access point ID.
-
-        '
-      additionalProperties:
-        $ref: '#/components/schemas/cmk.v2.Endpoints'
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was last updated. It is represented in RFC3339 format and is in UTC.
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2006-01-02T15:04:05-07:00'
+          readOnly: true
+          description: The date and time at which this object was (or will be) deleted. It is represented in RFC3339 format and is in UTC.
       readOnly: true
-      example:
-        ap1pni123:
-          kafka_bootstrap_endpoint: lkc-s1232-00000.us-central1.gcp.private.confluent.cloud:9092
-          http_endpoint: https://lkc-s1232.us-central1.gcp.private.confluent.cloud:443
-          connection_type: PRIVATE_NETWORK_INTERFACE
-        ap2platt67890:
-          kafka_bootstrap_endpoint: lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092
-          http_endpoint: https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud
-          connection_type: PRIVATE_LINK
+    cmk.v2.Basic:
+      type: object
+      description: 'The basic cluster type.
+
+        '
+      properties:
+        kind:
+          description: 'Basic cluster type.
+
+            '
+          type: string
+          enum:
+          - Basic
+        max_ecku:
+          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
+
+            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          example: 2
+      required:
+      - kind
+    SearchFilter:
+      description: Filter a collection by a string search
+      type: string
     EnvScopedObjectReference:
       type: object
       description: ObjectReference provides information for you to locate the referred object
@@ -901,90 +968,6 @@ components:
           description: CRN reference to the referred resource
           minLength: 1
           readOnly: true
-    cmk.v2.Endpoints:
-      type: object
-      description: 'Given a gateway type, endpoints to connect to the Kafka cluster.
-
-        '
-      properties:
-        kafka_bootstrap_endpoint:
-          type: string
-          description: 'The bootstrap endpoint used by Kafka clients to connect to the cluster.
-
-            '
-          example: lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092
-        http_endpoint:
-          type: string
-          description: 'The REST endpoint for the Kafka cluster.
-
-            '
-          format: uri
-          example: https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:443
-        connection_type:
-          type: string
-          description: 'The type of connection used for the endpoint.
-
-            '
-          x-extensible-enum:
-          - PUBLIC
-          - PRIVATE_LINK
-          - PRIVATE_NETWORK_INTERFACE
-          example: PRIVATE_NETWORK_INTERFACE
-      required:
-      - kafka_bootstrap_endpoint
-      - http_endpoint
-      - connection_type
-      readOnly: true
-    ListMeta:
-      type: object
-      description: ListMeta describes metadata that resource collections may have
-      properties:
-        first:
-          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds
-        last:
-          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
-        prev:
-          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
-        next:
-          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
-        total_size:
-          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
-          type: integer
-          format: int32
-          minimum: 0
-          example: 123
-    Failure:
-      type: object
-      description: Provides information about problems encountered while performing an operation.
-      required:
-      - errors
-      properties:
-        errors:
-          description: List of errors which caused this operation to fail
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-          uniqueItems: true
     cmk.v2.ClusterSpec:
       type: object
       description: The desired state of the Cluster
@@ -1130,31 +1113,116 @@ components:
       x-enable-id: true
       x-enable-listmeta: true
       x-enable-objectmeta: true
-    cmk.v2.Basic:
+    Error:
       type: object
-      description: 'The basic cluster type.
+      description: Describes a particular error encountered while performing an operation.
+      properties:
+        id:
+          description: A unique identifier for this particular occurrence of the problem.
+          type: string
+          maxLength: 255
+        status:
+          description: The HTTP status code applicable to this problem, expressed as a string value.
+          type: string
+        code:
+          description: An application-specific error code, expressed as a string value.
+          type: string
+        title:
+          description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        source:
+          type: object
+          description: If this error was caused by a particular part of the API request, the source will point to the query string parameter or request body property that caused it.
+          properties:
+            pointer:
+              description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/spec" for a spec object, or "/spec/title" for a specific field].
+              type: string
+            parameter:
+              description: A string indicating which query parameter caused the error.
+              type: string
+        error_code:
+          type: integer
+          format: int32
+        message:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ListMeta:
+      type: object
+      description: ListMeta describes metadata that resource collections may have
+      properties:
+        first:
+          description: A link to the first page of results. If a response does not contain a first link, then direct navigation to the first page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds
+        last:
+          description: A link to the last page of results. If a response does not contain a last link, then direct navigation to the last page is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=bcAOehAY8F16YD84Z1wT
+        prev:
+          description: A link to the previous page of results. If a response does not contain a prev link, then either there is no previous data or backwards traversal through the result set is not supported.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=YIXRY97wWYmwzrax4dld
+        next:
+          description: A link to the next page of results. If a response does not contain a next link, then there is no more data available.
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://api.confluent.cloud/v2/resourcekinds?page_token=UvmDWOB1iwfAIBPj6EYb
+        total_size:
+          description: Number of records in the full result set. This response may be paginated and have a smaller number of records.
+          type: integer
+          format: int32
+          minimum: 0
+          example: 123
+    cmk.v2.Endpoints:
+      type: object
+      description: 'Given a gateway type, endpoints to connect to the Kafka cluster.
 
         '
       properties:
-        kind:
-          description: 'Basic cluster type.
-
-            '
+        kafka_bootstrap_endpoint:
           type: string
-          enum:
-          - Basic
-        max_ecku:
-          description: 'The maximum number of Elastic Confluent Kafka Units (eCKUs) that Kafka clusters should auto-scale to.
-
-            For more details, see [Maximum eCKU requirements](https://docs.confluent.io/cloud/current/clusters/cluster-types.html#minimum-maximum-ecku-requirements).
+          description: 'The bootstrap endpoint used by Kafka clients to connect to the cluster.
 
             '
-          type: integer
-          format: int32
-          minimum: 1
-          example: 2
+          example: lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092
+        http_endpoint:
+          type: string
+          description: 'The REST endpoint for the Kafka cluster.
+
+            '
+          format: uri
+          example: https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:443
+        connection_type:
+          type: string
+          description: 'The type of connection used for the endpoint.
+
+            '
+          x-extensible-enum:
+          - PUBLIC
+          - PRIVATE_LINK
+          - PRIVATE_NETWORK_INTERFACE
+          example: PRIVATE_NETWORK_INTERFACE
       required:
-      - kind
+      - kafka_bootstrap_endpoint
+      - http_endpoint
+      - connection_type
+      readOnly: true
     cmk.v2.Cluster:
       type: object
       description: '`Clusters` objects represent Apache Kafka Clusters on Confluent Cloud.
@@ -1213,78 +1281,10 @@ components:
           $ref: '#/components/schemas/cmk.v2.ClusterSpec'
         status:
           $ref: '#/components/schemas/cmk.v2.ClusterStatus'
-    MultipleSearchFilter:
-      description: Filter a collection by a string search for one or more values
-      type: array
-      items:
-        type: string
-    cmk.v2.Dedicated:
-      type: object
-      description: 'A dedicated cluster with its parameters.
-
-        '
-      properties:
-        kind:
-          type: string
-          enum:
-          - Dedicated
-          description: 'Dedicated cluster type.
-
-            '
-        cku:
-          description: 'The number of Confluent Kafka Units (CKUs) for Dedicated cluster types.
-
-            MULTI_ZONE dedicated clusters must have at least two CKUs.
-
-            '
-          type: integer
-          format: int32
-          minimum: 1
-          example: 2
-        encryption_key:
-          type: string
-          description: 'The id of the encryption key that is used to encrypt the data in the Kafka cluster.
-
-            (e.g. for Amazon Web Services, the Amazon Resource Name of the key).
-
-            '
-          example: arn:aws:kms:us-west-2:000000000000:key/0000xxxx-00xx-00xx-00xx-0000000000xx
-          deprecated: true
-          x-immutable: true
-        zones:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-          minItems: 1
-          maxItems: 3
-          description: "The list of zones the cluster is in.\n\nOn AWS, zones are AWS [AZ IDs](https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html)\n (e.g. use1-az3)\n\nOn GCP, zones are GCP [zones](https://cloud.google.com/compute/docs/regions-zones)\n (e.g. us-central1-c).\n"
-          readOnly: false
-          example:
-          - us-central1-a
-          - us-central1-b
-          - us-central1-c
-          x-immutable: true
-        release_priority:
-          type: string
-          x-extensible-enum:
-          - REGULAR
-          - PRIORITY
-          description: 'Specifies the release priority for cluster updates. Defaults to REGULAR. Clusters with PRIORITY are updated before clusters with REGULAR.
-
-            '
-          default: REGULAR
-          example: REGULAR
-      required:
-      - kind
-      - cku
-    SearchFilter:
-      description: Filter a collection by a string search
-      type: string
   responses:
-    OverQuotaError:
-      x-summary: Over Quota
-      description: The request would exceed one or more quotas.
+    UnauthorizedError:
+      x-summary: Forbidden
+      description: The access credentials were considered insufficient to grant access
       headers:
         X-Request-Id:
           schema:
@@ -1297,10 +1297,10 @@ components:
           example:
             errors:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '402'
-              code: quota_exceeded
-              title: Kafka Clusters Per Org Quota Exceeded
-              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
+              status: '403'
+              code: user_unauthorized
+              title: User Access Unauthorized
+              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
     ValidationError:
       description: Validation Failed
       headers:
@@ -1580,43 +1580,6 @@ components:
               detail: 'The property ''/cluster/storage_size'' of type string did not match the following type: integer'
               source:
                 pointer: /cluster/storage_size
-    DefaultSystemError:
-      description: Oops, something went wrong!
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '500'
-              code: out_of_gas
-              title: DeLorean Out Of Gas
-              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
-    UnauthorizedError:
-      x-summary: Forbidden
-      description: The access credentials were considered insufficient to grant access
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Failure'
-          example:
-            errors:
-            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
-              status: '403'
-              code: user_unauthorized
-              title: User Access Unauthorized
-              detail: The user 'mcfly' is not allowed to access the 'delorean' resource without the 'plutonium' role.
     NotFoundError:
       description: Not Found
       headers:
@@ -1633,29 +1596,6 @@ components:
             - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
               status: '404'
               title: Not Found
-    RateLimitError:
-      description: Rate Limit Exceeded
-      headers:
-        X-Request-Id:
-          schema:
-            type: string
-          description: The unique identifier for the API request.
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-          description: The maximum number of requests you're permitted to make per time period.
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-          description: The number of requests remaining in the current rate limit window.
-        X-RateLimit-Reset:
-          schema:
-            type: integer
-          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
-        Retry-After:
-          schema:
-            type: integer
-          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
     BadRequestError:
       description: Bad Request
       headers:
@@ -1700,6 +1640,47 @@ components:
               code: user_unauthenticated
               title: Authentication Required
               detail: Valid authentication credentials must be provided
+    RateLimitError:
+      description: Rate Limit Exceeded
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: The maximum number of requests you're permitted to make per time period.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: The number of requests remaining in the current rate limit window.
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: "The relative time in seconds until the current rate-limit window resets.  \n  \n**Important:** This differs from Github and Twitter's same-named header which uses UTC epoch seconds. We use relative time to avoid client/server time synchronization issues."
+        Retry-After:
+          schema:
+            type: integer
+          description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
+    DefaultSystemError:
+      description: Oops, something went wrong!
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '500'
+              code: out_of_gas
+              title: DeLorean Out Of Gas
+              detail: The DeLorean has run out of gas, but Doc Brown will fill 'er up for you asap
     ConflictError:
       x-summary: Conflict
       description: The request is in conflict with the current server state
@@ -1725,6 +1706,25 @@ components:
               code: resource_already_exists
               title: Resource Already exists
               detail: The entitlement '91e3e86f-fca6-4f14-98f5-a48e64113ce2' already exists.
+    OverQuotaError:
+      x-summary: Over Quota
+      description: The request would exceed one or more quotas.
+      headers:
+        X-Request-Id:
+          schema:
+            type: string
+          description: The unique identifier for the API request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Failure'
+          example:
+            errors:
+            - id: ed42afdc-f0d5-4c0d-b428-9fc6ed6e279d
+              status: '402'
+              code: quota_exceeded
+              title: Kafka Clusters Per Org Quota Exceeded
+              detail: 'The request would exceed the quota: kafka_clusters_per_environment'
   securitySchemes:
     cloud-api-key:
       type: http

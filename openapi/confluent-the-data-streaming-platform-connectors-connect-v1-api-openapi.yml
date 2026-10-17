@@ -807,19 +807,10 @@ paths:
           $ref: '#/components/responses/connect.v1.DefaultSystemError'
 components:
   schemas:
-    connect.v1.ConnectorError:
+    connect.v1.ConnectorExpansionMap:
       type: object
-      properties:
-        error:
-          type: object
-          description: Connector Error with error code and message.
-          properties:
-            code:
-              type: integer
-              description: Error code for the type of error
-            message:
-              type: string
-              description: Human readable error message
+      additionalProperties:
+        $ref: '#/components/schemas/connect.v1.ConnectorExpansion'
     connect.v1.ConnectorWithOffsets:
       type: object
       properties:
@@ -926,10 +917,6 @@ components:
       required:
       - name
       - config
-    connect.v1.ConnectorExpansionMap:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/connect.v1.ConnectorExpansion'
     connect.v1.Connector:
       type: object
       properties:
@@ -1036,6 +1023,19 @@ components:
       required:
       - name
       - config
+    connect.v1.ConnectorError:
+      type: object
+      properties:
+        error:
+          type: object
+          description: Connector Error with error code and message.
+          properties:
+            code:
+              type: integer
+              description: Error code for the type of error
+            message:
+              type: string
+              description: Human readable error message
     connect.v1.ConnectorExpansion:
       type: object
       description: Name of connector
@@ -1201,7 +1201,7 @@ components:
           schema:
             type: integer
           description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    connect.v1.ResourceNotFoundError:
+    connect.v1.AccountNotFoundError:
       description: Not Found
       content:
         application/json:
@@ -1210,27 +1210,7 @@ components:
           example:
             error:
               code: 404
-              message: resource not found
-    connect.v1.UnauthenticatedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 401
-              message: Unauthorized
-    connect.v1.BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 400
-              message: Bad Request
+              message: account not found
     connect.v1.OK:
       description: OK
       content:
@@ -1244,6 +1224,26 @@ components:
                 - 'null'
           example:
             error: null
+    connect.v1.ResourceNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: resource not found
+    connect.v1.BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 400
+              message: Bad Request
     connect.v1.DefaultSystemError:
       description: Internal Server Error
       content:
@@ -1254,16 +1254,16 @@ components:
             error:
               code: 500
               message: Oops, something went wrong
-    connect.v1.AccountNotFoundError:
-      description: Not Found
+    connect.v1.UnauthenticatedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/connect.v1.ConnectorError'
           example:
             error:
-              code: 404
-              message: account not found
+              code: 401
+              message: Unauthorized
   securitySchemes:
     cloud-api-key:
       type: http

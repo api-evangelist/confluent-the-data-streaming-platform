@@ -338,44 +338,22 @@ paths:
           $ref: '#/components/responses/connect.v1.DefaultSystemError'
 components:
   schemas:
-    connect.v1.ConnectorError:
+    connect.v1.AlterOffsetRequestType:
+      type: string
+      enum:
+      - PATCH
+      - DELETE
+      description: "The type of alter operation. PATCH will update the offset to the provided values.\nThe update will only happen for the partitions provided in the request. \nDELETE will delete the offset for the provided partitions and reset them back to the\nbase state. It is as if, a fresh new connector was created.\n\nFor sink connectors PATCH/DELETE will move the offsets to the provided point in the \ntopic partition. If the offset provided is not present in the topic partition it will\nby default reset to the earliest offset in the topic partition.\n\nFor source connectors, post PATCH/DELETE the connector will attempt to read from the \nposition defined in the altered offsets."
+    connect.v1.AlterOffsetRequest:
       type: object
+      description: Request to alter the offset of a connector. The offsets parameter is options for DELETE type.
       properties:
-        error:
-          type: object
-          description: Connector Error with error code and message.
-          properties:
-            code:
-              type: integer
-              description: Error code for the type of error
-            message:
-              type: string
-              description: Human readable error message
-    connect.v1.AlterOffsetRequestInfo:
-      type: object
-      description: The request made to alter offsets.
-      properties:
-        id:
-          type: string
-          description: The ID of the connector.
-        name:
-          type: string
-          description: The name of the connector.
-        offsets:
-          $ref: '#/components/schemas/connect.v1.Offsets'
-        requested_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: 2024-02-20 15:14:19+00:00
-          description: The time at which the request was made. The time is in UTC, ISO 8601 format.
         type:
           $ref: '#/components/schemas/connect.v1.AlterOffsetRequestType'
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
       required:
-      - id
-      - name
       - type
-      - requested_at
     connect.v1.AlterOffsetStatus:
       type: object
       description: "Status of the alter offset operation. The previous offsets in the response \nis the offsets that the connector last processed, before the offsets were altered,\nvia a patch or delete operation."
@@ -412,22 +390,6 @@ components:
       required:
       - request
       - status
-    connect.v1.AlterOffsetRequest:
-      type: object
-      description: Request to alter the offset of a connector. The offsets parameter is options for DELETE type.
-      properties:
-        type:
-          $ref: '#/components/schemas/connect.v1.AlterOffsetRequestType'
-        offsets:
-          $ref: '#/components/schemas/connect.v1.Offsets'
-      required:
-      - type
-    connect.v1.AlterOffsetRequestType:
-      type: string
-      enum:
-      - PATCH
-      - DELETE
-      description: "The type of alter operation. PATCH will update the offset to the provided values.\nThe update will only happen for the partitions provided in the request. \nDELETE will delete the offset for the provided partitions and reset them back to the\nbase state. It is as if, a fresh new connector was created.\n\nFor sink connectors PATCH/DELETE will move the offsets to the provided point in the \ntopic partition. If the offset provided is not present in the topic partition it will\nby default reset to the earliest offset in the topic partition.\n\nFor source connectors, post PATCH/DELETE the connector will attempt to read from the \nposition defined in the altered offsets."
     connect.v1.ConnectorOffsets:
       type: object
       description: Offsets for a connector
@@ -450,6 +412,44 @@ components:
               example: 2024-02-20 15:14:19+00:00
               readOnly: true
               description: The time at which the offsets were observed. The time is in UTC, ISO 8601 format.
+    connect.v1.AlterOffsetRequestInfo:
+      type: object
+      description: The request made to alter offsets.
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        name:
+          type: string
+          description: The name of the connector.
+        offsets:
+          $ref: '#/components/schemas/connect.v1.Offsets'
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: 2024-02-20 15:14:19+00:00
+          description: The time at which the request was made. The time is in UTC, ISO 8601 format.
+        type:
+          $ref: '#/components/schemas/connect.v1.AlterOffsetRequestType'
+      required:
+      - id
+      - name
+      - type
+      - requested_at
+    connect.v1.ConnectorError:
+      type: object
+      properties:
+        error:
+          type: object
+          description: Connector Error with error code and message.
+          properties:
+            code:
+              type: integer
+              description: Error code for the type of error
+            message:
+              type: string
+              description: Human readable error message
     connect.v1.Offsets:
       type: array
       description: Array of offsets which are categorised into partitions.
@@ -488,46 +488,6 @@ components:
           schema:
             type: integer
           description: The number of seconds to wait until the rate limit window resets. Only sent when the rate limit is reached.
-    connect.v1.ResourceNotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 404
-              message: resource not found
-    connect.v1.UnauthenticatedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 401
-              message: Unauthorized
-    connect.v1.DefaultSystemError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 500
-              message: Oops, something went wrong
-    connect.v1.ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/connect.v1.ConnectorError'
-          example:
-            error:
-              code: 403
-              message: Forbidden
     connect.v1.BadRequestError:
       description: Bad Request
       content:
@@ -538,6 +498,46 @@ components:
             error:
               code: 400
               message: Bad Request
+    connect.v1.ResourceNotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 404
+              message: resource not found
+    connect.v1.ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 403
+              message: Forbidden
+    connect.v1.DefaultSystemError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 500
+              message: Oops, something went wrong
+    connect.v1.UnauthenticatedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/connect.v1.ConnectorError'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
   securitySchemes:
     cloud-api-key:
       type: http
