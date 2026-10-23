@@ -12,6 +12,9 @@ artifacts:
   authentication/confluent-the-data-streaming-platform-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  capabilities/confluent-the-data-streaming-platform-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/confluent-the-data-streaming-platform-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -72,127 +75,7 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -276,6 +159,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/confluent-the-data-streaming-platform-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -290,8 +188,8 @@ artifacts:
     evidence: declared in the artifact
   openapi/_original/confluent-the-data-streaming-platform-cloud-apis-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://docs.confluent.io/cloud/current/openapi.yaml (sha256 4bbccb7fdb6d,
+      fetched 2026-10-04)
   openapi/_original/confluent-the-data-streaming-platform-openapi.yml:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
@@ -644,7 +542,355 @@ artifacts:
   openapi/confluent-the-data-streaming-platform-users-iam-v2-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/confluent-the-data-streaming-platform-access-points-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-acl-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-agents-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-api-keys-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-applied-quotas-service-quota-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-catalog-integrations-tableflow-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-client-quotas-kafka-quotas-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/confluent-the-data-streaming-platform-cloud-apis-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/confluent-the-data-streaming-platform-cluster-linking-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-cluster-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-clusters-cmk-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-clusters-srcm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-clusters-srcm-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-compatibility-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-config-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-configs-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-connect-artifacts-cam-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-connect-clusters-usm-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-connections-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-connectors-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-consumer-group-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-consumer-shared-resources-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-consumer-shares-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-contexts-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-costs-billing-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-custom-code-loggings-ccl-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-custom-connect-plugin-versions-ccpm-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-custom-connect-plugins-ccpm-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-custom-connector-plugins-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-custom-connector-runtimes-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-data-encryption-keys-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-dns-forwarders-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-dns-records-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-endpoints-endpoint-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-entitlements-partner-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-entity-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-environments-org-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-exporters-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-flink-artifacts-artifact-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-gateways-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-group-mappings-iam-v2-sso-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-identity-pools-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-identity-providers-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-integrations-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-integrations-pim-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-integrations-pim-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-invitations-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-ip-addresses-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-ip-filter-summaries-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-ip-filters-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-ip-groups-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-jwks-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-kafka-clusters-usm-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-key-encryption-keys-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-keys-byok-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-lifecycle-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-managed-connector-plugins-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-materialized-table-versions-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-materialized-tables-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-modes-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-network-link-endpoints-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-network-link-service-associations-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-network-link-services-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-networks-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-notification-types-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-oauth-tokens-sts-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-offsets-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-opt-ins-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-org-compute-pool-configs-fcpm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-organizations-org-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-organizations-partner-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-partition-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-peerings-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-presigned-urls-artifact-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-presigned-urls-cam-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-presigned-urls-ccpm-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-presigned-urls-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-private-link-accesses-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-private-link-attachment-connections-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-private-link-attachments-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-provider-shared-resources-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-provider-shares-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-records-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-regions-fcpm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-regions-rtce-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-regions-srcm-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-regions-tableflow-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-resource-preferences-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-resource-subscriptions-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-role-bindings-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-rtce-topics-rtce-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-schemas-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-scopes-service-quota-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-search-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-service-accounts-iam-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-share-group-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-shared-tokens-cdx-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-signup-partner-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-statement-exceptions-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-statement-results-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-statements-query-v1alpha1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-statements-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-status-connect-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-streams-group-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-subjects-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-subscriptions-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-tableflow-topics-tableflow-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-tools-sql-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-topic-v3-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-transit-gateway-attachments-networking-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-types-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-user-notifications-notifications-v1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/confluent-the-data-streaming-platform-users-iam-v2-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   packages/confluent-the-data-streaming-platform-packages.yml:
