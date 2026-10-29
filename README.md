@@ -1,4 +1,4 @@
-# Confluent | the Data Streaming Platform (confluent-the-data-streaming-platform)
+# Confluent | the Data Streaming Platform
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,174 +66,320 @@
 
 Confluent is a fully managed data streaming platform built by the original creators of Apache Kafka. It lets organizations stream, connect, process, and govern data in motion through a cloud-native service (Confluent Cloud) and the on-prem/self-managed Confluent Platform. Confluent's developer surface includes the Confluent Cloud REST API for managing clusters, environments, and access; the Kafka REST Proxy for producing and consuming events over HTTP; the Schema Registry REST API for governance of Avro, JSON Schema, and Protobuf schemas; the Kafka Connect REST API for managing connectors; the ksqlDB REST API for stream processing; and managed Apache Flink. Authentication is API-key based (Cloud) or HTTP/mTLS/OAuth (Platform).
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/confluent-the-data-streaming-platform/refs/heads/main/apis.yml)
+**Areas:** Apache Flink · Apache Kafka · Confluent Cloud · Connectors · Data Streaming · Event Streaming · Kafka Connect · ksqlDB · Real-Time Data · REST · Schema Registry · Stream Processing
 
-## Scope
+## Confluent | the Data Streaming Platform on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Confluent | the Data Streaming Platform is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/confluent-the-data-streaming-platform/](https://apis.io/providers/confluent-the-data-streaming-platform/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (121)
 
-- Apache Flink
-- Apache Kafka
-- Confluent Cloud
-- Connectors
-- Data Streaming
-- Event Streaming
-- Kafka Connect
-- ksqlDB
-- Real-Time Data
-- REST
-- Schema Registry
-- Stream Processing
+- [Confluent Kafka REST API](https://apis.io/apis/confluent-the-data-streaming-platform/kafka-rest-api/) — The Kafka REST API (Confluent REST Proxy in self-managed deployments, Kafka REST in Cloud) provides HTTP access to Apache Kafka topics, consumers,…
+- [Confluent Schema Registry REST API](https://apis.io/apis/confluent-the-data-streaming-platform/schema-registry-api/) — The Schema Registry REST API stores and serves Avro, JSON Schema, and Protobuf schemas with versioning and compatibility enforcement. It is available both…
+- [Kafka Connect REST API](https://apis.io/apis/confluent-the-data-streaming-platform/connect-rest-api/) — The Kafka Connect REST API manages connectors, tasks, and worker configuration. Operators use it to deploy, configure, pause, resume, and delete source and…
+- [ksqlDB REST API](https://apis.io/apis/confluent-the-data-streaming-platform/ksqldb-rest-api/) — The ksqlDB REST API exposes ksqlDB, Confluent's streaming SQL engine, over HTTP. Clients submit streaming SQL statements, query streams and tables (push and…
+- [Confluent Cloud for Apache Flink REST API](https://apis.io/apis/confluent-the-data-streaming-platform/flink-rest-api/) — The Confluent Cloud for Apache Flink REST API manages Flink compute pools, statements, and workspaces for stateful stream processing on Confluent Cloud. It…
+- [Confluent | the Data Streaming Platform Access Points (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-access-points-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform ACL (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-acl-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Agents (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-agents-sql-v1-api/) — [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy) `Agent` models an AI agent that…
+- [Confluent | the Data Streaming Platform API Keys (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-api-keys-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Applied Quotas (service-quota/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-applied-quotas-service-quota-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Catalog Integrations (tableflow/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-catalog-integrations-tableflow-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Certificate Authorities (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Certificate Identity Pools (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Client Quotas (kafka-quotas/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-client-quotas-kafka-quotas-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Cluster Linking (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-cluster-linking-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Cluster (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-cluster-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Clusters (cmk/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-cmk-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Clusters (ksqldbcm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Clusters (srcm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-srcm-v2-api/) — [![Deprecated](https://img.shields.io/badge/Lifecycle%20Stage-Deprecated-%23ff005c)](#section/Versioning/API-Lifecycle-Policy) `Clusters` objects represent…
+- [Confluent | the Data Streaming Platform Clusters (srcm/v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-srcm-v3-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Compatibility (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-compatibility-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Compute Pools (fcpm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Config (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-config-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Configs (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-configs-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Connect Artifacts (cam/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connect-artifacts-cam-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Connect Clusters (usm/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connect-clusters-usm-v1-api/) — [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy) `ConnectCluster` object represent…
+- [Confluent | the Data Streaming Platform Connections (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connections-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Connectors (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connectors-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) API for…
+- [Confluent | the Data Streaming Platform Consumer Group (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-consumer-group-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Consumer Shared Resources (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-consumer-shared-resources-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Consumer Shares (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-consumer-shares-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Contexts (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-contexts-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Costs (billing/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-costs-billing-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) `Cost`…
+- [Confluent | the Data Streaming Platform Custom Code Loggings (ccl/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-custom-code-loggings-ccl-v1-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Custom Connect Plugin Versions (ccpm/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-custom-connect-plugin-versions-ccpm-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Custom Connect Plugins (ccpm/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-custom-connect-plugins-ccpm-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Custom Connector Plugins (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-custom-connector-plugins-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Custom Connector Runtimes (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-custom-connector-runtimes-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) List of…
+- [Confluent | the Data Streaming Platform Data Encryption Keys (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-data-encryption-keys-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform DNS Forwarders (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-dns-forwarders-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Add,…
+- [Confluent | the Data Streaming Platform DNS Records (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-dns-records-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) DNS…
+- [Confluent | the Data Streaming Platform Endpoints (endpoint/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-endpoints-endpoint-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) An…
+- [Confluent | the Data Streaming Platform Entitlements (partner/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-entitlements-partner-v2-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Entity (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-entity-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Environments (org/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-environments-org-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Exporters (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-exporters-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Flink Artifacts (artifact/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-flink-artifacts-artifact-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Gateways (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-gateways-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Group Mappings (iam/v2/sso) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-group-mappings-iam-v2-sso-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Identity Pools (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-identity-pools-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Identity Providers (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-identity-providers-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Integrations (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-integrations-notifications-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) You can…
+- [Confluent | the Data Streaming Platform Integrations (pim/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-integrations-pim-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Integrations (pim/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-integrations-pim-v2-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Invitations (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-invitations-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform IP Addresses (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-ip-addresses-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) IP…
+- [Confluent | the Data Streaming Platform IP Filter Summaries (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-ip-filter-summaries-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The IP…
+- [Confluent | the Data Streaming Platform IP Filters (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-ip-filters-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) `IP…
+- [Confluent | the Data Streaming Platform IP Groups (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-ip-groups-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Jwks (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-jwks-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) `JWKS`…
+- [Confluent | the Data Streaming Platform Kafka Clusters (usm/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-kafka-clusters-usm-v1-api/) — [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy) `KafkaCluster` object represent…
+- [Confluent | the Data Streaming Platform Key Encryption Keys (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-key-encryption-keys-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Keys (byok/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-keys-byok-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) `Key`…
+- [Confluent | the Data Streaming Platform Lifecycle (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-lifecycle-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) API for…
+- [Confluent | the Data Streaming Platform Managed Connector Plugins (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-managed-connector-plugins-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) API for…
+- [Confluent | the Data Streaming Platform Materialized Table Versions (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-materialized-table-versions-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Materialized Tables (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-materialized-tables-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Modes (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-modes-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Network Link Endpoints (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-network-link-endpoints-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Network Link Service Associations (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-network-link-service-associations-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) List of…
+- [Confluent | the Data Streaming Platform Network Link Services (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-network-link-services-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Network…
+- [Confluent | the Data Streaming Platform Networks (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-networks-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Notification Types (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-notification-types-notifications-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The…
+- [Confluent | the Data Streaming Platform OAuth Tokens (sts/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-oauth-tokens-sts-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) OAuth…
+- [Confluent | the Data Streaming Platform Offsets (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-offsets-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) API for…
+- [Confluent | the Data Streaming Platform Opt Ins (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-opt-ins-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Stream…
+- [Confluent | the Data Streaming Platform Org Compute Pool Configs (fcpm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-org-compute-pool-configs-fcpm-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Organizations (org/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-organizations-org-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Organizations (partner/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-organizations-partner-v2-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Partition (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-partition-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Peerings (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-peerings-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Add or…
+- [Confluent | the Data Streaming Platform Presigned Urls (artifact/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-presigned-urls-artifact-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Request…
+- [Confluent | the Data Streaming Platform Presigned Urls (cam/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-presigned-urls-cam-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Request…
+- [Confluent | the Data Streaming Platform Presigned Urls (ccpm/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-presigned-urls-ccpm-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Request…
+- [Confluent | the Data Streaming Platform Presigned Urls (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-presigned-urls-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Request…
+- [Confluent | the Data Streaming Platform Private Link Accesses (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-private-link-accesses-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Add or…
+- [Confluent | the Data Streaming Platform Private Link Attachment Connections (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-private-link-attachment-connections-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Private Link Attachments (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-private-link-attachments-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Provider Shared Resources (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-provider-shared-resources-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Provider Shares (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-provider-shares-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Records (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-records-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Regions (fcpm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-regions-fcpm-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Regions (rtce/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-regions-rtce-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Regions (srcm/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-regions-srcm-v2-api/) — [![Deprecated](https://img.shields.io/badge/Lifecycle%20Stage-Deprecated-%23ff005c)](#section/Versioning/API-Lifecycle-Policy) `Region` objects represent…
+- [Confluent | the Data Streaming Platform Regions (tableflow/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-regions-tableflow-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Resource Preferences (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-resource-preferences-notifications-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Resource Subscriptions (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-resource-subscriptions-notifications-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Role Bindings (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-role-bindings-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A role…
+- [Confluent | the Data Streaming Platform Rtce Topics (rtce/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-rtce-topics-rtce-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) An…
+- [Confluent | the Data Streaming Platform Schemas (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-schemas-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Scopes (service-quota/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-scopes-service-quota-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) Gets a…
+- [Confluent | the Data Streaming Platform Search (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-search-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Service Accounts (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-service-accounts-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Share Group (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-share-group-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Shared Tokens (cdx/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-shared-tokens-cdx-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Signup (partner/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-signup-partner-v2-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Statement Exceptions (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-statement-exceptions-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Statement Results (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-statement-results-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Statements (query/v1alpha1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-statements-query-v1alpha1-api/) — Execute SQL statements against queryable topics and read their results. A statement that resolves quickly returns its results inline; a long-running one is…
+- [Confluent | the Data Streaming Platform Statements (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-statements-sql-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Status (connect/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-status-connect-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) API for…
+- [Confluent | the Data Streaming Platform Streams Group (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-streams-group-v3-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Subjects (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-subjects-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform Subscriptions (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-subscriptions-notifications-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)…
+- [Confluent | the Data Streaming Platform Tableflow Topics (tableflow/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-tableflow-topics-tableflow-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) A…
+- [Confluent | the Data Streaming Platform Tools (sql/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-tools-sql-v1-api/) — [![Preview](https://img.shields.io/badge/Lifecycle%20Stage-Preview-%2300afba)](#section/Versioning/API-Lifecycle-Policy) `Tool` models a reusable tool…
+- [Confluent | the Data Streaming Platform Topic (v3) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-topic-v3-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy)
+- [Confluent | the Data Streaming Platform Transit Gateway Attachments (networking/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-transit-gateway-attachments-networking-v1-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) AWS…
+- [Confluent | the Data Streaming Platform Types (v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-types-v1-api/) — [![Generally Available](https://img.shields.io/badge/Lifecycle%20Stage-Generally%20Available-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) The API…
+- [Confluent | the Data Streaming Platform User Notifications (notifications/v1) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-user-notifications-notifications-v1-api/) — [![Early Access](https://img.shields.io/badge/Lifecycle%20Stage-Early%20Access-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) [![Request Access To…
+- [Confluent | the Data Streaming Platform Users (iam/v2) API](https://apis.io/apis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-users-iam-v2-api/) — [![General Availability](https://img.shields.io/badge/Lifecycle%20Stage-General%20Availability-%2345c6e8)](#section/Versioning/API-Lifecycle-Policy) `User`…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-08-19
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Confluent Cloud REST API
+Event-driven and webhook contracts.
 
-The Confluent Cloud REST API is the management plane for Confluent Cloud. It is used to manage organizations, environments, Kafka and Flink clusters, service accounts, API keys, role bindings, networking, schema registry clusters, and connector instances. The API uses Cloud API keys for authentication and follows Confluent's resource-oriented v2 conventions.
+- [Confluent The Data Streaming Platform Webhooks](https://apis.io/asyncapis/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-webhooks/)
 
-- **Human URL:** [https://docs.confluent.io/cloud/current/api.html](https://docs.confluent.io/cloud/current/api.html)
-- **Base URL:** `https://api.confluent.cloud`
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- Confluent Cloud
-- Management
-- REST
+- [Confluent managed MCP server](https://apis.io/servers/confluent-the-data-streaming-platform/confluent-managed-mcp-server/)
 
-#### Properties
+#### Agent skills (12)
 
-- [Documentation](https://docs.confluent.io/cloud/current/api.html)
-- [API Reference](https://docs.confluent.io/cloud/current/api.html)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Agent skills built on the API.
 
-### Confluent Kafka REST API
+- [Bad_Frontmatter](https://apis.io/agent-skills/confluent-the-data-streaming-platform/bad-frontmatter/)
+- [confluent-cloud-cdc-tableflow](https://apis.io/agent-skills/confluent-the-data-streaming-platform/confluent-cloud-cdc-tableflow/)
+- [confluent-skill-creator](https://apis.io/agent-skills/confluent-the-data-streaming-platform/confluent-skill-creator/)
+- [confluent-skill-reviewer](https://apis.io/agent-skills/confluent-the-data-streaming-platform/confluent-skill-reviewer/)
+- [developing-kafka-python-client](https://apis.io/agent-skills/confluent-the-data-streaming-platform/developing-kafka-python-client/)
+- [flink-udf](https://apis.io/agent-skills/confluent-the-data-streaming-platform/flink-udf/)
+- [good-skill](https://apis.io/agent-skills/confluent-the-data-streaming-platform/good-skill/)
+- [inlined-refs](https://apis.io/agent-skills/confluent-the-data-streaming-platform/inlined-refs/)
+- [kafka-schema-registry](https://apis.io/agent-skills/confluent-the-data-streaming-platform/kafka-schema-registry/)
+- [kafka-streams-programming](https://apis.io/agent-skills/confluent-the-data-streaming-platform/kafka-streams-programming/)
+- [stale-expectations](https://apis.io/agent-skills/confluent-the-data-streaming-platform/stale-expectations/)
+- [trigger-overlap](https://apis.io/agent-skills/confluent-the-data-streaming-platform/trigger-overlap/)
 
-The Kafka REST API (Confluent REST Proxy in self-managed deployments, Kafka REST in Cloud) provides HTTP access to Apache Kafka topics, consumers, partitions, brokers, and ACLs. Clients without a native Kafka library can produce and consume records, manage topics, and inspect metadata over HTTP. Cloud variants additionally enforce RBAC and Confluent Cloud authentication.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.confluent.io/platform/current/kafka-rest/api.html](https://docs.confluent.io/platform/current/kafka-rest/api.html)
-- **Base URL:** `https://pkc-XXXXX.region.aws.confluent.cloud`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Confluent The Data Streaming Platform Agentic Access](https://apis.io/agentic-access/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-agentic-access/)
 
-- Apache Kafka
-- Producer
-- Consumer
-- REST
+#### Collections (6)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://docs.confluent.io/platform/current/kafka-rest/api.html)
-- [Cloud  Documentation](https://docs.confluent.io/cloud/current/kafka-rest/index.html)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Confluent Cloud REST API (selected)](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform/)
+- [Confluent Cloud REST API (selected) API Keys API](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform-api-keys-api/)
+- [Confluent Cloud REST API (selected) API Keys Clusters API](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform-clusters-api/)
+- [Confluent Cloud REST API (selected) API Keys Environments API](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform-environments-api/)
+- [Confluent Cloud REST API (selected) API Keys Organizations API](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform-organizations-api/)
+- [Confluent Cloud REST API (selected) API Keys Service Accounts API](https://apis.io/collections/confluent-the-data-streaming-platform/open-confluent-the-data-streaming-platform-service-accounts-api/)
 
-### Confluent Schema Registry REST API
+#### Overlays (117)
 
-The Schema Registry REST API stores and serves Avro, JSON Schema, and Protobuf schemas with versioning and compatibility enforcement. It is available both as a managed Confluent Cloud service and as a self-managed component of Confluent Platform. The full developer profile lives in the api-evangelist/confluent-schema-registry repository.
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- **Human URL:** [https://docs.confluent.io/platform/current/schema-registry/develop/api.html](https://docs.confluent.io/platform/current/schema-registry/develop/api.html)
-- **Base URL:** `https://psrc-XXXXX.region.aws.confluent.cloud`
+- [Confluent The Data Streaming Platform Access Points Networking V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-access-points-networking-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Acl V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-acl-v3-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Agents Sql V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-agents-sql-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Api Keys Iam V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-api-keys-iam-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Applied Quotas Service Quota V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-applied-quotas-service-quota-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Catalog Integrations Tableflow V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-catalog-integrations-tableflow-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Certificate Authorities Iam V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-certificate-authorities-iam-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Certificate Identity Pools Iam V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-certificate-identity-pools-iam-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Client Quotas Kafka Quotas V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-client-quotas-kafka-quotas-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Cloud Apis Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-cloud-apis-overlay/)
+- [Confluent The Data Streaming Platform Cluster Linking V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-cluster-linking-v3-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Cluster V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-cluster-v3-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Clusters Cmk V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-cmk-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Clusters Ksqldbcm V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-ksqldbcm-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Clusters Srcm V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-srcm-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Clusters Srcm V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-clusters-srcm-v3-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Compatibility V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-compatibility-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Compute Pools Fcpm V2 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-compute-pools-fcpm-v2-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Config V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-config-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Configs V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-configs-v3-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Connect Artifacts Cam V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connect-artifacts-cam-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Connect Clusters Usm V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connect-clusters-usm-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Connections Sql V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connections-sql-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Connectors Connect V1 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-connectors-connect-v1-api-phrasing-overlay/)
+- [Confluent The Data Streaming Platform Consumer Group V3 Api Phrasing Overlay](https://apis.io/overlays/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-consumer-group-v3-api-phrasing-overlay/)
+- …and 92 more published on APIs.io
 
-#### Tags
+#### Security (4)
 
-- Avro
-- JSON Schema
-- Protobuf
-- Schema Registry
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Confluent The Data Streaming Platform Authentication](https://apis.io/security/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-authentication/)
+- [Confluent The Data Streaming Platform Domain Security](https://apis.io/security/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-domain-security/)
+- [Confluent The Data Streaming Platform Trust Center](https://apis.io/security/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-trust-center/)
+- [Confluent The Data Streaming Platform Vulnerability Disclosure](https://apis.io/security/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-vulnerability-disclosure/)
 
-- [Documentation](https://docs.confluent.io/platform/current/schema-registry/develop/api.html)
-- [Companion  Repo](https://github.com/api-evangelist/confluent-schema-registry)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### OAuth scopes (1)
 
-### Kafka Connect REST API
+The permissions the API asks for.
 
-The Kafka Connect REST API manages connectors, tasks, and worker configuration. Operators use it to deploy, configure, pause, resume, and delete source and sink connectors, inspect task status, and restart failed tasks. In Confluent Cloud, managed connectors are provisioned through the Cloud REST API while runtime status is exposed via the Connect REST surface.
+- [Confluent The Data Streaming Platform Scopes](https://apis.io/scopes/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-scopes/)
 
-- **Human URL:** [https://docs.confluent.io/platform/current/connect/references/restapi.html](https://docs.confluent.io/platform/current/connect/references/restapi.html)
-- **Base URL:** `https://localhost:8083`
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
-- Connectors
-- Kafka Connect
-- REST
+- [Confluent The Data Streaming Platform Plans Pricing](https://apis.io/plans/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [Documentation](https://docs.confluent.io/platform/current/connect/references/restapi.html)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published request limits.
 
-### ksqlDB REST API
+- [Confluent The Data Streaming Platform Rate Limits](https://apis.io/rate-limits/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-rate-limits/)
 
-The ksqlDB REST API exposes ksqlDB, Confluent's streaming SQL engine, over HTTP. Clients submit streaming SQL statements, query streams and tables (push and pull queries), and inspect server status.
+#### FinOps (1)
 
-- **Human URL:** [https://docs.ksqldb.io/en/latest/developer-guide/api/](https://docs.ksqldb.io/en/latest/developer-guide/api/)
-- **Base URL:** `https://localhost:8088`
+What the API costs to run, by operation.
 
-#### Tags
+- [Confluent The Data Streaming Platform Finops](https://apis.io/finops/confluent-the-data-streaming-platform/confluent-the-data-streaming-platform-finops/)
 
-- ksqlDB
-- REST
-- Streaming SQL
+## Where to find this API
 
-#### Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- [Documentation](https://docs.ksqldb.io/en/latest/developer-guide/api/)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Confluent Cloud for Apache Flink REST API
-
-The Confluent Cloud for Apache Flink REST API manages Flink compute pools, statements, and workspaces for stateful stream processing on Confluent Cloud. It is part of the Confluent Cloud REST surface.
-
-- **Human URL:** [https://docs.confluent.io/cloud/current/flink/index.html](https://docs.confluent.io/cloud/current/flink/index.html)
-- **Base URL:** `https://flink.region.aws.confluent.cloud`
-
-#### Tags
-
-- Apache Flink
-- Stream Processing
-
-#### Properties
-
-- [Documentation](https://docs.confluent.io/cloud/current/flink/index.html)
-- [Postman Collection](collections/confluent-the-data-streaming-platform.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/confluent-the-data-streaming-platform.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/confluent)
 - [Website](https://www.confluent.io/)
-- [Developer  Portal](https://developer.confluent.io/)
 - [Documentation](https://docs.confluent.io/)
-- [Cloud  A P I  Reference](https://docs.confluent.io/cloud/current/api.html)
-- [Git Hub](https://github.com/confluentinc)
-- [Blog](https://www.confluent.io/blog/)
+- [Getting started](https://docs.confluent.io/cloud/current/get-started/index.html)
+- [API reference](https://docs.confluent.io/cloud/current/api.html)
 - [Pricing](https://www.confluent.io/pricing/)
-- [Status Page](https://status.confluent.cloud/)
-- [Login](https://confluent.cloud/login)
-- [Marketplace](https://www.confluent.io/hub/)
-- [Training](https://training.confluent.io/)
-- [Terms of Service](https://www.confluent.io/terms-of-service/)
-- [Privacy Policy](https://www.confluent.io/privacy-policy/)
-- [Integrations](https://www.confluent.io/partner/)
-- [L L Ms Txt](https://docs.confluent.io/llms.txt)
+- [Sign up](https://www.confluent.io/confluent-cloud/tryfree/)
+- [Support](https://support.confluent.io/)
+- [Blog](https://www.confluent.io/blog/)
+- [Security](https://www.confluent.io/trust-and-security/)
+- [Compliance](https://www.confluent.io/trust-and-security/)
+- [Terms of service](https://www.confluent.io/terms-of-use/)
+- [Privacy policy](https://www.confluent.io/legal/confluent-privacy-notice/)
+- [GitHub](https://github.com/confluentinc)
+- [Status](https://status.confluent.cloud/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 76.3** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.8 |
+| Contract governance | 18.2 |
+| Operational transparency | 52.6 |
+| Developer ergonomics | 85.7 |
+| Access clarity | 92.1 |
+
+**Agent readiness 50.5** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | yes |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/confluent-the-data-streaming-platform/](https://apis.io/providers/confluent-the-data-streaming-platform/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Confluent | the Data Streaming Platform: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/confluent-the-data-streaming-platform/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
