@@ -1,0 +1,103 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://www.confluent.io/pricing/
+sources:
+- https://www.confluent.io/pricing/
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T120612
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: open-core
+  method: page
+  read: '2026-10-28'
+  evidence: I agree to the terms of the Confluent Community License Agreement .
+  free_edition: Confluent Platform
+  managed_tier: Standard
+  open_source_license: Confluent Community License Agreement
+published: true
+note: Confluent Cloud serverless cluster tiers with estimated monthly starting costs plus per-eCKU-hour,
+  per-GB transfer and per-GB-month storage rates; Confluent Platform offered as free self-managed download
+  under Confluent Community License; Private Cloud and Dedicated clusters are contact-us.
+plan_count: 4
+currency: USD
+plans:
+- name: Basic
+  price_text: Starting at $0/Month
+  price: 0
+  currency: USD
+  period: month
+  unit: cluster
+  included_quota: First eCKU free, then $0.14/eCKU-hour; Data In/Out $0.05/GB; Data Stored $0.08/GB-month
+- name: Standard
+  price_text: Starting at ~$385/Month
+  price: 385
+  currency: USD
+  period: month
+  unit: cluster
+  included_quota: $0.75/eCKU-hour; Data In/Out $0.035 - $0.050/GB; Data Stored $0.08/GB-month
+- name: Enterprise
+  price_text: Starting at ~$895/Month
+  price: 895
+  currency: USD
+  period: month
+  unit: cluster
+  included_quota: $1.75 - $2.25/eCKU-hour; Data In/Out $0.020 - $0.050/GB; Data Stored $0.08/GB-month
+- name: Freight (Specialty Clusters)
+  price_text: $2,300/Month
+  price: 2300
+  currency: USD
+  period: month
+  unit: cluster
+  included_quota: $2.25/eCKU-hour (minimum 2 eCKUs); Data In/Out $0.014 – $0.030/GB; Data Stored $0.03/GB-month
+rate_limit_statements:
+- 1,920 / 5,760 MBps
+- 9,120 / 27,360 MBps
+- 2,500
+- 96,000
+- 50,000
+- Connect up to 5 VPCs/VNets to Confluent Cloud.
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  units:
+  - compute
+  plans:
+  - name: Basic
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - month
+  - name: Standard
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - month
+  - name: Enterprise
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - month
+  - name: Freight (Specialty Clusters)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - month
